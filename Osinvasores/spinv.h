@@ -23,15 +23,31 @@
 #define ALIEN332 "(WTW)"
 
 #define QNTCORPOS 18 /*quantidades de corpos*/
+#define QNTET 55
 
 #define TAMET 6 /*tamanho do et*/
+
+/*Tamanho mínimo da tela*/
+#define MINLINHAS 38
+#define MINCOLUNAS 100
+
+struct t_coord {
+	int x,y;
+};
+typedef struct t_coord t_coord;
+
 struct t_alien {
 
 	int status;
 	int versao;
-	int pslinha; /*guarda a posição da linha*/
-	int pscoluna; /*guarda a posição da coluna*/
+	t_coord pos; 
 	struct t_alien *prox;
 	struct t_alien *prev;
 };
 typedef struct t_alien t_alien;
+
+/*inicializa os sprites dos corpos dos aliens*/
+void initspritsalien (char **corposaliens);
+
+/*inicializa os aliezinhos na lista*/
+void initaliens (t_listALiens *l, t_alien *et);
