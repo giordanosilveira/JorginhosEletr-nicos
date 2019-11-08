@@ -42,15 +42,14 @@ void initaliens (t_listAliens *l) {
 	free (l->ini);
 }*/
 
-void insalienslista (t_listAliens *l, int x; int y){
+void insalienslista (t_listAliens *l, int x, int y){
 
 	t_alien *et;
 
 	et = (t_alien *)malloc(sizeof(t_alien));
 	if (et != NULL) {
 
-		et->status = VIVO
-		et->versao = 0;
+		et->status = VIVO;
 
 		et->pos.x = x;
 		et->pos.y = y;

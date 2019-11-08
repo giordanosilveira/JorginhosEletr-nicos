@@ -1,4 +1,7 @@
 #include <ncurses.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
 #include "spinv.h"
 
 int main () {
@@ -27,9 +30,17 @@ int main () {
 
 	initaliens (&l_aliens);
 
-	admimpressao ();
+	while (1)
 
-	prntaliens ()
+		clear ();
+/*	admimpressao ();*/
+
+		prntaliens (&l_aliens,corposaliens);
+		refresh ();
+
+		usleep (DELAY);
+
+	}
 	/*For the time being, that's all folks*/
 
 

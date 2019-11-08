@@ -35,6 +35,7 @@
 #define MINLINHAS 38
 #define MINCOLUNAS 100
 
+#define DELAY 30000
 /*inicializa os sprites dos corpos dos aliens*/
 void initspritsaliens (char **corposaliens);
 

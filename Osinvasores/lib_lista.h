@@ -37,7 +37,7 @@ typedef struct t_listAliens t_listAliens;
   Cria uma lista vazia. Ela eh duplamente encadeada e tem sentinelas no
   inicio e no final. Tambem tem um apontador para um elemento qualquer.
 */
-int inicializa_lista(t_listAliens *l);
+int inicializa_lista(t_listAliens );
 
 
 /*
@@ -50,4 +50,4 @@ void destroi_lista(t_listAliens *l);
   Insere o elemento item no final da lista.
   Retorna 1 se a operação foi bem sucedida e zero caso contrário.
 */
-int insere_fim_lista(int item, t_listAliens *l);
+int insere_fim_lista(t_listAliens ,int , int );
