@@ -1,4 +1,4 @@
-/*Alien 1*/
+/*Sprits Alien 1*/
 #define ALIEN11 "/T-T\\"
 #define ALIEN12 "()-()"
 #define ALIEN13 "|W-W|"
@@ -6,7 +6,7 @@
 #define ALIEN122 "/(|)\\"
 #define ALIEN132 "|W-W|"
 
-/*Alien 2*/
+/*Sprits Alien 2*/
 #define ALIEN21 "(º-º)"
 #define ALIEN22 "}MOM{"
 #define ALIEN23 "().()"
@@ -14,7 +14,7 @@
 #define ALIEN222 "{MAM}"
 #define ALIEN232 "()_()"
 
-/*Alien 3*/
+/*Sprits Alien 3*/
 #define ALIEN31 "(O.O)"
 #define ALIEN32 "|/*\\|"
 #define ALIEN33 ")WTW("
@@ -22,32 +22,28 @@
 #define ALIEN322 "/|*|\\"
 #define ALIEN332 "(WTW)"
 
-#define QNTCORPOS 18 /*quantidades de corpos*/
+/*Tudo que tem haver com os aliens*/
+#define SPRITSALIEN 18			/*Número de sprits por alien*/
 #define QNTET 55
-
-#define TAMET 6 /*tamanho do et*/
+#define ESPACOCALIEN 2
+#define ESPACOLALIEN 3
+#define LINHASDALIENS 5
+#define COLUNASDALIENS 11
+#define TAMALIEN 6
 
 /*Tamanho mínimo da tela*/
 #define MINLINHAS 38
 #define MINCOLUNAS 100
 
-struct t_coord {
-	int x,y;
-};
-typedef struct t_coord t_coord;
-
-struct t_alien {
-
-	int status;
-	int versao;
-	t_coord pos; 
-	struct t_alien *prox;
-	struct t_alien *prev;
-};
-typedef struct t_alien t_alien;
-
 /*inicializa os sprites dos corpos dos aliens*/
-void initspritsalien (char **corposaliens);
+void initspritsaliens (char **corposaliens);
 
 /*inicializa os aliezinhos na lista*/
-void initaliens (t_listALiens *l, t_alien *et);
+void inicializa_aliens (t_listALiens *l);
+
+/*print os aliens na posição atual*/
+void prntaliens ();
+
+/*Vai administrar tudo o que tem haver com a impressão dos aliens*/
+void admimpressao ();
+

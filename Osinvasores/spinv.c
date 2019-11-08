@@ -1,5 +1,6 @@
 #include <string.h>
-#define "spinv.h"
+#include "spinv.h"
+#include "lib_lista.h"
 
 void initsprintsaliens (int **c_aliens) {
 	
@@ -25,14 +26,14 @@ void initsprintsaliens (int **c_aliens) {
 	strcpy (c_aliens[18],ALIEN332);	
 }
 
-void initaliens (t_listAliens *aliens) {
+void inicializa_aliens (t_listAliens *aliens) {
 	
-	int i;
-	for (i = 0; i < QNTET; i++)
+	initaliens (aliens);
 
+	int i,j;
 
-
-
-
-
+	for (i = 0; i < LINHASALIENS; i++)
+		for (j = 0; j < LINHASCOLUNAS; j++)
+			insalienslista (aliens,i,j);
 }
+void prntaliens (t_aliens);

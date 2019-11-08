@@ -16,7 +16,9 @@
 
 struct t_coord {
 	int x,y;
-}
+};
+typedef struct t_coord t_coord;
+
 struct t_alien {
     int status;
     t_coord pos;

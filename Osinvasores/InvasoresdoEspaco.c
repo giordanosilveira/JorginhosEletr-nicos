@@ -6,7 +6,7 @@ int main () {
   	initscr();
 
 
-	int tam_linhas, tam_colunas;
+	int tam_linhas, tam_colunas; /*resposável por pegar o tamanho da tela*/
 
 	getmaxyx (tam_linhas, tam_colunas);
 	if (tam_colunas < MINCOLUNAS || tam_linhas < MIMLINHAS) {
@@ -16,16 +16,18 @@ int main () {
 	}
 
 	char  **corposaliens,i;
-	corposaliens = (int **)malloc(sizeof(int*)*QNTCORPOS);
+	corposaliens = (int **)malloc(sizeof(int*)*SPRITSALIEN);
 
 	for (i = 0; i < QNTCORPOS; i++) {
-		corposaliens[i] = (int *)malloc(sizeof(int)*TAMET);
+		corposaliens[i] = (int *)malloc(sizeof(int)*TAMALIEN);
 	}
 	initspritsalien(corposaliens); /*inicializa os corpos dos aliens*/
 
 	t_listAliens l_aliens;
 
-	initaliens (l_aliens);
+	initaliens (&l_aliens);
+
+	admimpressao ();
 
 	prntaliens ()
 	/*For the time being, that's all folks*/
