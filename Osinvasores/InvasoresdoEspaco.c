@@ -30,7 +30,7 @@ int main () {
 
 	initaliens (&l_aliens);
 
-	while (1)
+	while (1) {
 
 		clear ();
 /*	admimpressao ();*/

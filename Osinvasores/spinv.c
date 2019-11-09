@@ -1,8 +1,6 @@
 #include <string.h>
 #include "spinv.h"
-#include "lib_lista.h"
-
-void initsprintsaliens (int **c_aliens) {
+void initsprintsaliens (char **c_aliens) {
 	
 	strcpy (c_aliens[0],ALIEN11);	
 	strcpy (c_aliens[1],ALIEN12);	
@@ -32,13 +30,13 @@ void inicializa_aliens (t_listAliens *aliens) {
 
 	int i,j;
 
-	for (i = 0; i < LINHASALIENS; i++)
-		for (j = 0; j < LINHASCOLUNAS; j++)
+	for (i = 0; i < LINHASDALIENS; i++)
+		for (j = 0; j < COLUNASDALIENS; j++)
 			insalienslista (aliens,i,j);
 }
-void prntaliens (t_listAliens *al,int **corposA) {
+void prntaliens (t_listAliens *al,char **corposA) {
 
-	int i,j,k,versao;
+	int k,versao,pos;
 	t_alien *et;
 	
 	et = al->ini->prox;
@@ -48,10 +46,10 @@ void prntaliens (t_listAliens *al,int **corposA) {
 	while (k < QNTET) {
 		
 		pos = (et->pos.x + 1)/2;		/*essa conta serve para pegar os sprit desejado do alien*/
-		if (et->start == VIVO) {
+		if (et->status == VIVO) {
 			if (versao) { /*se a versao do alien for 1 ele entra aqui*/ 
 				mvprintw (et->pos.x,et->pos.y,corposA[pos*6+3]);	
-				mvprintw (et->pos.x+1,et->pos+1.y,corposA[pos*6+4]);
+				mvprintw (et->pos.x+1,et->pos.y+1,corposA[pos*6+4]);
 				mvprintw (et->pos.x+2,et->pos.y+2,corposA[pos*6+5]);
 			}
 			else {

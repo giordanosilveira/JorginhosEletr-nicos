@@ -1,3 +1,5 @@
+#include "lib_lista.h"
+
 /*Sprits Alien 1*/
 #define ALIEN11 "/T-T\\"
 #define ALIEN12 "()-()"
@@ -37,13 +39,13 @@
 
 #define DELAY 30000
 /*inicializa os sprites dos corpos dos aliens*/
-void initspritsaliens (char **corposaliens);
+void initspritsaliens (char **);
 
 /*inicializa os aliezinhos na lista*/
-void inicializa_aliens (t_listALiens *l);
+void inicializa_aliens (t_listAliens *);
 
 /*print os aliens na posição atual*/
-void prntaliens ();
+void prntaliens (t_listAliens *,char **);
 
 /*Vai administrar tudo o que tem haver com a impressão dos aliens*/
 void admimpressao ();
