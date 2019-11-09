@@ -1,3 +1,4 @@
+#include <ncurses.h>
 #include <string.h>
 #include "spinv.h"
 void initsprintsaliens (char **c_aliens) {

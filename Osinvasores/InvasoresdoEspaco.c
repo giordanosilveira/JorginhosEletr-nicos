@@ -18,13 +18,15 @@ int main () {
 		return 1;
 	}
 
-	char  **corposaliens,i;
+	char  **corposaliens;
+	int i;
 	corposaliens = (char **)malloc(sizeof(char*)*SPRITSALIEN);
 
 	for (i = 0; i < SPRITSALIEN; i++) {
 		corposaliens[i] = (char *)malloc(sizeof(char)*TAMALIEN);
 	}
-	initspritsalien(corposaliens); /*inicializa os corpos dos aliens*/
+	
+	initspritsaliens (corposaliens); /*inicializa os corpos dos aliens*/
 
 	t_listAliens l_aliens;
 
