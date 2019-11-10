@@ -59,7 +59,10 @@ void insalienslista (t_listAliens *l, int x, int y) {
 		et->status = VIVO;
 	
 		et->pos.x = x;
+		printf ("%d ", et->pos.x);
 		et->pos.y = y;
+		printf ("\n");
+		printf ("%d ", et->pos.y);
 
 		et->prox = l->fim;
 		et->prev = l->fim->prev;
@@ -74,9 +77,11 @@ void inicializa_aliens (t_listAliens *aliens) {
 
 	int i,j;
 
-	for (i = 0; i < LINHASDALIENS; i++)
+	for (i = 0; i < LINHASDALIENS; i++) {
 		for (j = 0; j < COLUNASDALIENS; j++)
 			insalienslista (aliens,i,j);
+	printf ("\n");
+	}
 }
 void prntaliens (t_listAliens *al,char **corposA,int *versao, int *linha_alien, int *coluna_alien) {
 

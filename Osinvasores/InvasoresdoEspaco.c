@@ -29,7 +29,7 @@ void initspritsaliens (char **c_aliens) {
 }
 int main () {
 
-  	initscr();
+	initscr();
 	curs_set (FALSE);
 
 	int tam_linhas, tam_colunas; /*resposável por pegar o tamanho da tela*/
@@ -56,12 +56,12 @@ int main () {
 	inicializa_aliens (&l_aliens);
 
 	int linha_alien = 8; /*Em qual linha, primeiramente, eu escrevo o alien*/
-	int coluna_alien = 1; /*En qual coluna, primeiramente,  eu escrevo o alien*/
+	int coluna_alien = 1; /*Em qual coluna, primeiramente,  eu escrevo o alien*/
 	int versao = 0; /*Versão que é para imprimir do alien*/
 
 	while (1) {
 
-	/*admimpressao ();*/
+/*	admimpressao ();*/
 
 		clear ();
 
@@ -76,40 +76,7 @@ int main () {
 		versao = (versao + 1)%2;
 
 	}
-/*	For the time being, that's all folks*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	/*For the time being, that's all folks*/
 
 	return 0;
 

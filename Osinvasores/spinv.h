@@ -8,10 +8,10 @@
 #define ALIEN132 "|W-W|"
 
 /*Sprits Alien 2*/
-#define ALIEN21 "(º-º)"
+#define ALIEN21 "(O@O)"
 #define ALIEN22 "}MOM{"
 #define ALIEN23 "().()"
-#define ALIEN212 "(¬.¬)"
+#define ALIEN212 "(*-*)"
 #define ALIEN222 "{MAM}"
 #define ALIEN232 "()_()"
 
@@ -39,7 +39,7 @@
 #define MINLINHAS 38
 #define MINCOLUNAS 100
 
-#define DELAY 105000
+#define DELAY 100000
 
 struct t_coord {
 	int x,y;
