@@ -59,9 +59,7 @@ void insalienslista (t_listAliens *l, int x, int y) {
 		et->status = VIVO;
 	
 		et->pos.x = x;
-		printf ("%d\n", et->pos.x);
 		et->pos.y = y;
-		printf ("%d\n", et->pos.y);
 
 		et->prox = l->fim;
 		et->prev = l->fim->prev;
@@ -80,34 +78,32 @@ void inicializa_aliens (t_listAliens *aliens) {
 		for (j = 0; j < COLUNASDALIENS; j++)
 			insalienslista (aliens,i,j);
 }
-void prntaliens (t_listAliens *al,char **corposA) {
+void prntaliens (t_listAliens *al,char **corposA,int *versao, int *linha_alien, int *coluna_alien) {
 
-	int k,versao,pos;
+	int k,pos;
 	t_alien *et;
 	
 	et = al->ini->prox;
 	k = 0;
-	versao = 0; /*versao que é para imprimir do alien*/
 
 	while (k < QNTET) {
-		
-		pos = (et->pos.x + 1)/2;		/*essa conta serve para pegar os sprit desejado do alien*/
+
+		pos = (et->pos.x + 1)/2;		/*essa conta serve para pegar o sprit desejado do alien*/
 		if (et->status == VIVO) {
-			if (versao) { /*se a versao do alien for 1 ele entra aqui*/ 
-				mvprintw (et->pos.x,et->pos.y,corposA[pos*6+3]);	
-				mvprintw (et->pos.x+1,et->pos.y+1,corposA[pos*6+4]);
-				mvprintw (et->pos.x+2,et->pos.y+2,corposA[pos*6+5]);
+			if (*versao) { /*se a versao do alien for 1 ele entra aqui*/ 
+				mvprintw (*linha_alien+4*et->pos.x,*coluna_alien+7*et->pos.y,corposA[pos*6+3]);	
+				mvprintw (*linha_alien+4*et->pos.x+1,*coluna_alien+7*et->pos.y,corposA[pos*6+4]);
+				mvprintw (*linha_alien+4*et->pos.x+2,*coluna_alien+7*et->pos.y,corposA[pos*6+5]);
 			}
 			else {
 				
-				mvprintw (et->pos.x,et->pos.y,corposA[pos*6]);
-				mvprintw (et->pos.x+1,et->pos.y+1,corposA[pos*6+1]);
-				mvprintw (et->pos.x+2,et->pos.y+2,corposA[pos*6+2]);
+				mvprintw (*linha_alien+4*et->pos.x,*coluna_alien+7*et->pos.y,corposA[pos*6]);
+				mvprintw (*linha_alien+4*et->pos.x+1,*coluna_alien+7*et->pos.y,corposA[pos*6+1]);
+				mvprintw (*linha_alien+4*et->pos.x+2,*coluna_alien+7*et->pos.y,corposA[pos*6+2]);
 			}
 	
 		}
-		versao = (versao+1) % 2;
 		et = et->prox;
-		k = k+1;
+		k++;
 	}
 }

@@ -30,7 +30,7 @@ void initspritsaliens (char **c_aliens) {
 int main () {
 
   	initscr();
-
+	curs_set (FALSE);
 
 	int tam_linhas, tam_colunas; /*resposável por pegar o tamanho da tela*/
 
@@ -41,32 +41,42 @@ int main () {
 		return 1;
 	}
 
-/*	char  **corposaliens;
+	char  **corposaliens;
 	int i;
 	corposaliens = (char **)malloc(sizeof(char*)*SPRITSALIEN);
 
 	for (i = 0; i < SPRITSALIEN; i++) {
 		corposaliens[i] = (char *)malloc(sizeof(char)*TAMALIEN);
 	}
-	
-	initspritsaliens (corposaliens); inicializa os corpos dos aliens
+
+	initspritsaliens (corposaliens); /* inicializa os corpos dos aliens */
 
 	t_listAliens l_aliens;
 
-	initaliens (&l_aliens);
+	inicializa_aliens (&l_aliens);
+
+	int linha_alien = 8; /*Em qual linha, primeiramente, eu escrevo o alien*/
+	int coluna_alien = 1; /*En qual coluna, primeiramente,  eu escrevo o alien*/
+	int versao = 0; /*Versão que é para imprimir do alien*/
 
 	while (1) {
 
+	/*admimpressao ();*/
+
 		clear ();
-	admimpressao ();
 
-		prntaliens (&l_aliens,corposaliens);
+		prntaliens (&l_aliens,corposaliens,&versao,&linha_alien,&coluna_alien);
+
 		refresh ();
-
+		
 		usleep (DELAY);
 
+		coluna_alien++;
+
+		versao = (versao + 1)%2;
+
 	}
-	For the time being, that's all folks
+/*	For the time being, that's all folks*/
 
 
 
@@ -101,5 +111,6 @@ int main () {
 
 
 
-*/
+	return 0;
+
 }

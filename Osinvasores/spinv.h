@@ -39,7 +39,7 @@
 #define MINLINHAS 38
 #define MINCOLUNAS 100
 
-#define DELAY 30000
+#define DELAY 105000
 
 struct t_coord {
 	int x,y;
@@ -73,7 +73,7 @@ void insalienslista (t_listAliens *, int, int);
 void inicializa_aliens (t_listAliens *);
 
 /*print os aliens na posição atual*/
-void prntaliens (t_listAliens *,char **);
+void prntaliens (t_listAliens *,char **,int *, int*, int*);
 
 /*Vai administrar tudo o que tem haver com a impressão dos aliens*/
 void admimpressao ();
