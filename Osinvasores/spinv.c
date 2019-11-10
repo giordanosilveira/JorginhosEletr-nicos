@@ -3,7 +3,7 @@
 #include <string.h>
 #include "spinv.h"
 
-void initsprintsaliens (char **c_aliens) {
+/*void initsprintsaliens (char **c_aliens) {
 	
 	strcpy (c_aliens[0],ALIEN11);	
 	strcpy (c_aliens[1],ALIEN12);	
@@ -25,7 +25,7 @@ void initsprintsaliens (char **c_aliens) {
 	strcpy (c_aliens[15],ALIEN312);	
 	strcpy (c_aliens[16],ALIEN322);	
 	strcpy (c_aliens[17],ALIEN332);	
-}
+}*/
 void initaliens (t_listAliens *l) {
 
 	t_alien *ini, *fim;
@@ -39,7 +39,7 @@ void initaliens (t_listAliens *l) {
 			l->fim = fim;
 
 			ini->prox = fim;
-			ini->prev = ini;
+			ini->prev = NULL;
 
 			fim->prev = ini;
 			fim->prox = NULL;
@@ -59,11 +59,14 @@ void insalienslista (t_listAliens *l, int x, int y) {
 		et->status = VIVO;
 	
 		et->pos.x = x;
+		printf ("%d\n", et->pos.x);
 		et->pos.y = y;
+		printf ("%d\n", et->pos.y);
 
-		et->prev = l->fim->prev;		
+		et->prox = l->fim;
+		et->prev = l->fim->prev;
 
-		et->prev->prox = et;
+		l->fim->prev->prox = et;
 		l->fim->prev = et;
 	}
 }

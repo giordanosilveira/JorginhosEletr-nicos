@@ -67,7 +67,7 @@ void initaliens (t_listAliens *);
 void insalienslista (t_listAliens *, int, int);
 
 /*inicializa os sprites dos corpos dos aliens*/
-void initspritsaliens (char **);
+/*void initspritsaliens (char **);*/
 
 /*inicializa os aliezinhos na lista*/
 void inicializa_aliens (t_listAliens *);

@@ -1,9 +1,32 @@
+#include <string.h>
 #include <ncurses.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
 #include "spinv.h"
+void initspritsaliens (char **c_aliens) {
 
+	strcpy (c_aliens[0],ALIEN11);
+        strcpy (c_aliens[1],ALIEN12);
+        strcpy (c_aliens[2],ALIEN13);
+        strcpy (c_aliens[3],ALIEN112);
+        strcpy (c_aliens[4],ALIEN122);
+        strcpy (c_aliens[5],ALIEN132);
+
+        strcpy (c_aliens[6],ALIEN21);
+        strcpy (c_aliens[7],ALIEN22);
+        strcpy (c_aliens[8],ALIEN23);
+        strcpy (c_aliens[9],ALIEN212);
+        strcpy (c_aliens[10],ALIEN222);
+        strcpy (c_aliens[11],ALIEN232);
+
+        strcpy (c_aliens[12],ALIEN31);
+        strcpy (c_aliens[13],ALIEN32);
+        strcpy (c_aliens[14],ALIEN33);
+ 	strcpy (c_aliens[15],ALIEN312);
+ 	strcpy (c_aliens[16],ALIEN322);
+	strcpy (c_aliens[17],ALIEN332);
+}
 int main () {
 
   	initscr();
@@ -18,7 +41,7 @@ int main () {
 		return 1;
 	}
 
-	char  **corposaliens;
+/*	char  **corposaliens;
 	int i;
 	corposaliens = (char **)malloc(sizeof(char*)*SPRITSALIEN);
 
@@ -26,7 +49,7 @@ int main () {
 		corposaliens[i] = (char *)malloc(sizeof(char)*TAMALIEN);
 	}
 	
-	initspritsaliens (corposaliens); /*inicializa os corpos dos aliens*/
+	initspritsaliens (corposaliens); inicializa os corpos dos aliens
 
 	t_listAliens l_aliens;
 
@@ -35,7 +58,7 @@ int main () {
 	while (1) {
 
 		clear ();
-/*	admimpressao ();*/
+	admimpressao ();
 
 		prntaliens (&l_aliens,corposaliens);
 		refresh ();
@@ -43,7 +66,7 @@ int main () {
 		usleep (DELAY);
 
 	}
-	/*For the time being, that's all folks*/
+	For the time being, that's all folks
 
 
 
@@ -78,5 +101,5 @@ int main () {
 
 
 
-
+*/
 }
