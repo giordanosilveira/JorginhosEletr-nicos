@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "lib_lista.h"
+#include "spinv.h"
+
 void initaliens (t_listAliens *l) {
 
 	t_alien *ini, *fim;

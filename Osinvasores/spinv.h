@@ -32,12 +32,41 @@
 #define LINHASDALIENS 5
 #define COLUNASDALIENS 11
 #define TAMALIEN 6
+#define VIVO 1
+#define MORTO -1
+#define MORRENDO 0
 
 /*Tamanho mínimo da tela*/
 #define MINLINHAS 38
 #define MINCOLUNAS 100
 
 #define DELAY 30000
+
+struct t_coord {
+	int x,y;
+};
+typedef struct t_coord t_coord;
+
+struct t_alien {
+	int status;
+	t_coord pos;
+	struct t_alien *prox;
+	struct t_alien *prev;
+};
+typedef struct t_alien t_alien;
+
+struct t_listAliens {
+	t_alien *ini;
+	t_alien *fim;
+};
+typedef struct t_listAliens t_listAliens;
+
+/*cria uma lista vazia de aliens*/
+void initaliens (t_listAliens *);
+
+/*insere o alien no final da lista*/
+void insalienslista (t_listAliens *, int, int);
+
 /*inicializa os sprites dos corpos dos aliens*/
 void initspritsaliens (char **);
 

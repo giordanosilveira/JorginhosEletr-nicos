@@ -1,6 +1,7 @@
 #include <ncurses.h>
 #include <string.h>
 #include "spinv.h"
+
 void initsprintsaliens (char **c_aliens) {
 	
 	strcpy (c_aliens[0],ALIEN11);	
@@ -24,7 +25,47 @@ void initsprintsaliens (char **c_aliens) {
 	strcpy (c_aliens[16],ALIEN322);	
 	strcpy (c_aliens[17],ALIEN332);	
 }
+void initaliens (t_listAliens *l) {
 
+	t_alien *ini, *fim;
+
+	ini = (t_alien *)malloc(sizeof(t_alien));
+	if (ini != NULL){
+		fim = (t_alien *)malloc(sizeof(t_alien));
+		if (fim != NULL) {
+		
+			l->ini = ini;
+			l->fim = fim;
+
+			ini->prox = fim;
+			ini->prev = ini;
+
+			fim->prev = ini;
+			fim->prox = NULL;
+		}
+		else
+			free (ini);	
+	}
+}
+
+void insalienslista (t_listAliens *l) {
+
+	t_alien *et;
+
+	et = (t_alien *)malloc(sizeof(t_alien));
+	if (et != NULL) {
+	
+		et->status = VIVO;
+	
+		et->pos.x = x;
+		et->pos.y = y;
+
+		et->prev = l->fim->prev;		
+
+		et->prev->prox = et;
+		l->fim->prev = et;
+	}
+}
 void inicializa_aliens (t_listAliens *aliens) {
 	
 	initaliens (aliens);
