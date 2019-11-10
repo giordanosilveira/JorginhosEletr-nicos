@@ -59,10 +59,7 @@ void insalienslista (t_listAliens *l, int x, int y) {
 		et->status = VIVO;
 	
 		et->pos.x = x;
-		printf ("%d ", et->pos.x);
 		et->pos.y = y;
-		printf ("\n");
-		printf ("%d ", et->pos.y);
 
 		et->prox = l->fim;
 		et->prev = l->fim->prev;
@@ -127,43 +124,45 @@ void inicializa_controle (t_controle *linhAliens, t_controle *colunAliens) {
 		free (colunAliens);
 	}
 	else {
-		for (i = 0; i < colunAliens; i++) {
+		for (i = 0; i < colunAliens->tam; i++) {
 			if (i < 5)
-				linhAliens[i] = i;
-			colunAliens[i] = i;
+				linhAliens->vetor[i] = i;
+			colunAliens->vetor[i] = i;
 		}
 	}
 }
-void admimpressao (t_listAliens *lstaliens, int **corposaliens, int *indo, int *versao, int *linha_alien, int *coluna_alien, t_controle *linhasvivas, t_controle *colunasvivas,int telalinhas, int telacolunas)
+void admimpressao (t_listAliens *l_aliens, char **corposaliens, int *indo, int *versao, int *linha_alien, int *coluna_alien, t_controle *linhasvivas, t_controle *colunasvivas,int telalinhas, int telacolunas)
 {
 
-	t_listAliens alien;
+	t_alien *alien;
 	int i=0;
 
-	alien = t_listAliens->ini->prox;
+	alien = l_aliens->ini->prox;
 
 	if (*indo) {
-		if (linhasvivas->vetor[linhasvivas->tam]*alien->pos.y < telacolunas) {
-			*coluna_alien++;
-			prntaliens (lstaliens,corposaliens,linha_alien,coluna_alien);
+		if (11*7 + *coluna_alien == telacolunas) {
+			*coluna_alien = *coluna_alien - 1;
+			*linha_alien = *linha_alien + 1;
+			prntaliens (l_aliens,corposaliens,versao,linha_alien,coluna_alien);
+			*indo = 0;
 		}
 		else {
-			*coluna_alien--;
-			*linha_alien++;
-			prntaliens (lstaliens,corposaliens,linha_alien,coluna_alien);
-			*indo = 0;
+			*coluna_alien = *coluna_alien + 1;
+			prntaliens (l_aliens,corposaliens,versao,linha_alien,coluna_alien);
 		}
 	}
 	else {
-		if (*coluna_alien-1 > 0) {
-			*coluna_alien--;
-			prntaliens (lstaliens,corposaliens,linha_alien,coluna_alien);
-		}
-		else {
-			*coluna_alien++;
-			*linha_alien++;	
-			prntaliens (lstaliens,corposaliens,linha_alien,coluna_alien);
+		if (*coluna_alien-1 == 0) {
+			*coluna_alien = *coluna_alien + 1;
+			*linha_alien = *linha_alien + 1;	
+			prntaliens (l_aliens,corposaliens,versao,linha_alien,coluna_alien);
 			*indo=1;
 		}
+		else {
+			*coluna_alien = *coluna_alien - 1;
+			prntaliens (l_aliens,corposaliens,versao,linha_alien,coluna_alien);
+		}
+	
 	}
+	*versao = (*versao + 1)%2;
 }

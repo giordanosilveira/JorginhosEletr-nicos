@@ -37,9 +37,9 @@ int main () {
 	int versao = 0; /*Versão que é para imprimir do alien*/
 	int indo = 1; /*controla se o alien esta indo ou vindo*/
 
-	t_controle linhavivas, colunvivas;
+	t_controle linhasvivas, colunasvivas;
 
-	inicializa_controle (&linhavivas,&colunavivas);
+	inicializa_controle (&linhasvivas,&colunasvivas);
 
 	while (1) {
 
@@ -50,6 +50,8 @@ int main () {
 		refresh ();
 		
 		usleep (DELAY);
+
+		versao = (versao + 1)/2;
 
 	}
 	/*For the time being, that's all folks*/
