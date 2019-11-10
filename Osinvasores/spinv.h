@@ -60,6 +60,13 @@ struct t_listAliens {
 };
 typedef struct t_listAliens t_listAliens;
 
+/*esta struct serviva para eu fazer o controle da impressão dos aliens*/
+struct t_controle {
+	int *vetor;
+	int tam;
+}
+typedef struct t_controle t_controle;
+
 /*cria uma lista vazia de aliens*/
 void initaliens (t_listAliens *);
 
@@ -67,7 +74,7 @@ void initaliens (t_listAliens *);
 void insalienslista (t_listAliens *, int, int);
 
 /*inicializa os sprites dos corpos dos aliens*/
-/*void initspritsaliens (char **);*/
+void initspritsaliens (char **);
 
 /*inicializa os aliezinhos na lista*/
 void inicializa_aliens (t_listAliens *);
@@ -75,6 +82,9 @@ void inicializa_aliens (t_listAliens *);
 /*print os aliens na posição atual*/
 void prntaliens (t_listAliens *,char **,int *, int*, int*);
 
+/*Inicializa os vetores de controle*/
+void inicializa_controle (t_controle *, t_controle *);
+
 /*Vai administrar tudo o que tem haver com a impressão dos aliens*/
-void admimpressao ();
+void admimpressao (t_listAliens *, int ** , int *, int *, int *, int *, t_controle *, t_controle *, int, int );
 

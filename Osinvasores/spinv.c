@@ -3,7 +3,7 @@
 #include <string.h>
 #include "spinv.h"
 
-/*void initsprintsaliens (char **c_aliens) {
+void initspritsaliens (char **c_aliens) {
 	
 	strcpy (c_aliens[0],ALIEN11);	
 	strcpy (c_aliens[1],ALIEN12);	
@@ -25,7 +25,7 @@
 	strcpy (c_aliens[15],ALIEN312);	
 	strcpy (c_aliens[16],ALIEN322);	
 	strcpy (c_aliens[17],ALIEN332);	
-}*/
+}
 void initaliens (t_listAliens *l) {
 
 	t_alien *ini, *fim;
@@ -110,5 +110,60 @@ void prntaliens (t_listAliens *al,char **corposA,int *versao, int *linha_alien, 
 		}
 		et = et->prox;
 		k++;
+	}
+}
+void inicializa_controle (t_controle *linhAliens, t_controle *colunAliens) {
+
+	int i;
+	
+	linhAliens->tam = 5;
+	colunAliens->tam = 11;
+
+	linhAliens->vetor = (int *)malloc(sizeof(int)*linhAliens->tam);
+	colunAliens->vetor = (int *)malloc(sizeof(int)*colunAliens->tam);
+
+	if (linhAliens == NULL || colunAliens == NULL) {
+		free (linhAliens);
+		free (colunAliens);
+	}
+	else {
+		for (i = 0; i < colunAliens; i++) {
+			if (i < 5)
+				linhAliens[i] = i;
+			colunAliens[i] = i;
+		}
+	}
+}
+void admimpressao (t_listAliens *lstaliens, int **corposaliens, int *indo, int *versao, int *linha_alien, int *coluna_alien, t_controle *linhasvivas, t_controle *colunasvivas,int telalinhas, int telacolunas)
+{
+
+	t_listAliens alien;
+	int i=0;
+
+	alien = t_listAliens->ini->prox;
+
+	if (*indo) {
+		if (linhasvivas->vetor[linhasvivas->tam]*alien->pos.y < telacolunas) {
+			*coluna_alien++;
+			prntaliens (lstaliens,corposaliens,linha_alien,coluna_alien);
+		}
+		else {
+			*coluna_alien--;
+			*linha_alien++;
+			prntaliens (lstaliens,corposaliens,linha_alien,coluna_alien);
+			*indo = 0;
+		}
+	}
+	else {
+		if (*coluna_alien-1 > 0) {
+			*coluna_alien--;
+			prntaliens (lstaliens,corposaliens,linha_alien,coluna_alien);
+		}
+		else {
+			*coluna_alien++;
+			*linha_alien++;	
+			prntaliens (lstaliens,corposaliens,linha_alien,coluna_alien);
+			*indo=1;
+		}
 	}
 }
