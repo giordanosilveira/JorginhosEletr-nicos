@@ -1,4 +1,5 @@
 #include <ncurses.h>
+#include <stdlib.h>
 #include <string.h>
 #include "spinv.h"
 
@@ -48,7 +49,7 @@ void initaliens (t_listAliens *l) {
 	}
 }
 
-void insalienslista (t_listAliens *l) {
+void insalienslista (t_listAliens *l, int x, int y) {
 
 	t_alien *et;
 

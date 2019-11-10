@@ -1,4 +1,3 @@
-#include "lib_lista.h"
 
 /*Sprits Alien 1*/
 #define ALIEN11 "/T-T\\"
