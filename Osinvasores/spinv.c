@@ -26,6 +26,12 @@ void initspritsaliens (char **c_aliens) {
 	strcpy (c_aliens[16],ALIEN322);	
 	strcpy (c_aliens[17],ALIEN332);	
 }
+
+void initspritplayer (char ** c_player) {
+	strcpy (c_player[0],PLAYER11);
+	strcpy (c_player[1],PLAYER12);
+}
+
 void initaliens (t_listAliens *l) {
 
 	t_alien *ini, *fim;
@@ -109,6 +115,10 @@ void prntaliens (t_listAliens *al,char **corposA,int *versao, int *linha_alien, 
 		k++;
 	}
 }
+void prntplayer (char **corpoP, int *linha_player, int *coluna_player) {
+	mvprintw (*linha_player,*coluna_player,corpoP[0]);	
+	mvprintw (*linha_player+1,*coluna_player-1,corpoP[1]);
+}
 void inicializa_controle (t_controle *linhAliens, t_controle *colunAliens) {
 
 	int i;
@@ -165,4 +175,12 @@ void admimpressao (t_listAliens *l_aliens, char **corposaliens, int *indo, int *
 	
 	}
 	*versao = (*versao + 1)%2;
+}
+void prntiro (char key, int *linha_player, int *coluna_alien) {
+
+	if (key != ' ')
+		return;
+	
+	mvprintw (*linha_player-1,coluna_player+3,"|");
+
 }

@@ -1,3 +1,6 @@
+/*player*/
+#define PLAYER11 " / \\ "
+#define PLAYER12 "/MMMMM\\"
 
 /*Sprits Alien 1*/
 #define ALIEN11 "/T-T\\"
@@ -22,6 +25,10 @@
 #define ALIEN312 "(O.O)"
 #define ALIEN322 "/|*|\\"
 #define ALIEN332 "(WTW)"
+
+/*Tudo o que tem haver com o player*/
+#define TAMPLAYER 7
+#define ALTURAPLAYER 2
 
 /*Tudo que tem haver com os aliens*/
 #define SPRITSALIEN 18			/*Número de sprits por alien*/
@@ -67,6 +74,10 @@ struct t_controle {
 };
 typedef struct t_controle t_controle;
 
+struct t_tiro {
+	t_coord tirosplayer[3];	
+	/*t_coord tirosalien [5]*/
+}
 /*cria uma lista vazia de aliens*/
 void initaliens (t_listAliens *);
 
@@ -76,11 +87,17 @@ void insalienslista (t_listAliens *, int, int);
 /*inicializa os sprites dos corpos dos aliens*/
 void initspritsaliens (char **);
 
+/*inicializa o sprite do player*/
+void initspritplayer (char **);
+
 /*inicializa os aliezinhos na lista*/
 void inicializa_aliens (t_listAliens *);
 
 /*print os aliens na posição atual*/
 void prntaliens (t_listAliens *,char **,int *, int*, int*);
+
+/*printa o player na posição atual*/
+void prntplayer (char **, int *, int *);
 
 /*Inicializa os vetores de controle*/
 void inicializa_controle (t_controle *, t_controle *);
@@ -88,3 +105,5 @@ void inicializa_controle (t_controle *, t_controle *);
 /*Vai administrar tudo o que tem haver com a impressão dos aliens*/
 void admimpressao (t_listAliens *, char ** , int *, int *, int *, int *, t_controle *, t_controle *, int, int );
 
+/*printa o tiro na tela*/
+void prntiro (char ,int *, int *);
