@@ -29,9 +29,57 @@ void initspritsaliens (char **c_aliens) {
 
 void initspritplayer (char ** c_player) {
 	strcpy (c_player[0],PLAYER11);
-	strcpy (c_player[1],PLAYER12);
+	strcpy (c_player[1],PLAYER12);	
 }
 
+void initiros (t_listaTiro *l) {
+
+		t_tiro *ini, *fim;
+		ini = (t_tiro *)malloc(sizeof(t_tiro));
+		if (ini != NULL) {
+			fim = (t_tiro *)malloc(sizeof(t_tiro));
+			if (fim != NULL) {
+
+				l->ini = ini;
+				l->fim = fim;
+
+				ini->prox = fim;
+				ini->prev = NULL;
+
+				fim->prev = ini;
+				fim->prox = NULL;
+
+				l->atual = NULL;
+				l->tamanho = 0;
+			}
+			else {
+				free (fim);
+				free (ini);
+			}
+		
+		}
+		else
+			free (ini);
+}
+void instiroslista (t_listaTiros *l) {
+
+	t_tiro *new;
+
+	new = (t_tiro *)malloc(sizeof(t_tiro))
+	if (new != NULL) {
+
+		new->chave.x = pos_x;
+		new->chave.y = pos_y;
+
+		l->tamanho++;
+
+		new->prox = l->fim;
+		new->prev = l->fim->prev;
+
+		new->prev->prox = new;
+		l->fim->prev = new;
+	}
+}
 void initaliens (t_listAliens *l) {
 
 	t_alien *ini, *fim;
@@ -176,7 +224,7 @@ void admimpressao (t_listAliens *l_aliens, char **corposaliens, int *indo, int *
 	}
 	*versao = (*versao + 1)%2;
 }
-void prntiro (char key, int *linha_player, int *coluna_alien) {
+void prntiro (char key, t_tiro * int contiros, ) {
 
 	if (key != ' ')
 		return;

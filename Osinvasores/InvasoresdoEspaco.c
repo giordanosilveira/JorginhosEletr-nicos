@@ -46,6 +46,9 @@ int main () {
 	int player_coluna = telacolunas/2;
 	int versao = 0; /*Versão que é para imprimir do alien*/
 	int indo = 1; /*controla se o alien esta indo ou vindo*/
+	int contiros = 0; /*quantidade de tiros na tela*/
+
+	t_tiro tiros[QNTDTIROS];
 
 	t_controle linhasvivas, colunasvivas;
 
@@ -64,7 +67,9 @@ int main () {
 		admimpressao (&l_aliens,corposaliens,&indo,&versao,&linha_alien,&coluna_alien,&linhasvivas,&colunasvivas,telalinhas,telacolunas);
 	
 		prntplayer (corpoplayer,&player_linha,&player_coluna);
-		
+	
+		prntiro (key,tiros,&contiros);
+
 		refresh ();
 		
 		usleep (DELAY);
