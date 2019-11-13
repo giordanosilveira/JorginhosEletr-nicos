@@ -9,6 +9,8 @@ int main () {
 
 	initscr();
 	curs_set (FALSE);
+	/*nodelay(stdscr, TRUE);*/  /* faz com que getch não aguarde a digitação */
+
 	/*WINDOW *win;*/
 
 
@@ -36,6 +38,7 @@ int main () {
 	initspritsaliens (corposaliens); /* inicializa os corpos dos aliens */
 	initspritplayer (corpoplayer); /*inicializa o corpo do player*/
 
+	t_listaTiros l_tiros;
 	t_listAliens l_aliens;
 
 	inicializa_aliens (&l_aliens);
@@ -47,12 +50,16 @@ int main () {
 	int versao = 0; /*Versão que é para imprimir do alien*/
 	int indo = 1; /*controla se o alien esta indo ou vindo*/
 	int contiros = 0; /*quantidade de tiros na tela*/
+	char key;
+	int cnt = 0;
 
 	t_tiro tiros[QNTDTIROS];
 
 	t_controle linhasvivas, colunasvivas;
 
 	inicializa_controle (&linhasvivas,&colunasvivas);
+
+	/*initiros (&l_tiros);*/
 
 	/*win = newwin (38,100,0,0);
 	box(win, 0, 0);
@@ -62,17 +69,37 @@ int main () {
 
 		clear ();
 
-		/*key = getch ();*/
+		key = getch ();
+		if (key == ' ') {
+			contiros++;
+			/*if (contiros <= l_tiros->tam)
+				instiroslista ();*/
+		}
+		else if (key == 'd') {
+			player_coluna++;
+		}
+		else if (key == 'a') {
+			player_coluna--;
+		}
+	/*	else if (key == 'p'){ */
+			/*pausa*/
+		/*}
+		else if (key == 'q') {*/
+			/*acabou*/
+		/*}*/
 
-		admimpressao (&l_aliens,corposaliens,&indo,&versao,&linha_alien,&coluna_alien,&linhasvivas,&colunasvivas,telalinhas,telacolunas);
+		if (cnt == 10000)
+			admimpressao (&l_aliens,corposaliens,&indo,&versao,&linha_alien,&coluna_alien,&linhasvivas,&colunasvivas,telalinhas,telacolunas);
 	
 		prntplayer (corpoplayer,&player_linha,&player_coluna);
 	
-		prntiro (key,tiros,&contiros);
+	/*	prntiro (key,tiros,&contiros);*/
 
 		refresh ();
-		
-		usleep (DELAY);
+	
+		if (cnt > 20000)
+			cnt = 0;
+		cnt ++;
 
 		versao = (versao + 1)/2;
 

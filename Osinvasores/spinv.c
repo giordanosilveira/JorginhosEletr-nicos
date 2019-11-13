@@ -32,7 +32,7 @@ void initspritplayer (char ** c_player) {
 	strcpy (c_player[1],PLAYER12);	
 }
 
-void initiros (t_listaTiro *l) {
+/*void initiros (t_listaTiros *l) {
 
 		t_tiro *ini, *fim;
 		ini = (t_tiro *)malloc(sizeof(t_tiro));
@@ -60,12 +60,12 @@ void initiros (t_listaTiro *l) {
 		}
 		else
 			free (ini);
-}
-void instiroslista (t_listaTiros *l) {
+}*/
+/*void instiroslista (t_listaTiros *l) {
 
 	t_tiro *new;
 
-	new = (t_tiro *)malloc(sizeof(t_tiro))
+	new = (t_tiro *)malloc(sizeof(t_tiro));
 	if (new != NULL) {
 
 		new->chave.x = pos_x;
@@ -79,7 +79,7 @@ void instiroslista (t_listaTiros *l) {
 		new->prev->prox = new;
 		l->fim->prev = new;
 	}
-}
+}*/
 void initaliens (t_listAliens *l) {
 
 	t_alien *ini, *fim;
@@ -159,6 +159,7 @@ void prntaliens (t_listAliens *al,char **corposA,int *versao, int *linha_alien, 
 			}
 	
 		}
+		refresh();
 		et = et->prox;
 		k++;
 	}
@@ -224,11 +225,11 @@ void admimpressao (t_listAliens *l_aliens, char **corposaliens, int *indo, int *
 	}
 	*versao = (*versao + 1)%2;
 }
-void prntiro (char key, t_tiro * int contiros, ) {
+/*void prntiro (char key, t_tiro * int contiros, ) {
 
 	if (key != ' ')
 		return;
 	
 	mvprintw (*linha_player-1,coluna_player+3,"|");
 
-}
+}*/

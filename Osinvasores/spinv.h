@@ -77,31 +77,31 @@ typedef struct t_controle t_controle;
 
 struct t_tiro {
 	t_coord chave;
-	t_tiro *prox;
-	t_tiro *prev; /*linha/coluna*/
+	struct t_tiro *prox;
+	struct t_tiro *prev; /*linha/coluna*/
 };
-typedef t_tiro t_tiro;
+typedef struct t_tiro t_tiro;
 
-struct t_listaTiro {
+struct t_listaTiros {
 	t_tiro *ini;
 	t_tiro *fim;
 	t_tiro *atual;
 	int tam;
 };
-typedef t_listaTiro t_listaTiro;
+typedef struct t_listaTiros t_listaTiros;
 
 
 /*cria uma lista vazia de aliens*/
 void initaliens (t_listAliens *);
 
 /*cria uma lista de alien*/
-void initiros (t_listaTiro *);
+/*void initiros (t_listaTiros *);*/
 
 /*insere o alien no final da lista*/
 void insalienslista (t_listAliens *, int, int);
 
 /*insere o tiro no final da lista*/
-void instiroslista (t_listaTiro *,int , int);
+/*void instiroslista (t_listaTiros *,int , int);*/
 
 /*inicializa os sprites dos corpos dos aliens*/
 void initspritsaliens (char **);
@@ -125,4 +125,4 @@ void inicializa_controle (t_controle *, t_controle *);
 void admimpressao (t_listAliens *, char ** , int *, int *, int *, int *, t_controle *, t_controle *, int, int );
 
 /*printa o tiro na tela*/
-void  prntiro (char ,t_listaTiro *);
+/*void  prntiro (char ,t_listaTiro *);*/
