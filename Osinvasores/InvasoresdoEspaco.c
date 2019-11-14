@@ -8,8 +8,9 @@
 int main () {
 
 	initscr();
+	noecho ();
 	curs_set (FALSE);
-	/*nodelay(stdscr, TRUE);*/  /* faz com que getch não aguarde a digitação */
+	nodelay(stdscr, TRUE);  /* faz com que getch não aguarde a digitação */
 
 	/*WINDOW *win;*/
 
@@ -42,6 +43,7 @@ int main () {
 	t_listAliens l_aliens;
 
 	inicializa_aliens (&l_aliens);
+	initiros (&l_tiros);
 
 	int linha_alien = 8; /*Em qual linha, primeiramente, eu escrevo o alien*/
 	int coluna_alien = 1; /*Em qual coluna, primeiramente,  eu escrevo o alien*/
@@ -53,13 +55,11 @@ int main () {
 	char key;
 	int cnt = 0;
 
-	t_tiro tiros[QNTDTIROS];
 
 	t_controle linhasvivas, colunasvivas;
 
 	inicializa_controle (&linhasvivas,&colunasvivas);
-
-	/*initiros (&l_tiros);*/
+	
 
 	/*win = newwin (38,100,0,0);
 	box(win, 0, 0);
@@ -67,40 +67,41 @@ int main () {
 
 	while (1) {
 
-		clear ();
+		while (cnt <= 40000) {
 
-		key = getch ();
-		if (key == ' ') {
-			contiros++;
-			/*if (contiros <= l_tiros->tam)
-				instiroslista ();*/
+			key = getch ();
+		 	if (key == 'd') {
+				if (player_coluna + 1 < telacolunas){
+					player_coluna++;
+				}
+			}
+			else if (key == 'a') {
+				if (player_coluna - 1 > 0)
+					player_coluna--;
+			}
+			else if (key == ' ') {
+				contiros++;
+				if (contiros < QNTDTIROS) {
+					instiroslista (&l_tiros,player_linha-1,player_coluna+2);
+				}
+			}
+
+			if ((cnt % 20000)==0 ) {
+				admimpressao (&l_aliens,corposaliens,&indo,&versao,&linha_alien,&coluna_alien,&linhasvivas,&colunasvivas,telalinhas,telacolunas);
+			}
+			else if (cnt == 39999)
+				cnt = 0;
+		
+			if (l_tiros.tam != 0)
+				prntiro (&l_tiros,contiros);	
+
+			prntplayer (corpoplayer,&player_linha,&player_coluna);
+			
+			cnt ++;
+
+			refresh ();
 		}
-		else if (key == 'd') {
-			player_coluna++;
-		}
-		else if (key == 'a') {
-			player_coluna--;
-		}
-	/*	else if (key == 'p'){ */
-			/*pausa*/
-		/*}
-		else if (key == 'q') {*/
-			/*acabou*/
-		/*}*/
-
-		if (cnt == 10000)
-			admimpressao (&l_aliens,corposaliens,&indo,&versao,&linha_alien,&coluna_alien,&linhasvivas,&colunasvivas,telalinhas,telacolunas);
-	
-		prntplayer (corpoplayer,&player_linha,&player_coluna);
-	
-	/*	prntiro (key,tiros,&contiros);*/
-
-		refresh ();
-	
-		if (cnt > 20000)
-			cnt = 0;
-		cnt ++;
-
+				
 		versao = (versao + 1)/2;
 
 	}
