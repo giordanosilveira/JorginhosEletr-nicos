@@ -86,5 +86,5 @@ void prntaliens (t_listAliens *,char **,int *, int*, int*);
 void inicializa_controle (t_controle *, t_controle *);
 
 /*Vai administrar tudo o que tem haver com a impressão dos aliens*/
-void admimpressao (t_listAliens *, int ** , int *, int *, int *, int *, t_controle *, t_controle *, int, int );
+void admimpressao (t_listAliens *, char ** , int *, int *, int *, int *, t_controle *, t_controle *, int, int );
 

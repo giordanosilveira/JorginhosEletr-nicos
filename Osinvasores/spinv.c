@@ -134,7 +134,7 @@ void inicializa_controle (t_controle *linhAliens, t_controle *colunAliens) {
 		}
 	}
 }
-void admimpressao (t_listAliens *lstaliens, int **corposaliens, int *indo, int *versao, int *linha_alien, int *coluna_alien, t_controle *linhasvivas, t_controle *colunasvivas,int telalinhas, int telacolunas)
+void admimpressao (t_listAliens *lstaliens, char **corposaliens, int *indo, int *versao, int *linha_alien, int *coluna_alien, t_controle *linhasvivas, t_controle *colunasvivas,int telalinhas, int telacolunas)
 {
 
 	t_listAliens alien;
@@ -144,24 +144,24 @@ void admimpressao (t_listAliens *lstaliens, int **corposaliens, int *indo, int *
 
 	if (*indo) {
 		if (linhasvivas->vetor[linhasvivas->tam]*alien->pos.y < telacolunas) {
-			*coluna_alien++;
+			*coluna_alien = *coluna_alien + 1;
 			prntaliens (lstaliens,corposaliens,linha_alien,coluna_alien);
 		}
 		else {
-			*coluna_alien--;
-			*linha_alien++;
+			*coluna_alien = *coluna_alien - 1;
+			*linha_alien = *linha_alien + 1;
 			prntaliens (lstaliens,corposaliens,linha_alien,coluna_alien);
 			*indo = 0;
 		}
 	}
 	else {
 		if (*coluna_alien-1 > 0) {
-			*coluna_alien--;
+			*coluna_alien = *coluna_alien - 1;
 			prntaliens (lstaliens,corposaliens,linha_alien,coluna_alien);
 		}
 		else {
-			*coluna_alien++;
-			*linha_alien++;	
+			*coluna_alien = *coluna_alien + 1;
+			*linha_alien = * coluna_alien + 1;	
 			prntaliens (lstaliens,corposaliens,linha_alien,coluna_alien);
 			*indo=1;
 		}
