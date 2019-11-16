@@ -26,6 +26,60 @@ void initspritsaliens (char **c_aliens) {
 	strcpy (c_aliens[16],ALIEN322);	
 	strcpy (c_aliens[17],ALIEN332);	
 }
+
+void initspritplayer (char ** c_player) {
+	strcpy (c_player[0],PLAYER11);
+	strcpy (c_player[1],PLAYER12);	
+}
+
+void initiros (t_listaTiros *l) {
+
+		t_tiro *ini, *fim;
+		ini = (t_tiro *)malloc(sizeof(t_tiro));
+		if (ini != NULL) {
+			fim = (t_tiro *)malloc(sizeof(t_tiro));
+			if (fim != NULL) {
+
+				l->ini = ini;
+				l->fim = fim;
+
+				ini->prox = fim;
+				ini->prev = NULL;
+
+				fim->prev = ini;
+				fim->prox = NULL;
+
+				l->atual = NULL;
+				l->tam = 0;
+			}
+			else {
+				free (fim);
+				free (ini);
+			}
+		
+		}
+		else
+			free (ini);
+}
+void instiroslista (t_listaTiros *l, int pos_x, int pos_y) {
+
+	t_tiro *new;
+
+	new = (t_tiro *)malloc(sizeof(t_tiro));
+	if (new != NULL) {
+
+		new->chave.x = pos_x;
+		new->chave.y = pos_y;
+
+		l->tam++;
+
+		new->prox = l->fim;
+		new->prev = l->fim->prev;
+
+		new->prev->prox = new;
+		l->fim->prev = new;
+	}
+}
 void initaliens (t_listAliens *l) {
 
 	t_alien *ini, *fim;
@@ -59,10 +113,7 @@ void insalienslista (t_listAliens *l, int x, int y) {
 		et->status = VIVO;
 	
 		et->pos.x = x;
-		printf ("%d ", et->pos.x);
 		et->pos.y = y;
-		printf ("\n");
-		printf ("%d ", et->pos.y);
 
 		et->prox = l->fim;
 		et->prev = l->fim->prev;
@@ -108,9 +159,14 @@ void prntaliens (t_listAliens *al,char **corposA,int *versao, int *linha_alien, 
 			}
 	
 		}
+		refresh();
 		et = et->prox;
 		k++;
 	}
+}
+void prntplayer (char **corpoP, int *linha_player, int *coluna_player) {
+	mvprintw (*linha_player,*coluna_player,corpoP[0]);	
+	mvprintw (*linha_player+1,*coluna_player-1,corpoP[1]);
 }
 void inicializa_controle (t_controle *linhAliens, t_controle *colunAliens) {
 
@@ -127,43 +183,65 @@ void inicializa_controle (t_controle *linhAliens, t_controle *colunAliens) {
 		free (colunAliens);
 	}
 	else {
-		for (i = 0; i < colunAliens; i++) {
+		for (i = 0; i < colunAliens->tam; i++) {
 			if (i < 5)
-				linhAliens[i] = i;
-			colunAliens[i] = i;
+				linhAliens->vetor[i] = i;
+			colunAliens->vetor[i] = i;
 		}
 	}
 }
-void admimpressao (t_listAliens *lstaliens, char **corposaliens, int *indo, int *versao, int *linha_alien, int *coluna_alien, t_controle *linhasvivas, t_controle *colunasvivas,int telalinhas, int telacolunas)
+void admimpressao (t_listAliens *l_aliens, char **corposaliens, int *indo, int *versao, int *linha_alien, int *coluna_alien, t_controle *linhasvivas, t_controle *colunasvivas,int telalinhas, int telacolunas)
 {
 
-	t_listAliens alien;
+	t_alien *alien;
 	int i=0;
 
-	alien = t_listAliens->ini->prox;
+	alien = l_aliens->ini->prox;
 
+	clear ();
+	
 	if (*indo) {
-		if (linhasvivas->vetor[linhasvivas->tam]*alien->pos.y < telacolunas) {
-			*coluna_alien = *coluna_alien + 1;
-			prntaliens (lstaliens,corposaliens,linha_alien,coluna_alien);
-		}
-		else {
+		if (11*7 + *coluna_alien == telacolunas) {
 			*coluna_alien = *coluna_alien - 1;
 			*linha_alien = *linha_alien + 1;
-			prntaliens (lstaliens,corposaliens,linha_alien,coluna_alien);
+			prntaliens (l_aliens,corposaliens,versao,linha_alien,coluna_alien);
 			*indo = 0;
+		}
+		else {
+			*coluna_alien = *coluna_alien + 1;
+			prntaliens (l_aliens,corposaliens,versao,linha_alien,coluna_alien);
 		}
 	}
 	else {
-		if (*coluna_alien-1 > 0) {
-			*coluna_alien = *coluna_alien - 1;
-			prntaliens (lstaliens,corposaliens,linha_alien,coluna_alien);
+		if (*coluna_alien-1 == 0) {
+			*coluna_alien = *coluna_alien + 1;
+			*linha_alien = *linha_alien + 1;	
+			prntaliens (l_aliens,corposaliens,versao,linha_alien,coluna_alien);
+			*indo=1;
 		}
 		else {
-			*coluna_alien = *coluna_alien + 1;
-			*linha_alien = * coluna_alien + 1;	
-			prntaliens (lstaliens,corposaliens,linha_alien,coluna_alien);
-			*indo=1;
+			*coluna_alien = *coluna_alien - 1;
+			prntaliens (l_aliens,corposaliens,versao,linha_alien,coluna_alien);
+		}
+	
+	}
+	/*usleep (DELAY);*/
+	*versao = (*versao + 1)%2;
+}
+void prntiro (t_listaTiros * l_tiros, int contiros) { 
+
+	int i;
+	t_tiro * tiro;
+
+	i = 0;
+	if (l_tiros->tam != 0) {
+		tiro = l_tiros->ini->prox;
+		while (i < contiros) {
+			mvprintw (tiro->chave.x,tiro->chave.y,"|");
+			mvprintw (tiro->chave.x + 1,tiro->chave.y," ");		
+			tiro->chave.x = tiro->chave.x - 1;
+			tiro = tiro->prox;
+			i++;
 		}
 	}
 }

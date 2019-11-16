@@ -4,10 +4,16 @@
 #include <stdio.h>
 #include <unistd.h>
 #include "spinv.h"
+
 int main () {
 
 	initscr();
+	noecho ();
 	curs_set (FALSE);
+	nodelay(stdscr, TRUE);  /* faz com que getch não aguarde a digitação */
+
+	/*WINDOW *win;*/
+
 
 	int telalinhas, telacolunas; /*resposável por pegar o tamanho da tela*/
 
@@ -21,35 +27,82 @@ int main () {
 	char  **corposaliens;
 	int i;
 	corposaliens = (char **)malloc(sizeof(char*)*SPRITSALIEN);
-
 	for (i = 0; i < SPRITSALIEN; i++) {
 		corposaliens[i] = (char *)malloc(sizeof(char)*TAMALIEN);
 	}
 
-	initspritsaliens (corposaliens); /* inicializa os corpos dos aliens */
+	char **corpoplayer;
+	corpoplayer = (char **)malloc(sizeof(char *)*ALTURAPLAYER);
+	for (i = 0; i < ALTURAPLAYER; i++) 
+		corpoplayer[i] = (char *)malloc(sizeof(char)*TAMPLAYER);
 
+	initspritsaliens (corposaliens); /* inicializa os corpos dos aliens */
+	initspritplayer (corpoplayer); /*inicializa o corpo do player*/
+
+	t_listaTiros l_tiros;
 	t_listAliens l_aliens;
 
 	inicializa_aliens (&l_aliens);
+	initiros (&l_tiros);
 
 	int linha_alien = 8; /*Em qual linha, primeiramente, eu escrevo o alien*/
 	int coluna_alien = 1; /*Em qual coluna, primeiramente,  eu escrevo o alien*/
+	int player_linha = telalinhas-2;
+	int player_coluna = telacolunas/2;
 	int versao = 0; /*Versão que é para imprimir do alien*/
 	int indo = 1; /*controla se o alien esta indo ou vindo*/
+	int contiros = 0; /*quantidade de tiros na tela*/
+	char key;
+	int cnt = 0;
 
-	t_controle linhavivas, colunvivas;
 
-	inicializa_controle (&linhavivas,&colunavivas);
+	t_controle linhasvivas, colunasvivas;
+
+	inicializa_controle (&linhasvivas,&colunasvivas);
+	
+
+	/*win = newwin (38,100,0,0);
+	box(win, 0, 0);
+	wrefresh(win);*/
 
 	while (1) {
 
-		clear ();
+		while (cnt <= 40000) {
 
-		admimpressao (&l_aliens,corposaliens,&indo,&versao,&linha_alien,&coluna_alien,&linhasvivas,&colunasvivas,telalinhas,telacolunas);
+			key = getch ();
+		 	if (key == 'd') {
+				if (player_coluna + 1 < telacolunas){
+					player_coluna++;
+				}
+			}
+			else if (key == 'a') {
+				if (player_coluna - 1 > 0)
+					player_coluna--;
+			}
+			else if (key == ' ') {
+				contiros++;
+				if (contiros < QNTDTIROS) {
+					instiroslista (&l_tiros,player_linha-1,player_coluna+2);
+				}
+			}
 
-		refresh ();
+			if ((cnt % 20000)==0 ) {
+				admimpressao (&l_aliens,corposaliens,&indo,&versao,&linha_alien,&coluna_alien,&linhasvivas,&colunasvivas,telalinhas,telacolunas);
+			}
+			else if (cnt == 39999)
+				cnt = 0;
 		
-		usleep (DELAY);
+			if (l_tiros.tam != 0)
+				prntiro (&l_tiros,contiros);	
+
+			prntplayer (corpoplayer,&player_linha,&player_coluna);
+			
+			cnt ++;
+
+			refresh ();
+		}
+				
+		versao = (versao + 1)/2;
 
 	}
 	/*For the time being, that's all folks*/
