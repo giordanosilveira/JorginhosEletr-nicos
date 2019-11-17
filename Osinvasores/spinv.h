@@ -26,6 +26,10 @@
 #define ALIEN322 "/|*|\\"
 #define ALIEN332 "(WTW)"
 
+/*Tudo o que tem haver com a barreira*/
+#define ALTURABARREIRA 3
+#define LARGURABARREIRA 8
+
 /*Tudo o que tem haver com o player*/
 #define TAMPLAYER 7
 #define ALTURAPLAYER 2
@@ -75,6 +79,22 @@ struct t_controle {
 };
 typedef struct t_controle t_controle;
 
+struct t_barreira {
+
+	int status;
+	t_coord chave;
+	struct t_barreira *prox;
+	struct t_barreira *prev;
+};
+typedef struct t_barreira t_barreira;
+
+struct t_listaBarreira {
+	t_barreira *ini;
+	t_barreira *fim;
+	int tam;
+};
+typedef struct t_listaBarreira t_listaBarreira;
+
 struct t_tiro {
 	t_coord chave;
 	struct t_tiro *prox;
@@ -97,11 +117,20 @@ void initaliens (t_listAliens *);
 /*cria uma lista de tiros*/
 void initiros (t_listaTiros *);
 
+/*controla a inicialização da barreira*/
+void inicializa_barreira (t_listaBarreira *, int, int);
+
+/*cria uma lista de peças de barreira*/
+void initbarreira (t_listaBarreira *);
+
 /*insere o alien no final da lista*/
 void insalienslista (t_listAliens *, int, int);
 
 /*insere o tiro no final da lista*/
 void instiroslista (t_listaTiros *,int , int);
+
+/*insere a peça de barreira no final da lista*/
+void inspecabarlista (t_listaBarreira *, int, int, int, int, int );
 
 /*inicializa os sprites dos corpos dos aliens*/
 void initspritsaliens (char **);
@@ -117,6 +146,9 @@ void prntaliens (t_listAliens *,char **,int *, int*, int*);
 
 /*printa o player na posição atual*/
 void prntplayer (char **, int *, int *);
+
+/*printa a barreira na posicao certa*/
+void prntbarreiras (t_listaBarreira *barreira);
 
 /*Inicializa os vetores de controle*/
 void inicializa_controle (t_controle *, t_controle *);

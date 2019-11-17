@@ -236,12 +236,84 @@ void prntiro (t_listaTiros * l_tiros, int contiros) {
 	i = 0;
 	if (l_tiros->tam != 0) {
 		tiro = l_tiros->ini->prox;
-		while (i < contiros) {
+		while (tiro->prox != NULL) {
+			mvprintw (tiro->chave.x + 1,tiro->chave.y," ");
 			mvprintw (tiro->chave.x,tiro->chave.y,"|");
-			mvprintw (tiro->chave.x + 1,tiro->chave.y," ");		
 			tiro->chave.x = tiro->chave.x - 1;
 			tiro = tiro->prox;
 			i++;
 		}
+	}
+}
+void initbarreira (t_listaBarreira *barreiras){
+
+		t_barreira *ini, *fim;
+		ini = (t_barreira*)malloc(sizeof(t_barreira));
+		if (ini != NULL) {
+			fim = (t_barreira *)malloc(sizeof(t_barreira));
+			if (fim != NULL) {
+
+				barreiras->ini = ini;
+				barreiras->fim = fim;
+
+				barreiras->ini->prox = fim;
+				barreiras->ini->prev = NULL;
+
+				barreiras->fim->prev = ini;
+				barreiras->fim->prox = NULL;
+
+				barreiras->tam = 0;
+			}
+			else {
+				free (fim);
+				free (ini);
+			}
+		
+		}
+		else
+			free (ini);
+}
+void inspecabarlista (t_listaBarreira *barreira, int i, int j, int k, int telalinhas, int telacolunas) {
+
+		t_barreira *peca;
+
+		peca = (t_barreira *)malloc(sizeof(t_barreira));
+		if (peca != NULL) {
+	
+			peca->status = VIVO;
+
+			peca->chave.x = (telalinhas-10)+j;
+			peca->chave.y = (telacolunas/5)*i + k;
+	
+			peca->prox = barreira->fim;
+			peca->prev = barreira->fim->prev;
+
+			barreira->fim->prev->prox = peca;
+			barreira->fim->prev = peca;
+
+			barreira->tam++;
+	}
+}
+void inicializa_barreira (t_listaBarreira *barreiras, int telalinhas, int telacolunas) {
+
+	initbarreira (barreiras);
+
+	int i,j,k;
+	for (i = 1; i <= 4; i++)
+		for (j = 0; j < ALTURABARREIRA; j++) 
+			for (k = 0; k < LARGURABARREIRA; k++) 
+				inspecabarlista (barreiras,i,j,k,telalinhas,telacolunas);
+}
+void prntbarreiras (t_listaBarreira *barreira) {
+
+	t_barreira *peca;
+
+	peca = barreira->ini->prox;
+
+	while (peca->prox != NULL) {
+		if (peca->status == VIVO) {
+			mvprintw (peca->chave.x, peca->chave.y, "M");
+		}
+		peca = peca->prox;
 	}
 }

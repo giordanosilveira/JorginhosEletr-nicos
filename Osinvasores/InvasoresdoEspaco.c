@@ -41,7 +41,9 @@ int main () {
 
 	t_listaTiros l_tiros;
 	t_listAliens l_aliens;
+	t_listaBarreira l_barreira;
 
+	inicializa_barreira (&l_barreira, telalinhas, telacolunas);
 	inicializa_aliens (&l_aliens);
 	initiros (&l_tiros);
 
@@ -85,6 +87,10 @@ int main () {
 					instiroslista (&l_tiros,player_linha-1,player_coluna+2);
 				}
 			}
+			else if (key == 'q') {
+				endwin();
+				return 0;
+			}
 
 			if ((cnt % 20000)==0 ) {
 				admimpressao (&l_aliens,corposaliens,&indo,&versao,&linha_alien,&coluna_alien,&linhasvivas,&colunasvivas,telalinhas,telacolunas);
@@ -96,7 +102,8 @@ int main () {
 				prntiro (&l_tiros,contiros);	
 
 			prntplayer (corpoplayer,&player_linha,&player_coluna);
-			
+
+			prntbarreiras (&l_barreira);
 			cnt ++;
 
 			refresh ();
