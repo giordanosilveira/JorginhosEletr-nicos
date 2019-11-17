@@ -236,7 +236,7 @@ void prntiro (t_listaTiros * l_tiros, int contiros) {
 	i = 0;
 	if (l_tiros->tam != 0) {
 		tiro = l_tiros->ini->prox;
-		while (tiro->prox != NULL) {
+		while (i < contiros) {
 			mvprintw (tiro->chave.x + 1,tiro->chave.y," ");
 			mvprintw (tiro->chave.x,tiro->chave.y,"|");
 			tiro->chave.x = tiro->chave.x - 1;
