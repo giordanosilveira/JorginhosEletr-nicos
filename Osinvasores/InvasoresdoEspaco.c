@@ -97,20 +97,22 @@ int main () {
 			}
 			else if (cnt == 39999)
 				cnt = 0;
-		
-			if (l_tiros.tam != 0)
-				prntiro (&l_tiros,contiros);	
-
+			
+			if ((cnt % 2500) == 0)
+				prntiro (&l_tiros,contiros);
+			
 			prntplayer (corpoplayer,&player_linha,&player_coluna);
+			
+		/*	refresh ();*/
 
 			prntbarreiras (&l_barreira);
 			cnt ++;
 
 			refresh ();
+
 		}
 				
 		versao = (versao + 1)/2;
-
 	}
 	/*For the time being, that's all folks*/
 

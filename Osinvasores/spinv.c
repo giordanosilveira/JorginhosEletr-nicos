@@ -230,18 +230,15 @@ void admimpressao (t_listAliens *l_aliens, char **corposaliens, int *indo, int *
 }
 void prntiro (t_listaTiros * l_tiros, int contiros) { 
 
-	int i;
 	t_tiro * tiro;
 
-	i = 0;
 	if (l_tiros->tam != 0) {
 		tiro = l_tiros->ini->prox;
-		while (i < contiros) {
+		while (tiro->prox !=  NULL) {
 			mvprintw (tiro->chave.x + 1,tiro->chave.y," ");
 			mvprintw (tiro->chave.x,tiro->chave.y,"|");
 			tiro->chave.x = tiro->chave.x - 1;
 			tiro = tiro->prox;
-			i++;
 		}
 	}
 }
