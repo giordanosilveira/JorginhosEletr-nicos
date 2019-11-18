@@ -26,6 +26,16 @@
 #define ALIEN322 "/|*|\\"
 #define ALIEN332 "(WTW)"
 
+/*Sprit explosão alien*/
+#define EXPLOSAOA1 "\\\\  //"
+#define EXPLOSAOA2 "-|10|-"
+#define EXPLOSAOA3 "//  \\\\"
+
+/*sprit explosão geral*/
+#define EXPLOSAOG1 "\\ /"
+#define EXPLOSAOG2 "-o-"
+#define EXPLOSAOG3 "/ \\"
+
 /*Tudo o que tem haver com a barreira*/
 #define ALTURABARREIRA 3
 #define LARGURABARREIRA 8
@@ -43,15 +53,20 @@
 #define COLUNASDALIENS 11
 #define TAMALIEN 6
 #define VIVO 1
-#define MORTO -1
 #define MORRENDO 0
 
 /*Tamanho mínimo da tela*/
 #define MINLINHAS 38
 #define MINCOLUNAS 100
 
+/*Tudo que tem haver com os tiros*/
 #define QNTDTIROS 5 /*Quantidade de tiros por vez na tela*/
-#define DELAY 100000
+#define NPEGOU 0
+#define PEGOU 1
+
+/*Tudo o que tem haver com a dinamica do jogo*/
+#define PERIODODOJOGO 40000
+#define RESETACONTADOR 39999
 
 struct t_coord {
 	int x,y;
@@ -96,6 +111,7 @@ struct t_listaBarreira {
 typedef struct t_listaBarreira t_listaBarreira;
 
 struct t_tiro {
+	int status;
 	t_coord chave;
 	struct t_tiro *prox;
 	struct t_tiro *prev; /*linha/coluna*/
@@ -158,3 +174,12 @@ void admimpressao (t_listAliens *, char ** , int *, int *, int *, int *, t_contr
 
 /*printa o tiro na tela*/
 void  prntiro (t_listaTiros *, int );
+
+/*srchandrmtirolista (); */
+/*void prntiroaliens (); */
+/*void srchanddstryalien ();*/
+/*void attbarreira ();*/
+/*int detecta_tiro ();*/
+/*void rddtirosaliens (); */
+/*int detecta_tirosA ();*/
+/*void analizasituacaoALIENS ();*/

@@ -68,6 +68,8 @@ void instiroslista (t_listaTiros *l, int pos_x, int pos_y) {
 	new = (t_tiro *)malloc(sizeof(t_tiro));
 	if (new != NULL) {
 
+		new->status = NPEGOU;
+
 		new->chave.x = pos_x;
 		new->chave.y = pos_y;
 
@@ -142,7 +144,7 @@ void prntaliens (t_listAliens *al,char **corposA,int *versao, int *linha_alien, 
 	et = al->ini->prox;
 	k = 0;
 
-	while (k < QNTET) {
+	while (et->prox != NULL) {
 
 		pos = (et->pos.x + 1)/2;		/*essa conta serve para pegar o sprit desejado do alien*/
 		if (et->status == VIVO) {
@@ -157,7 +159,13 @@ void prntaliens (t_listAliens *al,char **corposA,int *versao, int *linha_alien, 
 				mvprintw (*linha_alien+4*et->pos.x+1,*coluna_alien+7*et->pos.y,corposA[pos*6+1]);
 				mvprintw (*linha_alien+4*et->pos.x+2,*coluna_alien+7*et->pos.y,corposA[pos*6+2]);
 			}
-	
+		else
+		{
+			mvprintw (*linha_alien+4*et->pos.x+2,*coluna_alien+7*et->pos.y,EXPLOSAOA1);
+			mvprintw (*linha_alien+4*et->pos.x+2,*coluna_alien+7*et->pos.y,EXPLOSAOA2);
+			mvprintw (*linha_alien+4*et->pos.x+2,*coluna_alien+7*et->pos.y,EXPLOSAOA3);	
+		}
+		
 		}
 		refresh();
 		et = et->prox;
@@ -165,6 +173,7 @@ void prntaliens (t_listAliens *al,char **corposA,int *versao, int *linha_alien, 
 	}
 }
 void prntplayer (char **corpoP, int *linha_player, int *coluna_player) {
+	/*Arrumar os rastro #nois*/
 	mvprintw (*linha_player,*coluna_player,corpoP[0]);	
 	mvprintw (*linha_player+1,*coluna_player-1,corpoP[1]);
 }
@@ -225,7 +234,6 @@ void admimpressao (t_listAliens *l_aliens, char **corposaliens, int *indo, int *
 		}
 	
 	}
-	/*usleep (DELAY);*/
 	*versao = (*versao + 1)%2;
 }
 void prntiro (t_listaTiros * l_tiros, int contiros) { 
@@ -314,3 +322,42 @@ void prntbarreiras (t_listaBarreira *barreira) {
 		peca = peca->prox;
 	}
 }
+
+/*void srchandrmtirolista (); */
+/*void prntiroaliens () */
+/*void srchanddstryalien ()*/
+/*void attbarreira ()*/
+/*int detecta_tiro ()*/
+/*void rddtirosaliens () */
+/*int detecta_tirosA ()*/
+
+/*void analizasituacao (situacao,l_tiros,l_aliens,l_barreiras) {
+	
+	switch (situacao) {
+					
+		case 0 : caso que o tiro nao pega em nada
+		tiro->chave.x++;		
+		break;
+
+		case 1 : 				caso que o tiro pega em um alien
+		prntaliens (); 			printa os aliens direitos na tela
+		srchanddstryalien (); 	acha o alien morto e remove o alien da lista
+		break;
+								
+		case 2 : 				tiro pegou na barreira
+		attbarreira (); 		atualiza os status da barreira
+		prntbarreiras (); 		printa a situação nova da barreira 
+		break;
+
+		case 3 : 				pega na nave mae
+		break;
+
+		case 4 :				tiro pega no tiro do alien
+		break;
+
+		default	: 				tiro chegou no final da tela;
+		}               					
+	
+	
+}*/
+/*void analizasituacaoALIENS () {}*/

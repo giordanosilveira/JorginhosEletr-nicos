@@ -47,16 +47,18 @@ int main () {
 	inicializa_aliens (&l_aliens);
 	initiros (&l_tiros);
 
-	int linha_alien = 8; /*Em qual linha, primeiramente, eu escrevo o alien*/
-	int coluna_alien = 1; /*Em qual coluna, primeiramente,  eu escrevo o alien*/
+	int linha_alien = 8; 		/*Em qual linha, primeiramente, eu escrevo o alien*/
+	int coluna_alien = 1; 		/*Em qual coluna, primeiramente,  eu escrevo o alien*/
 	int player_linha = telalinhas-2;
 	int player_coluna = telacolunas/2;
-	int versao = 0; /*Versão que é para imprimir do alien*/
-	int indo = 1; /*controla se o alien esta indo ou vindo*/
-	int contiros = 0; /*quantidade de tiros na tela*/
+	int versao = 0; 			/*Versão que é para imprimir do alien*/
+	int indo = 1; 				/*controla se o alien esta indo ou vindo*/
+	int contiros = 0; 			/*quantidade de tiros na tela*/
 	char key;
 	int cnt = 0;
-
+	int prdaliens = 20000;		/*Servira para controlar o periodo do alien*/ 
+	int prdtiros = prdaliens/8	/*periodo dos tiro (8x mais rapido que os aliens)*/
+	/*int contirosA = 0 */      /*quantida de tiros dos aliens*/ 
 
 	t_controle linhasvivas, colunasvivas;
 
@@ -69,7 +71,7 @@ int main () {
 
 	while (1) {
 
-		while (cnt <= 40000) {
+		while (cnt <= PERIODODOJOGO) {
 
 			key = getch ();
 		 	if (key == 'd') {
@@ -82,8 +84,8 @@ int main () {
 					player_coluna--;
 			}
 			else if (key == ' ') {
-				contiros++;
 				if (contiros < QNTDTIROS) {
+					contiros++;
 					instiroslista (&l_tiros,player_linha-1,player_coluna+2);
 				}
 			}
@@ -92,17 +94,40 @@ int main () {
 				return 0;
 			}
 
-			if ((cnt % 20000)==0 ) {
+			if ((cnt % prdaliens) == 0 ) {
 				admimpressao (&l_aliens,corposaliens,&indo,&versao,&linha_alien,&coluna_alien,&linhasvivas,&colunasvivas,telalinhas,telacolunas);
 			}
-			else if (cnt == 39999)
+			else if (cnt == RESETACONTADOR)
 				cnt = 0;
 			
-			if ((cnt % 2500) == 0)
+			if ((cnt % prdtiros) == 0) {
+
+				/*
+
+					rddtiroaliens ();
+					OS ALIENS TBM PRECISA ATIRAR LEMBRE-SE
+
+				t_tiro *tiro;
+				tiro = l_tiros->ini->prox;
+				while (tiro->prox != NULL) {
+							situacao = detecta_tiro (tiro->chave,l_aliens,l_barreira);
+							analizasituacao ();
+						}
+						tiro = tiro->prox;
+						if (situacao >= 1 && situacao <= 5) {				avança para o proximo tiro da lista e remove o anterior
+							srchandrmtirolista ();
+						}
+				}
+				outro while parecido para os tiros dos aliens
+				
+				situacao = detecta_tiroA ();
+				analizasituacaoALIENS (); */
+				
 				prntiro (&l_tiros,contiros);
-			
+				/*prntiroaliens*/
+			}
 			prntplayer (corpoplayer,&player_linha,&player_coluna);
-			
+				
 		/*	refresh ();*/
 
 			prntbarreiras (&l_barreira);
@@ -110,9 +135,7 @@ int main () {
 
 			refresh ();
 
-		}
-				
-		versao = (versao + 1)/2;
+		}	
 	}
 	/*For the time being, that's all folks*/
 
