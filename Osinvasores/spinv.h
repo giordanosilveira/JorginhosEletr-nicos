@@ -1,6 +1,6 @@
 /*player*/
 #define PLAYER11 " / \\ "
-#define PLAYER12 "/MMMMM\\"
+#define PLAYER12 "   /MMMMM\\   "
 
 /*Sprits Alien 1*/
 #define ALIEN11 "/T-T\\"

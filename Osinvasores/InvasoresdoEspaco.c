@@ -90,7 +90,7 @@ int main () {
 			else if (key == ' ') {
 				if (contiros < QNTDTIROS) {
 					contiros++;
-					instiroslista (&l_tiros,player_linha-1,player_coluna+2);
+					instiroslista (&l_tiros,player_linha-1,player_coluna + 2);
 				}
 			}
 			else if (key == 'q') {
