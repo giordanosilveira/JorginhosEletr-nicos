@@ -316,7 +316,12 @@ void prntbarreiras (t_listaBarreira *barreira) {
 
 	while (peca->prox != NULL) {
 		if (peca->status == VIVO) {
-			mvprintw (peca->chave.x, peca->chave.y, "M");
+				mvprintw (peca->chave.x, peca->chave.y, "M");
+		}
+		else {
+			mvprintw (peca->chave.x-1, peca->chave.y-1,EXPLOSAOG1);
+			mvprintw (peca->chave.x, peca->chave.y-1, EXPLOSAOG2);
+			mvprintw (peca->chave.x+1, peca->chave.y-1, EXPLOSAOG3);
 		}
 		peca = peca->prox;
 	}
@@ -348,8 +353,21 @@ void srchanddstryalien (t_listAliens *aliens) {
 	free (aux);
 
 }
-/*void attbarreira ()*/
-int detecta_tiro (t_coord *chave, int *status, t_listAliens *aliens, int linha_alien, int coluna_alien) {
+void attbarreira (t_listaBarreira *barreiras) {
+
+	t_barreira *bar,*aux;
+	bar = barreiras->ini->prox;
+
+	while (bar->prox != NULL && bar->status != MORRENDO) 
+		bar = bar->prox;
+
+	aux = bar;
+	bar->prox->prev = bar->prev;
+	bar->prev->prox = bar->prox;
+	barreiras->tam--;
+	free (aux);
+}
+int detecta_tiro (t_coord *chave, int *status, t_listAliens *aliens,t_listaBarreira *barreiras, int linha_alien, int coluna_alien) {
 
 	
 		if (chave->x - 1 == 0) {			/*tiro chegou no final da tela*/
@@ -357,10 +375,21 @@ int detecta_tiro (t_coord *chave, int *status, t_listAliens *aliens, int linha_a
 			return 5;
 		}
 	
+		t_barreira *barreira;
+		barreira = barreiras->ini->prox;
+		while (barreira->prox != NULL) {
+			if (chave->x-1 == barreira->chave.x && chave->y == barreira->chave.y) {
+				barreira->status = MORRENDO;
+				*status = PEGOU;
+				return 2;
+			}
+			barreira = barreira->prox;
+		}
+
 		t_alien *alien;
 		alien = aliens->ini->prox;
 		while (alien->prox != NULL) {
-			if ((alien->pos.x + linha_alien <= chave->x) && (chave->x <= alien->pos.x + linha_alien + 3) && (chave->y <= alien->pos.y + coluna_alien + TAMALIEN -1) && (chave->y >= alien->pos.y + coluna_alien)) {
+			if ((alien->pos.x*4+linha_alien <= chave->x) && (chave->x <= alien->pos.x*4+linha_alien+2) && (chave->y <= alien->pos.y*7 + 1) && (chave->y >= alien->pos.y*7+1+4)) {
 				*status = PEGOU;
 				alien->status = MORRENDO;
 				return 1;
@@ -374,7 +403,7 @@ int detecta_tiro (t_coord *chave, int *status, t_listAliens *aliens, int linha_a
 /*void rddtirosaliens () */
 /*int detecta_tirosA ()*/
 
-void analizasituacao (int situacao, t_coord *chave, t_listAliens *aliens,char **corposA, int *versao, int *linha_alien, int *coluna_alien, int *contiros) {
+void analizasituacao (int situacao, t_coord *chave, t_listAliens *aliens, t_listaBarreira *barreiras,char **corposA, int *versao, int *linha_alien, int *coluna_alien, int *contiros) {
 
 	switch (situacao) {
 					
@@ -383,15 +412,16 @@ void analizasituacao (int situacao, t_coord *chave, t_listAliens *aliens,char **
 		break;
 
 		case 1 : 								/*caso que o tiro pega em um alien*/
-		prntalien (aliens,corposA,versao,linha_alien,coluna_alien); 				/*printa os aliens direitos na tela*/
+		prntaliens (aliens,corposA,versao,linha_alien,coluna_alien); 				/*printa os aliens direitos na tela*/
 		srchanddstryalien (aliens); 						/*acha o alien morto e remove o alien da lista*/
 		*contiros = *contiros - 1;						/*diminui a qntd de tiros*/
 		break;
 								
-		/*case 2 : 				tiro pegou na barreira
-		attbarreira (); 		atualiza os status da barreira
-		prntbarreiras (); 		printa a situação nova da barreira 
-		break;*/
+		case 2 : 				/*tiro pegou na barreira*/
+		prntbarreiras (barreiras); 		/*printa a situação nova da barreira*/
+		attbarreira (barreiras); 		/*atualiza a barreira*/
+		*contiros = *contiros - 1;
+		break;
 
 		/*case 3 : 				pega na nave mae
 		break;*/

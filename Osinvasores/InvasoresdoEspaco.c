@@ -109,8 +109,8 @@ int main () {
 				tiro = l_tiros.ini->prox;
 				while (tiro->prox != NULL) {
 
-					situacao = detecta_tiro (&tiro->chave,&tiro->status,&l_aliens,linha_alien,coluna_alien);
-					analizasituacao (situacao,&tiro->chave,&l_aliens,corposaliens,&versao,&coluna_alien,&linha_alien,&contiros); 
+					situacao = detecta_tiro (&tiro->chave,&tiro->status,&l_aliens,&l_barreira,linha_alien,coluna_alien);
+					analizasituacao (situacao,&tiro->chave,&l_aliens,&l_barreira,corposaliens,&versao,&coluna_alien,&linha_alien,&contiros); 
 					prntaliens (&l_aliens,corposaliens,&versao,&linha_alien,&coluna_alien);
 
 					if (situacao >= 1 && situacao <= 5)

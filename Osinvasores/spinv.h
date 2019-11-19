@@ -178,17 +178,17 @@ void admimpressao (t_listAliens *, char ** , int *, int *, int *, int *, t_contr
 void  prntiro (t_listaTiros *, int );
 
 /**/
-void analizasituacao (int, t_coord *, t_listAliens *,char **, int *, int *, int *, int *);
+void analizasituacao (int, t_coord *, t_listAliens *, t_listaBarreira *, char **, int *, int *, int *, int *);
 
 /*remove o tiro certo da lista*/
 void srchandrmtirolista (t_listaTiros *);
 
 /*void prntiroaliens (); */
 /*void srchanddstryalien ();*/
-/*void attbarreira ();*/
+void attbarreira (t_listaBarreira *);
 
 /*detecta se o tiro pegou em algo ou chegou no final da tela*/
-int detecta_tiro (t_coord *, int *, t_listAliens *, int, int);
+int detecta_tiro (t_coord *, int *, t_listAliens *,t_listaBarreira *, int, int);
 /*void rddtirosaliens (); */
 /*int detecta_tirosA ();*/
 /*void analizasituacaoALIENS ();*/
