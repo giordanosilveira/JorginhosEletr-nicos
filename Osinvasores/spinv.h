@@ -157,6 +157,8 @@ void initspritplayer (char **);
 /*inicializa os aliezinhos na lista*/
 void inicializa_aliens (t_listAliens *);
 
+void prntalienmorrendo (t_listAliens*, int*, int*);
+
 /*print os aliens na posição atual*/
 void prntaliens (t_listAliens *,char **,int *, int*, int*);
 

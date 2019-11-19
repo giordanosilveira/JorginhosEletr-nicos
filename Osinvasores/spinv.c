@@ -142,7 +142,7 @@ void inicializa_aliens (t_listAliens *aliens) {
 }
 void prntaliens (t_listAliens *al,char **corposA,int *versao, int *linha_alien, int *coluna_alien) {
 
-	int k,pos;
+	int pos;
 	t_alien *et;
 	
 	et = al->ini->prox;
@@ -162,11 +162,11 @@ void prntaliens (t_listAliens *al,char **corposA,int *versao, int *linha_alien, 
 				mvprintw (*linha_alien+4*et->pos.x+2,*coluna_alien+7*et->pos.y,corposA[pos*6+2]);
 			}
 		}
-		else if (et->status == MORRENDO)
-		{
-			mvprintw (*linha_alien+4*et->pos.x+2,*coluna_alien+7*et->pos.y,EXPLOSAOA1);
-			mvprintw (*linha_alien+4*et->pos.x+2,*coluna_alien+7*et->pos.y,EXPLOSAOA2);
-			mvprintw (*linha_alien+4*et->pos.x+2,*coluna_alien+7*et->pos.y,EXPLOSAOA3);	
+		else if (et->status == MORRENDO) {
+			mvprintw (*linha_alien+4*et->pos.x,*coluna_alien+7*et->pos.y,EXPLOSAOA1);
+			mvprintw (*linha_alien+4*et->pos.x+1,*coluna_alien+7*et->pos.y,EXPLOSAOA2);
+			mvprintw (*linha_alien+4*et->pos.x+2,*coluna_alien+7*et->pos.y,EXPLOSAOA3);
+			
 		}
 		refresh();
 		et = et->prox;
@@ -379,13 +379,13 @@ void analizasituacao (int situacao, t_coord *chave, t_listAliens *aliens,char **
 	switch (situacao) {
 					
 		case 0 :
-		chave->x--;				/*caso que o tiro nao pega em nada*/		
+		chave->x--;								/*caso que o tiro nao pega em nada*/		
 		break;
 
-		case 1 : 				/*caso que o tiro pega em um alien*/
-		prntaliens (aliens,corposA,versao,linha_alien,coluna_alien); 			/*printa os aliens direitos na tela*/
-		srchanddstryalien (aliens); 	/*acha o alien morto e remove o alien da lista*/
-		*contiros = *contiros - 1;	/*diminui a qntd de tiros*/
+		case 1 : 								/*caso que o tiro pega em um alien*/
+		prntalien (aliens,corposA,versao,linha_alien,coluna_alien); 				/*printa os aliens direitos na tela*/
+		srchanddstryalien (aliens); 						/*acha o alien morto e remove o alien da lista*/
+		*contiros = *contiros - 1;						/*diminui a qntd de tiros*/
 		break;
 								
 		/*case 2 : 				tiro pegou na barreira
