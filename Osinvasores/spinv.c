@@ -162,7 +162,7 @@ void prntaliens (t_listAliens *al,char **corposA,int *versao, int *linha_alien, 
 				mvprintw (*linha_alien+4*et->pos.x+2,*coluna_alien+7*et->pos.y,corposA[pos*6+2]);
 			}
 		}
-		else
+		else if (et->status == MORRENDO)
 		{
 			mvprintw (*linha_alien+4*et->pos.x+2,*coluna_alien+7*et->pos.y,EXPLOSAOA1);
 			mvprintw (*linha_alien+4*et->pos.x+2,*coluna_alien+7*et->pos.y,EXPLOSAOA2);
