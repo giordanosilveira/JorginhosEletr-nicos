@@ -130,14 +130,14 @@ int main () {
 				if (l_aliens->tam > 5) {
 					for (i = contirosA - l_tirosA->tam; i < QNTDALIENTIROS; i++) {
 						alien = rand % l_aliens->tam;					 sorteia um alien da lista para atirar;
-						coordbomba = srchalien ();
+						coordbomba = srchalien (alien,l_aliens);
 						instiroslista = (l_tirosA,coordbomba.x,coordbomba.y);
 					}
 				}
 				else {
 					for (i = l_aliens->tam; i < l_tirosA; i++ ) {
 						alien = rand % l_alien->tam;	
-						coordbomba = srchalien ();
+						coordbomba = srchalien (alien,l_aliens,linha_alien,coluna_alien);
 						instiroslista = (l_tirosA,coordbomba.x,coordbomba.y);
 				}
 				while parecido com o tiro player
