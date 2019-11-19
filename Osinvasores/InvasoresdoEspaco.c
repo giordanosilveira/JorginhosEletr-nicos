@@ -57,7 +57,8 @@ int main () {
 	char key;
 	int cnt = 0;
 	int prdaliens = 20000;		/*Servira para controlar o periodo do alien*/ 
-	int prdtiros = prdaliens/8	/*periodo dos tiro (8x mais rapido que os aliens)*/
+	int prdtiros = prdaliens/8;	/*periodo dos tiro (8x mais rapido que os aliens)*/
+	int situacao;
 	/*int contirosA = 0 */      /*quantida de tiros dos aliens*/ 
 
 	t_controle linhasvivas, colunasvivas;
@@ -101,30 +102,29 @@ int main () {
 				cnt = 0;
 			
 			if ((cnt % prdtiros) == 0) {
-
 				/*
-
 					rddtiroaliens ();
-					OS ALIENS TBM PRECISA ATIRAR LEMBRE-SE
-
+					OS ALIENS TBM PRECISA ATIRAR LEMBRE-SE */
 				t_tiro *tiro;
-				tiro = l_tiros->ini->prox;
+				tiro = l_tiros.ini->prox;
 				while (tiro->prox != NULL) {
-							situacao = detecta_tiro (tiro->chave,l_aliens,l_barreira);
-							analizasituacao ();
-						}
-						tiro = tiro->prox;
-						if (situacao >= 1 && situacao <= 5) {				avança para o proximo tiro da lista e remove o anterior
-							srchandrmtirolista ();
-						}
-				}
-				outro while parecido para os tiros dos aliens
+
+					situacao = detecta_tiro (&tiro->chave,&tiro->status,&l_aliens,linha_alien,coluna_alien);
+					analizasituacao (situacao,&tiro->chave,&l_aliens,corposaliens,&versao,&coluna_alien,&linha_alien,&contiros); 
+				
+					if (situacao >= 1 && situacao <= 5)
+						srchandrmtirolista (&l_tiros);
+					tiro = tiro->prox;
+				}	
+				
+				/*outro while parecido para os tiros dos aliens
 				
 				situacao = detecta_tiroA ();
 				analizasituacaoALIENS (); */
 				
 				prntiro (&l_tiros,contiros);
 				/*prntiroaliens*/
+
 			}
 			prntplayer (corpoplayer,&player_linha,&player_coluna);
 				
