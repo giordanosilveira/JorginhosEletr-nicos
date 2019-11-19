@@ -90,6 +90,7 @@ void initaliens (t_listAliens *l) {
 		fim = (t_alien *)malloc(sizeof(t_alien));
 		if (fim != NULL) {
 		
+			l->tam = 0;
 
 			l->ini = ini;
 			l->fim = fim;
@@ -115,6 +116,8 @@ void insalienslista (t_listAliens *l, int x, int y) {
 	et = (t_alien *)malloc(sizeof(t_alien));
 	if (et != NULL) {
 	
+		l->tam++;
+
 		et->status = VIVO;
 	
 		et->pos.x = x;
@@ -173,7 +176,7 @@ void prntaliens (t_listAliens *al,char **corposA,int *versao, int *linha_alien, 
 }
 void prntplayer (char **corpoP, int *linha_player, int *coluna_player) {
 	/*Arrumar os rastro #nois*/
-	mvprintw (*linha_player,*coluna_player,corpoP[0]);	
+	mvprintw (*linha_player,*coluna_player+3,corpoP[0]);	
 	mvprintw (*linha_player+1,*coluna_player-1,corpoP[1]);
 }
 void inicializa_controle (t_controle *linhAliens, t_controle *colunAliens) {
@@ -235,7 +238,7 @@ void admimpressao (t_listAliens *l_aliens, char **corposaliens, int *indo, int *
 	}
 	*versao = (*versao + 1)%2;
 }
-void prntiro (t_listaTiros * l_tiros, int contiros) { 
+void prntiro (t_listaTiros * l_tiros) { 
 
 	t_tiro * tiro;
 
@@ -339,7 +342,23 @@ void srchandrmtirolista (t_listaTiros *tiros) {
 	tiros->tam--;
 	free (aux);
 }
-/*void prntiroaliens () */
+void prntiroaliens (t_listaTiros * tirosA) {
+
+	t_tiro * bomba;
+
+	if (tirosA->tam != 0) {
+		bomba = tirosA->ini->prox;
+		while (bomba->prox !=  NULL) {
+			mvprintw (bomba->chave.x + 1,bomba->chave.y,"$");
+			mvprintw (bomba->chave.x,bomba->chave.y," ");
+			bomba->chave.x++;
+			bomba = bomba->prox;
+		}
+	}
+
+
+
+} 
 void srchanddstryalien (t_listAliens *aliens) {
 
 	t_alien *alien,*aux;
@@ -350,6 +369,7 @@ void srchanddstryalien (t_listAliens *aliens) {
 	aux = alien;
 	alien->prox->prev = alien->prev;
 	alien->prev->prox = alien->prox;
+	aliens->tam--;
 	free (aux);
 
 }
@@ -381,7 +401,7 @@ int detecta_tiro (t_coord *chave, int *status, t_listAliens *aliens,t_listaBarre
 			if (chave->x-1 == barreira->chave.x && chave->y == barreira->chave.y) {
 				barreira->status = MORRENDO;
 				*status = PEGOU;
-				return 2;
+				return 1;
 			}
 			barreira = barreira->prox;
 		}
@@ -389,16 +409,21 @@ int detecta_tiro (t_coord *chave, int *status, t_listAliens *aliens,t_listaBarre
 		t_alien *alien;
 		alien = aliens->ini->prox;
 		while (alien->prox != NULL) {
-			if ((alien->pos.x*4+linha_alien <= chave->x) && (chave->x <= alien->pos.x*4+linha_alien+2) && (chave->y <= alien->pos.y*7 + 1) && (chave->y >= alien->pos.y*7+1+4)) {
+			if ((chave->x - 1 == (alien->pos.x*4 + linha_alien)+2) && (chave->y >= (alien->pos.y*7 + coluna_alien)) && (chave->y <= (alien->pos.y*7 + coluna_alien)+5)) {
 				*status = PEGOU;
 				alien->status = MORRENDO;
-				return 1;
+				return 2;
 			}
 			alien = alien->prox;
 		
 		}
 	return 0;
 
+}
+int ganhou (t_listAliens *aliens) {
+	if (aliens->tam == 0)
+		return 1;
+	return 0;
 }
 /*int detecta_tirosA ()*/
 
@@ -410,17 +435,18 @@ void analizasituacao (int situacao, t_coord *chave, t_listAliens *aliens, t_list
 		chave->x--;								/*caso que o tiro nao pega em nada*/		
 		break;
 
-		case 1 : 								/*caso que o tiro pega em um alien*/
+		case 1 : 								/*tiro pegou na barreira*/
+		prntbarreiras (barreiras); 						/*printa a situação nova da barreira*/
+		attbarreira (barreiras); 						/*atualiza a barreira*/
+		*contiros = *contiros - 1;
+		break;
+
+		case 2 : 								/*caso que o tiro pega em um alien*/
 		prntaliens (aliens,corposA,versao,linha_alien,coluna_alien); 				/*printa os aliens direitos na tela*/
 		srchanddstryalien (aliens); 						/*acha o alien morto e remove o alien da lista*/
 		*contiros = *contiros - 1;						/*diminui a qntd de tiros*/
 		break;
 								
-		case 2 : 								/*tiro pegou na barreira*/
-		prntbarreiras (barreiras); 						/*printa a situação nova da barreira*/
-		attbarreira (barreiras); 						/*atualiza a barreira*/
-		*contiros = *contiros - 1;
-		break;
 
 		/*case 3 : 								pega na nave mae
 		break;*/
@@ -432,19 +458,19 @@ void analizasituacao (int situacao, t_coord *chave, t_listAliens *aliens, t_list
 		*contiros = *contiros - 1;						/*diminui a qntd de tiros*/
 		}
 }
-/*t_coord srchalien (int ndoalien, t_listAliens *aliens, int linha_alien, int coluna_player) {
+t_coord srchalien (int ndoalien, t_listAliens *aliens, int linha_alien, int coluna_alien) {
 
 	t_alien *aln;
+	t_coord coord;
 	aln = aliens->ini->prox;
 
+	int i;
 	for (i = 0; i < ndoalien; i++)
 		aln = aln->prox;
 
-	
+	coord.x = (aln->pos.x*4 + linha_alien)+2;
+	coord.y = ((aln->pos.y*7 + coluna_alien) - 3)/2;
 
-
-
-
-
-}*/
+	return coord;
+}
 /*void analizasituacaoALIENS () {}*/

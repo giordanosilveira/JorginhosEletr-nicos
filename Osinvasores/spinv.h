@@ -45,8 +45,9 @@
 #define ALTURAPLAYER 2
 
 /*Tudo que tem haver com os aliens*/
-#define SPRITSALIEN 18			/*Número de sprits por alien*/
+#define SPRITSALIEN 18				/*Número de sprits por alien*/
 #define QNTET 55
+#define QNTDALIENTIROS 5
 #define ESPACOCALIEN 2
 #define ESPACOLALIEN 3
 #define LINHASDALIENS 5
@@ -84,6 +85,7 @@ typedef struct t_alien t_alien;
 struct t_listAliens {
 	t_alien *ini;
 	t_alien *fim;
+	int tam;
 };
 typedef struct t_listAliens t_listAliens;
 
@@ -126,6 +128,9 @@ struct t_listaTiros {
 };
 typedef struct t_listaTiros t_listaTiros;
 
+
+/*verifica se você ganhou*/
+int ganhou (t_listAliens *);
 
 /*cria uma lista vazia de aliens*/
 void initaliens (t_listAliens *);
@@ -175,7 +180,10 @@ void inicializa_controle (t_controle *, t_controle *);
 void admimpressao (t_listAliens *, char ** , int *, int *, int *, int *, t_controle *, t_controle *, int, int );
 
 /*printa o tiro na tela*/
-void  prntiro (t_listaTiros *, int );
+void  prntiro (t_listaTiros *);
+
+/**/
+t_coord srchalien (int, t_listAliens *, int, int);
 
 /**/
 void analizasituacao (int, t_coord *, t_listAliens *, t_listaBarreira *, char **, int *, int *, int *, int *);
@@ -183,7 +191,8 @@ void analizasituacao (int, t_coord *, t_listAliens *, t_listaBarreira *, char **
 /*remove o tiro certo da lista*/
 void srchandrmtirolista (t_listaTiros *);
 
-/*void prntiroaliens (); */
+/*Printa as bombas dos alien*/
+void prntiroaliens (t_listaTiros *); 
 /*void srchanddstryalien ();*/
 void attbarreira (t_listaBarreira *);
 

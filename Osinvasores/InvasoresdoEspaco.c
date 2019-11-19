@@ -73,7 +73,7 @@ int main () {
 	box(win, 0, 0);
 	wrefresh(win);*/
 
-	while (1) {
+	while (!ganhou (&l_aliens)) {
 
 		while (cnt <= PERIODODOJOGO) {
 
@@ -111,41 +111,43 @@ int main () {
 				while (tiro->prox != NULL) {
 
 					situacao = detecta_tiro (&tiro->chave,&tiro->status,&l_aliens,&l_barreira,linha_alien,coluna_alien);
-					analizasituacao (situacao,&tiro->chave,&l_aliens,&l_barreira,corposaliens,&versao,&coluna_alien,&linha_alien,&contiros); 
+					analizasituacao (situacao,&tiro->chave,&l_aliens,&l_barreira,corposaliens,&versao,&linha_alien,&coluna_alien,&contiros); 
 					prntaliens (&l_aliens,corposaliens,&versao,&linha_alien,&coluna_alien);
 
+					refresh ();
 					if (situacao >= 1 && situacao <= 5)
 						srchandrmtirolista (&l_tiros);
 					tiro = tiro->prox;
 				}	
-				prntiro (&l_tiros,contiros);
+				prntiro (&l_tiros);
 			}
 
-			/*if ((cnt % prdtirosA) == 0){
+			if ((cnt % prdtirosA) == 0){
 				
-				int i;
-				t_coord *coordbomba;
+				int i,ndoalien;
+				t_coord coordbomba;
 
 				srand(time(NULL));
-				if (l_aliens->tam > 5) {
-					for (i = contirosA - l_tirosA->tam; i < QNTDALIENTIROS; i++) {
-						alien = rand % l_aliens->tam;					 sorteia um alien da lista para atirar;
-						coordbomba = srchalien (alien,l_aliens);
-						instiroslista = (l_tirosA,coordbomba.x,coordbomba.y);
+				if (l_aliens.tam > 5) {
+					for (i = contirosA - l_tirosA.tam; i < QNTDALIENTIROS; i++) {
+						ndoalien = rand () % l_aliens.tam;					 						/*sorteia um alien da lista para atirar;*/
+						coordbomba = srchalien (ndoalien,&l_aliens,linha_alien,coluna_alien);
+						instiroslista (&l_tirosA,coordbomba.x,coordbomba.y);
 					}
 				}
 				else {
-					for (i = l_aliens->tam; i < l_tirosA; i++ ) {
-						alien = rand % l_alien->tam;	
-						coordbomba = srchalien (alien,l_aliens,linha_alien,coluna_alien);
-						instiroslista = (l_tirosA,coordbomba.x,coordbomba.y);
+					for (i = l_aliens.tam; i < l_tirosA.tam; i++ ) {
+						ndoalien = rand () % l_aliens.tam;	
+						coordbomba = srchalien (ndoalien,&l_aliens,linha_alien,coluna_alien);
+						instiroslista (&l_tirosA,coordbomba.x,coordbomba.y);
+					}
 				}
-				while parecido com o tiro player
-			
-			}*/
+				/*while parecido com o tiro player*/
+				prntiroaliens (&l_tirosA);
+			}
 			prntplayer (corpoplayer,&player_linha,&player_coluna);
 				
-		/*	refresh ();*/
+			/*refresh ();*/
 
 			prntbarreiras (&l_barreira);
 			cnt ++;
@@ -156,6 +158,7 @@ int main () {
 	}
 	/*For the time being, that's all folks*/
 
+	endwin ();
 	return 0;
 
 }
