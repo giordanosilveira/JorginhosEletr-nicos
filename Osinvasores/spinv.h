@@ -189,6 +189,5 @@ void attbarreira (t_listaBarreira *);
 
 /*detecta se o tiro pegou em algo ou chegou no final da tela*/
 int detecta_tiro (t_coord *, int *, t_listAliens *,t_listaBarreira *, int, int);
-/*void rddtirosaliens (); */
 /*int detecta_tirosA ();*/
 /*void analizasituacaoALIENS ();*/

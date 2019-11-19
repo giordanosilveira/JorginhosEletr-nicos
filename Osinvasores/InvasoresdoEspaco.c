@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include "spinv.h"
+#include <time.h>
 
 int main () {
 
@@ -39,16 +40,17 @@ int main () {
 	initspritsaliens (corposaliens); /* inicializa os corpos dos aliens */
 	initspritplayer (corpoplayer); /*inicializa o corpo do player*/
 
-	t_listaTiros l_tiros;
+	t_listaTiros l_tiros,l_tirosA;
 	t_listAliens l_aliens;
 	t_listaBarreira l_barreira;
 
 	inicializa_barreira (&l_barreira, telalinhas, telacolunas);
 	inicializa_aliens (&l_aliens);
 	initiros (&l_tiros);
+	initiros (&l_tirosA);
 
-	int linha_alien = 8; 		/*Em qual linha, primeiramente, eu escrevo o alien*/
-	int coluna_alien = 1; 		/*Em qual coluna, primeiramente,  eu escrevo o alien*/
+	int linha_alien = 8; 			/*Em qual linha, primeiramente, eu escrevo o alien*/
+	int coluna_alien = 1; 			/*Em qual coluna, primeiramente,  eu escrevo o alien*/
 	int player_linha = telalinhas-2;
 	int player_coluna = telacolunas/2;
 	int versao = 0; 			/*Versão que é para imprimir do alien*/
@@ -56,10 +58,11 @@ int main () {
 	int contiros = 0; 			/*quantidade de tiros na tela*/
 	char key;
 	int cnt = 0;
-	int prdaliens = 20000;		/*Servira para controlar o periodo do alien*/ 
-	int prdtiros = prdaliens/8;	/*periodo dos tiro (8x mais rapido que os aliens)*/
+	int prdaliens = 20000;			/*Servira para controlar o periodo do alien*/ 
+	int prdtiros = prdaliens/8;		/*periodo dos tiro (8x mais rapido que os aliens)*/
+	int prdtirosA = prdaliens/4;
 	int situacao;
-	/*int contirosA = 0 */      /*quantida de tiros dos aliens*/ 
+	int contirosA = 5;      		/*quantida de tiros dos aliens*/ 
 
 	t_controle linhasvivas, colunasvivas;
 
@@ -102,9 +105,7 @@ int main () {
 				cnt = 0;
 			
 			if ((cnt % prdtiros) == 0) {
-				/*
-					rddtiroaliens ();
-					OS ALIENS TBM PRECISA ATIRAR LEMBRE-SE */
+				
 				t_tiro *tiro;
 				tiro = l_tiros.ini->prox;
 				while (tiro->prox != NULL) {
@@ -117,16 +118,31 @@ int main () {
 						srchandrmtirolista (&l_tiros);
 					tiro = tiro->prox;
 				}	
-				
-				/*outro while parecido para os tiros dos aliens
-				
-				situacao = detecta_tiroA ();
-				analizasituacaoALIENS (); */
-				
 				prntiro (&l_tiros,contiros);
-				/*prntiroaliens*/
-
 			}
+
+			/*if ((cnt % prdtirosA) == 0){
+				
+				int i;
+				t_coord *coordbomba;
+
+				srand(time(NULL));
+				if (l_aliens->tam > 5) {
+					for (i = contirosA - l_tirosA->tam; i < QNTDALIENTIROS; i++) {
+						alien = rand % l_aliens->tam;					 sorteia um alien da lista para atirar;
+						coordbomba = srchalien ();
+						instiroslista = (l_tirosA,coordbomba.x,coordbomba.y);
+					}
+				}
+				else {
+					for (i = l_aliens->tam; i < l_tirosA; i++ ) {
+						alien = rand % l_alien->tam;	
+						coordbomba = srchalien ();
+						instiroslista = (l_tirosA,coordbomba.x,coordbomba.y);
+				}
+				while parecido com o tiro player
+			
+			}*/
 			prntplayer (corpoplayer,&player_linha,&player_coluna);
 				
 		/*	refresh ();*/

@@ -31,7 +31,6 @@ void initspritplayer (char ** c_player) {
 	strcpy (c_player[0],PLAYER11);
 	strcpy (c_player[1],PLAYER12);	
 }
-
 void initiros (t_listaTiros *l) {
 
 		t_tiro *ini, *fim;
@@ -337,6 +336,7 @@ void srchandrmtirolista (t_listaTiros *tiros) {
 	aux = tiro;
 	tiro->prox->prev = tiro->prev;
 	tiro->prev->prox = tiro->prox;
+	tiros->tam--;
 	free (aux);
 }
 /*void prntiroaliens () */
@@ -400,7 +400,6 @@ int detecta_tiro (t_coord *chave, int *status, t_listAliens *aliens,t_listaBarre
 	return 0;
 
 }
-/*void rddtirosaliens () */
 /*int detecta_tirosA ()*/
 
 void analizasituacao (int situacao, t_coord *chave, t_listAliens *aliens, t_listaBarreira *barreiras,char **corposA, int *versao, int *linha_alien, int *coluna_alien, int *contiros) {
@@ -417,20 +416,35 @@ void analizasituacao (int situacao, t_coord *chave, t_listAliens *aliens, t_list
 		*contiros = *contiros - 1;						/*diminui a qntd de tiros*/
 		break;
 								
-		case 2 : 				/*tiro pegou na barreira*/
-		prntbarreiras (barreiras); 		/*printa a situação nova da barreira*/
-		attbarreira (barreiras); 		/*atualiza a barreira*/
+		case 2 : 								/*tiro pegou na barreira*/
+		prntbarreiras (barreiras); 						/*printa a situação nova da barreira*/
+		attbarreira (barreiras); 						/*atualiza a barreira*/
 		*contiros = *contiros - 1;
 		break;
 
-		/*case 3 : 				pega na nave mae
+		/*case 3 : 								pega na nave mae
 		break;*/
 
-		/*case 4 :				tiro pega no tiro do alien
+		/*case 4 :								tiro pega no tiro do alien
 		break;*/
 
-		default	: 				/*tiro chegou no final da tela;*/
-		*contiros = *contiros - 1;	/*diminui a qntd de tiros*/
+		default	: 								/*tiro chegou no final da tela;*/
+		*contiros = *contiros - 1;						/*diminui a qntd de tiros*/
 		}
 }
+/*t_coord srchalien (int ndoalien, t_listAliens *aliens, int linha_alien, int coluna_player) {
+
+	t_alien *aln;
+	aln = aliens->ini->prox;
+
+	for (i = 0; i < ndoalien; i++)
+		aln = aln->prox;
+
+	
+
+
+
+
+
+}*/
 /*void analizasituacaoALIENS () {}*/
