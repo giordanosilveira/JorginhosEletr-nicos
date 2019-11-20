@@ -412,7 +412,7 @@ int detecta_bomba (t_coord *chave, int *status, t_listaBarreira *barreiras, int 
 	return 0;
 
 }
-int detecta_tiro (t_coord *chave, int *status, t_listAliens *aliens,t_listaBarreira *barreiras, t_listaTiros *tiros, int linha_alien, int coluna_alien) {
+int detecta_tiro (t_coord *chave, int *status, t_listAliens *aliens,t_listaBarreira *barreiras, t_listaTiros *tiros,t_navemae *navemae, int linha_alien, int coluna_alien) {
 
 	
 		if (chave->x - 1 == 0) {			/*tiro chegou no final da tela*/
@@ -442,6 +442,12 @@ int detecta_tiro (t_coord *chave, int *status, t_listAliens *aliens,t_listaBarre
 			alien = alien->prox;
 		
 		}
+		
+		if (chave->x + 1 == navemae->coord.x + ALTURANAVEMAE-1 && chave->y + 3 <= navemae->coord.y + LARGURANAVEMAE - 1 && chave->y + 3 >= navemae->coord.y){
+			navemae->status = MORRENDO;
+			*status = PEGOU;
+			return 3;
+		}
 
 		t_tiro *bomba;
 		bomba = tiros->ini->prox;
@@ -459,7 +465,7 @@ int detecta_tiro (t_coord *chave, int *status, t_listAliens *aliens,t_listaBarre
 }
 /*int detecta_tirosA ()*/
 
-void analizasituacao (int situacao, t_coord *chave, t_listAliens *aliens, t_listaBarreira *barreiras, t_listaTiros * bombas, char **corposA, int *versao, int *linha_alien, int *coluna_alien, int *contiros, int *contirosA) {
+void analizasituacao (int situacao, t_coord *chave, t_listAliens *aliens, t_listaBarreira *barreiras, t_listaTiros * bombas, t_navemae navemae, char **corponavemae, char **corposA, int *versao, int *linha_alien, int *coluna_alien, int *contiros, int *contirosA) {
 	t_tiro *bomba;
 
 	switch (situacao) {
@@ -481,8 +487,10 @@ void analizasituacao (int situacao, t_coord *chave, t_listAliens *aliens, t_list
 		break;
 								
 
-		/*case 3 : 								pega na nave mae
-		break;*/
+		case 3 : 								/*pega na nave mae*/
+		prntnavemae (corponavemae,navemae);
+		*contiros = *contiros - 1;
+		break;
 
 		case 4 :								/*tiro pega no tiro do alien*/
 		bomba = bombas->ini->prox;
@@ -556,4 +564,21 @@ void prntclstiro (t_coord *coord) {
 	mvprintw (coord->x - 1,coord->y - 1,EXPLOSAOG1);
 	mvprintw (coord->x,coord->y - 1,EXPLOSAOG2);
 	mvprintw (coord->x + 1,coord->y - 1 ,EXPLOSAOG3);
+}
+void initspritnavemae (char **corponavemae) {
+	strcpy (corponavemae[0],MAE1);
+	strcpy (corponavemae[1],MAE2);
+	strcpy (corponavemae[2],MAE3);
+}
+void prntnavemae (char **corponavemae, t_navemae navemae) {
+	if (navemae.status == 1) {
+		mvprintw (navemae.coord.x, navemae.coord.y, corponavemae[0]);
+		mvprintw (navemae.coord.x + 1,navemae.coord.y,corponavemae[1]);
+		mvprintw (navemae.coord.x + 2,navemae.coord.y,corponavemae[2]);
+	}
+	else {	
+		mvprintw (navemae.coord.x, navemae.coord.y, EXPLOSAOG1);
+		mvprintw (navemae.coord.x + 1,navemae.coord.y,EXPLOSAOG2);
+		mvprintw (navemae.coord.x + 2,navemae.coord.y,EXPLOSAOG3);
+	}
 }

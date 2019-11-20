@@ -37,8 +37,15 @@ int main () {
 	for (i = 0; i < ALTURAPLAYER; i++) 
 		corpoplayer[i] = (char *)malloc(sizeof(char)*TAMPLAYER);
 
-	initspritsaliens (corposaliens); /* inicializa os corpos dos aliens */
-	initspritplayer (corpoplayer); /*inicializa o corpo do player*/
+	char **corponavemae;
+	corponavemae = (char **)malloc(sizeof(char*)*ALTURANAVEMAE);
+	for (i = 0; i < ALTURANAVEMAE; i++)
+		corponavemae[i] = (char*)malloc(sizeof(char)*LARGURANAVEMAE);
+	
+
+	initspritsaliens (corposaliens); 	/* inicializa os corpos dos aliens */
+	initspritplayer (corpoplayer); 		/*inicializa o corpo do player*/
+	initspritnavemae (corponavemae); 	/*Inicializa o corpo da nave mae*/
 
 	t_listaTiros l_tiros,l_tirosA;
 	t_listAliens l_aliens;
@@ -49,6 +56,7 @@ int main () {
 	initiros (&l_tiros);
 	initiros (&l_tirosA);
 
+	t_navemae navemae;			/*Coordenada nave mae*/
 	int linha_alien = 8; 			/*Em qual linha, primeiramente, eu escrevo o alien*/
 	int coluna_alien = 1; 			/*Em qual coluna, primeiramente,  eu escrevo o alien*/
 	int player_linha = telalinhas-2;
@@ -65,15 +73,19 @@ int main () {
 	int contirosA = 0;      		/*quantida de tiros dos aliens*/ 
 	int statusjogo = 0;
 	int score = 0; 
+	int chancenavemae;
 
 	t_controle linhasvivas, colunasvivas;
 
 	inicializa_controle (&linhasvivas,&colunasvivas);
+	navemae.coord.x = 0;
+	navemae.coord.y = 0;
+	navemae.status = MORRENDO;
 	
-
 	/*win = newwin (38,100,0,0);
 	box(win, 0, 0);
 	wrefresh(win);*/
+	srand(time(NULL));
 
 	while (l_aliens.tam != 0 && statusjogo != 1) {
 
@@ -102,8 +114,25 @@ int main () {
 				return 0;
 			}
 
-			if ((cnt % prdaliens) == 0 ) {
-				admimpressao (&l_aliens,corposaliens,&indo,&versao,&linha_alien,&coluna_alien,&linhasvivas,&colunasvivas,telalinhas,telacolunas);
+			if ((cnt % prdaliens/2) == 0 ) {
+				
+				chancenavemae = 1;
+
+				if (chancenavemae == 1 && navemae.status == 1) {
+					prntnavemae (corponavemae,navemae);
+					navemae.coord.y++;
+					if (navemae.coord.y + LARGURANAVEMAE == telacolunas )
+						navemae.status = 0;
+				}
+				else if (chancenavemae == 1 && navemae.status == 0) {
+					navemae.coord.x = 0;
+					navemae.coord.y = 0;
+					navemae.status = 1;
+					prntnavemae (corponavemae,navemae);
+				}
+
+				if ((cnt % prdaliens) == 0)
+					admimpressao (&l_aliens,corposaliens,&indo,&versao,&linha_alien,&coluna_alien,&linhasvivas,&colunasvivas,telalinhas,telacolunas);
 			}
 			else if (cnt == RESETACONTADOR)
 				cnt = 0;
@@ -114,8 +143,8 @@ int main () {
 				tiro = l_tiros.ini->prox;
 				while (tiro->prox != NULL) {
 
-					situacao = detecta_tiro (&tiro->chave,&tiro->status,&l_aliens,&l_barreira,&l_tirosA,linha_alien,coluna_alien);
-					analizasituacao (situacao,&tiro->chave,&l_aliens,&l_barreira,&l_tirosA,corposaliens,&versao,&linha_alien,&coluna_alien,&contiros,&contirosA); 
+					situacao = detecta_tiro (&tiro->chave,&tiro->status,&l_aliens,&l_barreira,&l_tirosA,&navemae,linha_alien,coluna_alien);
+					analizasituacao (situacao,&tiro->chave,&l_aliens,&l_barreira,&l_tirosA,navemae,corponavemae,corposaliens,&versao,&linha_alien,&coluna_alien,&contiros,&contirosA); 
 					prntaliens (&l_aliens,corposaliens,&versao,&linha_alien,&coluna_alien);
 
 					refresh ();
@@ -137,7 +166,6 @@ int main () {
 				t_coord coordbomba;
 
 
-				srand(time(NULL));
 				ndoalien = rand () % l_aliens.tam;					 						/*sorteia um alien da lista para atirar;*/
 				coordbomba = srchalien (ndoalien,&l_aliens,linha_alien,coluna_alien);
 				if (contirosA < QNTDALIENTIROS ) {

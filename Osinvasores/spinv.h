@@ -26,10 +26,14 @@
 #define ALIEN322 "/|*|\\"
 #define ALIEN332 "(WTW)"
 
+/*Sprit Nave mãe*/
+#define MAE1 " ^ "
+#define MAE2 "MoM"
+#define MAE3 "/-\\"
+
 /*sprit explosao player*/
 #define EXPLOSAOP1 "\\\\-O-//"
 #define EXPLOSAOP2 "WAS TED"
-
 
 /*Sprit explosão alien*/
 #define EXPLOSAOA1 "\\\\  //"
@@ -50,7 +54,7 @@
 #define ALTURAPLAYER 2
 
 /*Tudo que tem haver com os aliens*/
-#define SPRITSALIEN 18				/*Número de sprits por alien*/
+#define SPRITSALIEN 18		/*Número de sprits por alien*/
 #define QNTET 55
 #define QNTDALIENTIROS 6
 #define ESPACOCALIEN 2
@@ -60,6 +64,10 @@
 #define TAMALIEN 6
 #define VIVO 1
 #define MORRENDO 0
+
+/*Tudo o que tem haver com a nave mae*/
+#define ALTURANAVEMAE 3
+#define LARGURANAVEMAE 3
 
 /*Tamanho mínimo da tela*/
 #define MINLINHAS 38
@@ -78,6 +86,12 @@ struct t_coord {
 	int x,y;
 };
 typedef struct t_coord t_coord;
+
+struct t_navemae {
+	t_coord coord;
+	int status;
+};
+typedef struct t_navemae t_navemae;
 
 struct t_alien {
 	int status;
@@ -193,7 +207,7 @@ void  prntiro (t_listaTiros *);
 t_coord srchalien (int, t_listAliens *, int, int);
 
 /*De acordo com a situação analiza a decisão a ser tomada*/
-void analizasituacao (int, t_coord *, t_listAliens *, t_listaBarreira *, t_listaTiros *,char **, int *, int *, int *, int *, int *);
+void analizasituacao (int, t_coord *, t_listAliens *, t_listaBarreira *, t_listaTiros *,t_navemae , char **, char **, int *, int *, int *, int *, int *);
 
 /*remove o tiro certo da lista*/
 void srchandrmtirolista (t_listaTiros *);
@@ -207,7 +221,7 @@ void prntiroaliens (t_listaTiros *);
 void attbarreira (t_listaBarreira *);
 
 /*detecta se o tiro pegou em algo ou chegou no final da tela*/
-int detecta_tiro (t_coord *, int *, t_listAliens *,t_listaBarreira *,t_listaTiros *, int, int);
+int detecta_tiro (t_coord *, int *, t_listAliens *,t_listaBarreira *,t_listaTiros *,t_navemae *, int, int);
 
 /*verifica se a bomba do alien pegou em algo*/
 int detecta_bomba (t_coord *, int *, t_listaBarreira *, int , int, int);
@@ -220,3 +234,9 @@ void prntplayermorto (int, int);
 
 /*printa a colisao do tiro*/
 void prntclstiro (t_coord *);
+
+/*Inicializa o sprit da nave mae*/
+void initspritnavemae (char **);
+
+/*Printa a nave mae*/
+void prntnavemae (char **, t_navemae);
