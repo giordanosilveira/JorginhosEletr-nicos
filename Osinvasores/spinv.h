@@ -26,6 +26,11 @@
 #define ALIEN322 "/|*|\\"
 #define ALIEN332 "(WTW)"
 
+/*sprit explosao player*/
+#define EXPLOSAOP1 "\\\\-O-//"
+#define EXPLOSAOP2 "WAS TED"
+
+
 /*Sprit explosão alien*/
 #define EXPLOSAOA1 "\\\\  //"
 #define EXPLOSAOA2 "-|10|-"
@@ -47,7 +52,7 @@
 /*Tudo que tem haver com os aliens*/
 #define SPRITSALIEN 18				/*Número de sprits por alien*/
 #define QNTET 55
-#define QNTDALIENTIROS 5
+#define QNTDALIENTIROS 6
 #define ESPACOCALIEN 2
 #define ESPACOLALIEN 3
 #define LINHASDALIENS 5
@@ -128,6 +133,8 @@ struct t_listaTiros {
 };
 typedef struct t_listaTiros t_listaTiros;
 
+/*verifica se o jogador perdeu*/
+int perdeu (int );
 
 /*verifica se você ganhou*/
 int ganhou (t_listAliens *);
@@ -182,21 +189,31 @@ void admimpressao (t_listAliens *, char ** , int *, int *, int *, int *, t_contr
 /*printa o tiro na tela*/
 void  prntiro (t_listaTiros *);
 
-/**/
+/*retorna as coordenadas certas do alien que atirou */
 t_coord srchalien (int, t_listAliens *, int, int);
 
-/**/
+/*De acordo com a situação analiza a decisão a ser tomada*/
 void analizasituacao (int, t_coord *, t_listAliens *, t_listaBarreira *, char **, int *, int *, int *, int *);
 
 /*remove o tiro certo da lista*/
 void srchandrmtirolista (t_listaTiros *);
 
 /*Printa as bombas dos alien*/
-void prntiroaliens (t_listaTiros *); 
+void prntiroaliens (t_listaTiros *);
+
+/*Pesquisa qual alien esta morrendo e mata ele*/
 /*void srchanddstryalien ();*/
+
 void attbarreira (t_listaBarreira *);
 
 /*detecta se o tiro pegou em algo ou chegou no final da tela*/
 int detecta_tiro (t_coord *, int *, t_listAliens *,t_listaBarreira *, int, int);
-/*int detecta_tirosA ();*/
-/*void analizasituacaoALIENS ();*/
+
+/*verifica se a bomba do alien pegou em algo*/
+int detecta_bomba (t_coord *, int *, t_listaBarreira *, int , int, int);
+
+/*De acordo com a situação analiza a decisao a ser tomada (ALIENS)*/
+void analizasituacaoALIENS (int, t_coord *, t_listaBarreira *, int *, int *);
+
+/*printa player morrendo*/
+void prntplayermorto (int, int);

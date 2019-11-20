@@ -60,9 +60,10 @@ int main () {
 	int cnt = 0;
 	int prdaliens = 20000;			/*Servira para controlar o periodo do alien*/ 
 	int prdtiros = prdaliens/8;		/*periodo dos tiro (8x mais rapido que os aliens)*/
-	int prdtirosA = prdaliens/4;
+	int prdtirosA = 10000;
 	int situacao;
-	int contirosA = 5;      		/*quantida de tiros dos aliens*/ 
+	int contirosA = 0;      		/*quantida de tiros dos aliens*/ 
+	int statusjogo = 0;
 
 	t_controle linhasvivas, colunasvivas;
 
@@ -73,9 +74,9 @@ int main () {
 	box(win, 0, 0);
 	wrefresh(win);*/
 
-	while (!ganhou (&l_aliens)) {
+	while (l_aliens.tam != 0 && statusjogo != 1) {
 
-		while (cnt <= PERIODODOJOGO) {
+		while (cnt <= PERIODODOJOGO && !ganhou(&l_aliens) && statusjogo != 1) {
 
 			key = getch ();
 		 	if (key == 'd') {
@@ -127,22 +128,31 @@ int main () {
 				int i,ndoalien;
 				t_coord coordbomba;
 
+
 				srand(time(NULL));
-				if (l_aliens.tam > 5) {
-					for (i = contirosA - l_tirosA.tam; i < QNTDALIENTIROS; i++) {
-						ndoalien = rand () % l_aliens.tam;					 						/*sorteia um alien da lista para atirar;*/
-						coordbomba = srchalien (ndoalien,&l_aliens,linha_alien,coluna_alien);
+				ndoalien = rand () % l_aliens.tam;					 						/*sorteia um alien da lista para atirar;*/
+				coordbomba = srchalien (ndoalien,&l_aliens,linha_alien,coluna_alien);
+				if (contirosA < QNTDALIENTIROS ) {
 						instiroslista (&l_tirosA,coordbomba.x,coordbomba.y);
-					}
+						contirosA++;
 				}
-				else {
-					for (i = l_aliens.tam; i < l_tirosA.tam; i++ ) {
-						ndoalien = rand () % l_aliens.tam;	
-						coordbomba = srchalien (ndoalien,&l_aliens,linha_alien,coluna_alien);
-						instiroslista (&l_tirosA,coordbomba.x,coordbomba.y);
-					}
+
+				t_tiro *bomba;
+				bomba = l_tirosA.ini->prox;
+				while (bomba->prox != NULL) {
+					situacao = detecta_bomba (&bomba->chave,&bomba->status,&l_barreira, telalinhas, player_linha,player_coluna);
+					analizasituacaoALIENS (situacao,&bomba->chave,&l_barreira,&statusjogo,&contirosA);
+
+					if (situacao == 2 || situacao == 3)
+						srchandrmtirolista (&l_tirosA);
+					/*else if (situacao == 1) {
+						usleep (100000);
+						prntplayermorto (player_linha,player_coluna);
+					}*/
+
+					bomba = bomba->prox;
 				}
-				/*while parecido com o tiro player*/
+
 				prntiroaliens (&l_tirosA);
 			}
 			prntplayer (corpoplayer,&player_linha,&player_coluna);

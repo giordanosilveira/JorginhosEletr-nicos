@@ -245,8 +245,8 @@ void prntiro (t_listaTiros * l_tiros) {
 	if (l_tiros->tam != 0) {
 		tiro = l_tiros->ini->prox;
 		while (tiro->prox !=  NULL) {
-			mvprintw (tiro->chave.x + 1,tiro->chave.y," ");
-			mvprintw (tiro->chave.x,tiro->chave.y,"|");
+			mvprintw (tiro->chave.x + 1,tiro->chave.y + 3," ");
+			mvprintw (tiro->chave.x,tiro->chave.y + 3,"|");
 			tiro = tiro->prox;
 		}
 	}
@@ -349,9 +349,8 @@ void prntiroaliens (t_listaTiros * tirosA) {
 	if (tirosA->tam != 0) {
 		bomba = tirosA->ini->prox;
 		while (bomba->prox !=  NULL) {
-			mvprintw (bomba->chave.x + 1,bomba->chave.y,"$");
-			mvprintw (bomba->chave.x,bomba->chave.y," ");
-			bomba->chave.x++;
+			mvprintw (bomba->chave.x - 1,bomba->chave.y," ");
+			mvprintw (bomba->chave.x,bomba->chave.y,"$");
 			bomba = bomba->prox;
 		}
 	}
@@ -387,6 +386,32 @@ void attbarreira (t_listaBarreira *barreiras) {
 	barreiras->tam--;
 	free (aux);
 }
+int detecta_bomba (t_coord *chave, int *status, t_listaBarreira *barreiras, int telalinha, int linha_player, int coluna_player ) {
+
+	if (chave->x + 1 == telalinha) {					/*Tiro chegou no final da tela*/
+		*status = PEGOU;
+		return 3;
+	}
+
+	t_barreira *bar;													/*Verifica se a bomba do alien pegou na barreira*/
+	bar = barreiras->ini->prox;
+	while (bar->prox != NULL) {
+		if (chave->x + 1 == bar->chave.x && chave->y == bar->chave.y) {
+			bar->status = MORRENDO;
+			*status = PEGOU;
+			return 2;
+		}
+		bar = bar->prox;
+	}
+
+	if (chave->x + 1 == linha_player && chave->y >= coluna_player + 3 && chave->y <= coluna_player + 8) { /*Verifica se a bomba pegou no jogador*/
+		*status = PEGOU;
+		return 1;
+	}
+
+	return 0;
+
+}
 int detecta_tiro (t_coord *chave, int *status, t_listAliens *aliens,t_listaBarreira *barreiras, int linha_alien, int coluna_alien) {
 
 	
@@ -398,7 +423,7 @@ int detecta_tiro (t_coord *chave, int *status, t_listAliens *aliens,t_listaBarre
 		t_barreira *barreira;
 		barreira = barreiras->ini->prox;
 		while (barreira->prox != NULL) {
-			if (chave->x-1 == barreira->chave.x && chave->y == barreira->chave.y) {
+			if (chave->x-1 == barreira->chave.x && chave->y + 3 == barreira->chave.y) {
 				barreira->status = MORRENDO;
 				*status = PEGOU;
 				return 1;
@@ -409,7 +434,7 @@ int detecta_tiro (t_coord *chave, int *status, t_listAliens *aliens,t_listaBarre
 		t_alien *alien;
 		alien = aliens->ini->prox;
 		while (alien->prox != NULL) {
-			if ((chave->x - 1 == (alien->pos.x*4 + linha_alien)+2) && (chave->y >= (alien->pos.y*7 + coluna_alien)) && (chave->y <= (alien->pos.y*7 + coluna_alien)+5)) {
+			if ((chave->x - 1 == (alien->pos.x*4 + linha_alien)+2) && (chave->y + 3 >= (alien->pos.y*7 + coluna_alien)) && (chave->y + 3<= (alien->pos.y*7 + coluna_alien)+5)) {
 				*status = PEGOU;
 				alien->status = MORRENDO;
 				return 2;
@@ -419,11 +444,6 @@ int detecta_tiro (t_coord *chave, int *status, t_listAliens *aliens,t_listaBarre
 		}
 	return 0;
 
-}
-int ganhou (t_listAliens *aliens) {
-	if (aliens->tam == 0)
-		return 1;
-	return 0;
 }
 /*int detecta_tirosA ()*/
 
@@ -435,16 +455,16 @@ void analizasituacao (int situacao, t_coord *chave, t_listAliens *aliens, t_list
 		chave->x--;								/*caso que o tiro nao pega em nada*/		
 		break;
 
-		case 1 : 								/*tiro pegou na barreira*/
-		prntbarreiras (barreiras); 						/*printa a situação nova da barreira*/
-		attbarreira (barreiras); 						/*atualiza a barreira*/
+		case 1 : 																	/*tiro pegou na barreira*/
+		prntbarreiras (barreiras); 													/*printa a situação nova da barreira*/
+		attbarreira (barreiras); 													/*atualiza a barreira*/
 		*contiros = *contiros - 1;
 		break;
 
-		case 2 : 								/*caso que o tiro pega em um alien*/
+		case 2 : 																	/*caso que o tiro pega em um alien*/
 		prntaliens (aliens,corposA,versao,linha_alien,coluna_alien); 				/*printa os aliens direitos na tela*/
-		srchanddstryalien (aliens); 						/*acha o alien morto e remove o alien da lista*/
-		*contiros = *contiros - 1;						/*diminui a qntd de tiros*/
+		srchanddstryalien (aliens); 												/*acha o alien morto e remove o alien da lista*/
+		*contiros = *contiros - 1;													/*diminui a qntd de tiros*/
 		break;
 								
 
@@ -456,7 +476,7 @@ void analizasituacao (int situacao, t_coord *chave, t_listAliens *aliens, t_list
 
 		default	: 								/*tiro chegou no final da tela;*/
 		*contiros = *contiros - 1;						/*diminui a qntd de tiros*/
-		}
+	}
 }
 t_coord srchalien (int ndoalien, t_listAliens *aliens, int linha_alien, int coluna_alien) {
 
@@ -469,8 +489,46 @@ t_coord srchalien (int ndoalien, t_listAliens *aliens, int linha_alien, int colu
 		aln = aln->prox;
 
 	coord.x = (aln->pos.x*4 + linha_alien)+2;
-	coord.y = ((aln->pos.y*7 + coluna_alien) - 3)/2;
+	coord.y = ((aln->pos.y*7 + coluna_alien) + (aln->pos.y*7 + coluna_alien )+5)/2;
 
 	return coord;
 }
-/*void analizasituacaoALIENS () {}*/
+int perdeu (int statusjogo) {
+	if (statusjogo)
+		return 0;
+	return 1;
+}
+int ganhou (t_listAliens *aliens) {
+
+	if (aliens->tam == 0 )
+		return 1;
+	return 0; 
+
+}
+void analizasituacaoALIENS (int situacao, t_coord *chave, t_listaBarreira *barreiras, int *statusjogo, int *contirosA) {
+
+	switch (situacao) {
+
+		case 0 :										/*bomba não pega em nada*/
+		chave->x++;
+		break;
+
+		case 1 :										/*tiro pega no player*/
+		*statusjogo = 1;								/*Atualiza o jogo para "perdeu" */
+		break;
+
+		case 2 :										/*bomba pegou na barreira*/
+		prntbarreiras (barreiras); 						/*printa a situação nova da barreira*/
+		attbarreira (barreiras);
+		*contirosA = *contirosA - 1;
+		break;
+
+		case 3 :										/*bomba chega ao final da tela*/
+		*contirosA = *contirosA - 1;
+		break;
+	}
+}
+void prntplayermorto (int player_linha , int player_coluna) {
+	mvprintw (player_linha,player_coluna,"EXPLOSAOP1");
+	mvprintw (player_linha + 1,player_coluna,"EXPLOSAOP2");
+}
