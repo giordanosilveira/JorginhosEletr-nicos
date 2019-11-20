@@ -193,7 +193,7 @@ void  prntiro (t_listaTiros *);
 t_coord srchalien (int, t_listAliens *, int, int);
 
 /*De acordo com a situação analiza a decisão a ser tomada*/
-void analizasituacao (int, t_coord *, t_listAliens *, t_listaBarreira *, char **, int *, int *, int *, int *);
+void analizasituacao (int, t_coord *, t_listAliens *, t_listaBarreira *, t_listaTiros *,char **, int *, int *, int *, int *, int *);
 
 /*remove o tiro certo da lista*/
 void srchandrmtirolista (t_listaTiros *);
@@ -207,7 +207,7 @@ void prntiroaliens (t_listaTiros *);
 void attbarreira (t_listaBarreira *);
 
 /*detecta se o tiro pegou em algo ou chegou no final da tela*/
-int detecta_tiro (t_coord *, int *, t_listAliens *,t_listaBarreira *, int, int);
+int detecta_tiro (t_coord *, int *, t_listAliens *,t_listaBarreira *,t_listaTiros *, int, int);
 
 /*verifica se a bomba do alien pegou em algo*/
 int detecta_bomba (t_coord *, int *, t_listaBarreira *, int , int, int);
@@ -217,3 +217,6 @@ void analizasituacaoALIENS (int, t_coord *, t_listaBarreira *, int *, int *);
 
 /*printa player morrendo*/
 void prntplayermorto (int, int);
+
+/*printa a colisao do tiro*/
+void prntclstiro (t_coord *);

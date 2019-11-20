@@ -64,6 +64,7 @@ int main () {
 	int situacao;
 	int contirosA = 0;      		/*quantida de tiros dos aliens*/ 
 	int statusjogo = 0;
+	int score = 0; 
 
 	t_controle linhasvivas, colunasvivas;
 
@@ -77,6 +78,8 @@ int main () {
 	while (l_aliens.tam != 0 && statusjogo != 1) {
 
 		while (cnt <= PERIODODOJOGO && !ganhou(&l_aliens) && statusjogo != 1) {
+			
+		/*	mvprintw (0,telacolunas/2,"score: %d ", score);*/
 
 			key = getch ();
 		 	if (key == 'd') {
@@ -111,13 +114,18 @@ int main () {
 				tiro = l_tiros.ini->prox;
 				while (tiro->prox != NULL) {
 
-					situacao = detecta_tiro (&tiro->chave,&tiro->status,&l_aliens,&l_barreira,linha_alien,coluna_alien);
-					analizasituacao (situacao,&tiro->chave,&l_aliens,&l_barreira,corposaliens,&versao,&linha_alien,&coluna_alien,&contiros); 
+					situacao = detecta_tiro (&tiro->chave,&tiro->status,&l_aliens,&l_barreira,&l_tirosA,linha_alien,coluna_alien);
+					analizasituacao (situacao,&tiro->chave,&l_aliens,&l_barreira,&l_tirosA,corposaliens,&versao,&linha_alien,&coluna_alien,&contiros,&contirosA); 
 					prntaliens (&l_aliens,corposaliens,&versao,&linha_alien,&coluna_alien);
 
 					refresh ();
-					if (situacao >= 1 && situacao <= 5)
+					if (situacao >= 1 && situacao <= 5) {
+						if (situacao == 2) {
+							score = score + 10;
+							/*mvprintw (0,telacolunas/2,"score: %d ", score);*/
+						}
 						srchandrmtirolista (&l_tiros);
+					}
 					tiro = tiro->prox;
 				}	
 				prntiro (&l_tiros);

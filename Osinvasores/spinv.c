@@ -412,7 +412,7 @@ int detecta_bomba (t_coord *chave, int *status, t_listaBarreira *barreiras, int 
 	return 0;
 
 }
-int detecta_tiro (t_coord *chave, int *status, t_listAliens *aliens,t_listaBarreira *barreiras, int linha_alien, int coluna_alien) {
+int detecta_tiro (t_coord *chave, int *status, t_listAliens *aliens,t_listaBarreira *barreiras, t_listaTiros *tiros, int linha_alien, int coluna_alien) {
 
 	
 		if (chave->x - 1 == 0) {			/*tiro chegou no final da tela*/
@@ -442,12 +442,25 @@ int detecta_tiro (t_coord *chave, int *status, t_listAliens *aliens,t_listaBarre
 			alien = alien->prox;
 		
 		}
-	return 0;
+
+		t_tiro *bomba;
+		bomba = tiros->ini->prox;
+		while (bomba->prox != NULL ){
+			if (chave->x - 2 == bomba->chave.x && chave->y + 3 == bomba->chave.y) {
+				*status = PEGOU;
+				bomba->status = PEGOU;
+				return 4;
+			}
+			bomba = bomba->prox;
+		}
+
+		return 0;
 
 }
 /*int detecta_tirosA ()*/
 
-void analizasituacao (int situacao, t_coord *chave, t_listAliens *aliens, t_listaBarreira *barreiras,char **corposA, int *versao, int *linha_alien, int *coluna_alien, int *contiros) {
+void analizasituacao (int situacao, t_coord *chave, t_listAliens *aliens, t_listaBarreira *barreiras, t_listaTiros * bombas, char **corposA, int *versao, int *linha_alien, int *coluna_alien, int *contiros, int *contirosA) {
+	t_tiro *bomba;
 
 	switch (situacao) {
 					
@@ -471,8 +484,15 @@ void analizasituacao (int situacao, t_coord *chave, t_listAliens *aliens, t_list
 		/*case 3 : 								pega na nave mae
 		break;*/
 
-		/*case 4 :								tiro pega no tiro do alien
-		break;*/
+		case 4 :								/*tiro pega no tiro do alien*/
+		bomba = bombas->ini->prox;
+		while (bomba->prox != NULL && bomba->status != PEGOU)
+			bomba = bomba->prox;
+		prntclstiro (&bomba->chave);
+		srchandrmtirolista (bombas);
+		*contirosA = *contirosA - 1;
+		*contiros = *contiros - 1;
+		break;
 
 		default	: 								/*tiro chegou no final da tela;*/
 		*contiros = *contiros - 1;						/*diminui a qntd de tiros*/
@@ -531,4 +551,9 @@ void analizasituacaoALIENS (int situacao, t_coord *chave, t_listaBarreira *barre
 void prntplayermorto (int player_linha , int player_coluna) {
 	mvprintw (player_linha,player_coluna,"EXPLOSAOP1");
 	mvprintw (player_linha + 1,player_coluna,"EXPLOSAOP2");
+}
+void prntclstiro (t_coord *coord) {
+	mvprintw (coord->x - 1,coord->y - 1,EXPLOSAOG1);
+	mvprintw (coord->x,coord->y - 1,EXPLOSAOG2);
+	mvprintw (coord->x + 1,coord->y - 1 ,EXPLOSAOG3);
 }
