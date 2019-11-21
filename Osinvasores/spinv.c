@@ -213,7 +213,7 @@ void admimpressao (t_listAliens *l_aliens, char **corposaliens, int *indo, int *
 		}
 	}
 	else {
-		if (( *coluna_alien - 1 == 0)) {
+		if (( *coluna_alien + colunasvivas->vetor[colunasvivas->ini].x*7 - 1 == 0)) {
 			
 			*coluna_alien = *coluna_alien + 1;
 			*linha_alien = *linha_alien + 1;	
