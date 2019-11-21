@@ -51,8 +51,8 @@ int main () {
 	t_listAliens l_aliens;
 	t_listaBarreira l_barreira;
 
-	inicializa_barreira (&l_barreira, telalinhas, telacolunas);
 	inicializa_aliens (&l_aliens);
+	inicializa_barreira (&l_barreira, telalinhas, telacolunas);
 	initiros (&l_tiros);
 	initiros (&l_tirosA);
 
@@ -74,6 +74,7 @@ int main () {
 	int statusjogo = 0;
 	int score = 0; 
 	int chancenavemae;
+	int contador = 1000;
 	t_coord coordstr;			/*Ajudará no controle da impressao dos aliens*/
 
 	t_controle linhasvivas, colunasvivas;
@@ -91,8 +92,10 @@ int main () {
 
 	while (l_aliens.tam != 0 && statusjogo != 1) {
 
-		while (cnt <= PERIODODOJOGO && !ganhou(&l_aliens) && statusjogo != 1) {
+		while (cnt <= PERIODODOJOGO && !ganhou(&l_aliens) && !perdeu(statusjogo)) {
 			
+			/*mvprintw (0,60,"%d ", linhasvivas.vetor[linhasvivas.fim].y);*/
+			/*mvprintw (0,MINCOLUNAS/2,"%d score: ", score);*/	
 
 			key = getch ();
 		 	if (key == 'd') {
@@ -117,30 +120,41 @@ int main () {
 
 			if ((cnt % prdaliens/2) == 0 ) {
 				
-				chancenavemae = rand () % 9 + 1;
+				chancenavemae = rand () % 4000 + 1;
 
-				if (chancenavemae >= 7 && navemae.status == 1) {
+				if (chancenavemae >= 3995) {
+					if (navemae.status == 0) {
+						navemae.coord.x = 0;
+						navemae.coord.y = 0;
+						navemae.status = 1;
+						prntnavemae (corponavemae,navemae);
+					}
+				}
+				if (navemae.status == 1) {
 					prntnavemae (corponavemae,navemae);
 					navemae.coord.y++;
-					if (navemae.coord.y + LARGURANAVEMAE == MINCOLUNAS )
+					if (navemae.coord.y + 1 == MINCOLUNAS)	
 						navemae.status = 0;
-				}
-				else if (chancenavemae >= 7 && navemae.status == 0) {
-					navemae.coord.x = 0;
-					navemae.coord.y = 0;
-					navemae.status = 1;
-					prntnavemae (corponavemae,navemae);
 				}
 
 				if ((cnt % prdaliens) == 0) {
-					admimpressao (&l_aliens,corposaliens,&indo,&versao,&linha_alien,&coluna_alien,&linhasvivas,&colunasvivas,telalinhas,telacolunas);
+					admimpressao (&l_aliens,corposaliens,&indo,&versao,&linha_alien,&coluna_alien,&linhasvivas,&colunasvivas,&prdaliens,telalinhas,telacolunas);
 					if (dtctaclsalienbarreira (l_aliens,&l_barreira,linhasvivas,linha_alien,coluna_alien)) {
 						prntbarreiras (&l_barreira);
+						attbarreira (&l_barreira);
 					}
+					if (fimdalinha (linhasvivas,linha_alien,player_linha))
+						statusjogo = 1;
+
 				}
 			}
+			
+
 			else if (cnt == RESETACONTADOR)
 				cnt = 0;
+			
+			prntbarreiras (&l_barreira);
+			/*mvprintw (0,60,"%d ", l_barreira.tam);*/
 			
 			if ((cnt % prdtiros) == 0) {
 				
@@ -155,8 +169,8 @@ int main () {
 					refresh ();
 					if (situacao >= 1 && situacao <= 5) {
 						if (situacao == 2) {
-							vrfcextraliens (coordstr,&colunasvivas);	
-							vrfcextraliens (coordstr,&linhasvivas);
+							vrfcextraliens (coordstr.y,&colunasvivas);	
+							vrfcextraliens (coordstr.x,&linhasvivas);
 							score = score + 10;
 							/*mvprintw (0,telacolunas/2,"score: %d ", score);*/
 						}
@@ -176,31 +190,31 @@ int main () {
 				int i,ndoalien;
 				t_coord coordbomba;
 
+				if (l_aliens.tam > 0) {
+					ndoalien = rand () % l_aliens.tam;					 						/*sorteia um alien da lista para atirar;*/
+					coordbomba = srchalien (ndoalien,&l_aliens,linha_alien,coluna_alien);
+					if (contirosA < QNTDALIENTIROS ) {
+							instiroslista (&l_tirosA,coordbomba.x,coordbomba.y);
+							contirosA++;
+					}
+	
+					t_tiro *bomba;
+					bomba = l_tirosA.ini->prox;
+					while (bomba->prox != NULL) {
+						situacao = detecta_bomba (&bomba->chave,&bomba->status,&l_barreira, telalinhas, player_linha,player_coluna);
+						analizasituacaoALIENS (situacao,&bomba->chave,&l_barreira,&statusjogo,&contirosA);
 
-				ndoalien = rand () % l_aliens.tam;					 						/*sorteia um alien da lista para atirar;*/
-				coordbomba = srchalien (ndoalien,&l_aliens,linha_alien,coluna_alien);
-				if (contirosA < QNTDALIENTIROS ) {
-						instiroslista (&l_tirosA,coordbomba.x,coordbomba.y);
-						contirosA++;
+						if (situacao == 2 || situacao == 3)
+							srchandrmtirolista (&l_tirosA);
+						else if (situacao == 1) {
+							statusjogo = 1;
+						}
+
+						bomba = bomba->prox;
+					}
+
+					prntiroaliens (&l_tirosA);
 				}
-
-				t_tiro *bomba;
-				bomba = l_tirosA.ini->prox;
-				while (bomba->prox != NULL) {
-					situacao = detecta_bomba (&bomba->chave,&bomba->status,&l_barreira, telalinhas, player_linha,player_coluna);
-					analizasituacaoALIENS (situacao,&bomba->chave,&l_barreira,&statusjogo,&contirosA);
-
-					if (situacao == 2 || situacao == 3)
-						srchandrmtirolista (&l_tirosA);
-					/*else if (situacao == 1) {
-						usleep (100000);
-						prntplayermorto (player_linha,player_coluna);
-					}*/
-
-					bomba = bomba->prox;
-				}
-
-				prntiroaliens (&l_tirosA);
 			}
 			prntplayer (corpoplayer,&player_linha,&player_coluna);
 				
@@ -209,8 +223,24 @@ int main () {
 			prntbarreiras (&l_barreira);
 			cnt ++;
 
+
 			refresh ();
 
+		}
+		if (ganhou(&l_aliens)) {
+			destroi_listas (&l_tiros,&l_tirosA,&l_aliens,&l_barreira);
+			inicializa_listas (&l_tiros,&l_tirosA,&l_aliens,&l_barreira);
+			initcontrole (&colunasvivas,COLUNASDALIENS-1,LINHASDALIENS);
+			initcontrole (&linhasvivas,LINHASDALIENS-1,COLUNASDALIENS);
+			increaseperiodo (&prdaliens,&contador);
+			linha_alien = 7;
+			coluna_alien = 1;
+			statusjogo = 0;
+			contiros = 0;
+			contirosA = 0;
+		}
+		if (perdeu(statusjogo)) {
+			printf ("Você perdeu\n");	
 		}	
 	}
 	/*For the time being, that's all folks*/

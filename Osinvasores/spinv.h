@@ -202,7 +202,7 @@ void prntbarreiras (t_listaBarreira *barreira);
 void inicializa_controle (t_controle *, t_controle *);
 
 /*Vai administrar tudo o que tem haver com a impressão dos aliens*/
-void admimpressao (t_listAliens *, char ** , int *, int *, int *, int *, t_controle *, t_controle *, int, int );
+void admimpressao (t_listAliens *, char ** , int *, int *, int *, int *, t_controle *, t_controle *,int *, int, int );
 
 /*printa o tiro na tela*/
 void  prntiro (t_listaTiros *);
@@ -246,7 +246,28 @@ void initspritnavemae (char **);
 void prntnavemae (char **, t_navemae);
 
 /*verifica os extremos dos aliens*/
-void vrfcextraliens (t_coord, t_controle *);
+void vrfcextraliens (int, t_controle *);
 
 /*detecta colisao alien-barreira*/
 int dtctaclsalienbarreira (t_listAliens,t_listaBarreira *, t_controle, int , int);
+
+/*Verifica se a ultima linha de alien chegou na linha do player*/
+int fimdalinha (t_controle , int , int );
+
+/*destroi todas as listas*/
+void destroi_listas (t_listaTiros *, t_listaTiros *, t_listAliens *, t_listaBarreira *);
+
+/*destroi tiros*/
+void dstrlistatiro (t_listaTiros *);
+
+/*destroi barreira*/
+void dstrlistabarreira (t_listaBarreira *);
+
+/*destroi aliens*/
+void dstrlistaliens (t_listAliens *);
+
+/*inicializa todas as listas*/
+void inicializa_listas (t_listaTiros *, t_listaTiros *, t_listAliens *, t_listaBarreira *);
+
+/*aumenta a velocidade dos aliens*/
+void increaseperiodo (int *, int *);

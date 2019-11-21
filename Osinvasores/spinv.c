@@ -190,7 +190,7 @@ void prntplayer (char **corpoP, int *linha_player, int *coluna_player) {
 	mvprintw (*linha_player,*coluna_player+3,corpoP[0]);	
 	mvprintw (*linha_player+1,*coluna_player-1,corpoP[1]);
 }
-void admimpressao (t_listAliens *l_aliens, char **corposaliens, int *indo, int *versao, int *linha_alien, int *coluna_alien, t_controle *linhasvivas, t_controle *colunasvivas,int telalinhas, int telacolunas)
+void admimpressao (t_listAliens *l_aliens, char **corposaliens, int *indo, int *versao, int *linha_alien, int *coluna_alien, t_controle *linhasvivas, t_controle *colunasvivas, int *prdalien, int telalinhas, int telacolunas)
 {
 
 	t_alien *alien;
@@ -205,6 +205,7 @@ void admimpressao (t_listAliens *l_aliens, char **corposaliens, int *indo, int *
 			*coluna_alien = *coluna_alien - 1;
 			*linha_alien = *linha_alien + 1;
 			prntaliens (l_aliens,corposaliens,versao,linha_alien,coluna_alien);
+			*prdalien = *prdalien - 100;
 			*indo = 0;
 		}
 		else {
@@ -218,10 +219,10 @@ void admimpressao (t_listAliens *l_aliens, char **corposaliens, int *indo, int *
 			*coluna_alien = *coluna_alien + 1;
 			*linha_alien = *linha_alien + 1;	
 			prntaliens (l_aliens,corposaliens,versao,linha_alien,coluna_alien);
-			*indo=1;
+			*indo=1;	
+			*prdalien = *prdalien - 100;
 		}
 		else {
-			mvprintw (0,60,"%d ", *coluna_alien);
 			*coluna_alien = *coluna_alien - 1;
 			prntaliens (l_aliens,corposaliens,versao,linha_alien,coluna_alien);
 		}
@@ -371,14 +372,16 @@ void attbarreira (t_listaBarreira *barreiras) {
 	t_barreira *bar,*aux;
 	bar = barreiras->ini->prox;
 
-	while (bar->prox != NULL && bar->status != MORRENDO) 
-		bar = bar->prox;
+	if (barreiras->tam != 0) {
+		while	(bar->prox != barreiras->fim && bar->status != MORRENDO)
+			bar = bar->prox;
 
-	aux = bar;
-	bar->prox->prev = bar->prev;
-	bar->prev->prox = bar->prox;
-	barreiras->tam--;
-	free (aux);
+		aux = bar;
+		bar->prox->prev = bar->prev;
+		bar->prev->prox = bar->prox;
+		barreiras->tam--;
+		free (aux);
+	}
 }
 int detecta_bomba (t_coord *chave, int *status, t_listaBarreira *barreiras, int telalinha, int linha_player, int coluna_player ) {
 
@@ -517,8 +520,8 @@ t_coord srchalien (int ndoalien, t_listAliens *aliens, int linha_alien, int colu
 }
 int perdeu (int statusjogo) {
 	if (statusjogo)
-		return 0;
-	return 1;
+		return 1;
+	return 0;
 }
 int ganhou (t_listAliens *aliens) {
 
@@ -576,9 +579,9 @@ void prntnavemae (char **corponavemae, t_navemae navemae) {
 		mvprintw (navemae.coord.x + 2,navemae.coord.y,EXPLOSAOG3);
 	}
 }
-void vrfcextraliens (t_coord coord, t_controle * ctrl){
+void vrfcextraliens (int coordy, t_controle * ctrl){
 	
-	ctrl->vetor[coord.y].y--;
+	ctrl->vetor[coordy].y--;
 	
 	int i;
 
@@ -608,14 +611,17 @@ int dtctaclsalienbarreira (t_listAliens aliens, t_listaBarreira *barreiras,t_con
 	while (alien->prox != aliens.fim) {
 
 		barreira = barreiras->ini->prox;
-
-		while (barreira->prox != barreiras->fim) {
-			if ((barreira->chave.x == (alien->pos.x*4 + linha_alien)+3) && (barreira->chave.y == (alien->pos.y*7 + coluna_alien) - 1) && (barreira->chave.y == (alien->pos.y*7 + coluna_alien)+6)){
-				barreira->status = MORRENDO;
+		
+		if (barreiras->fim != 0) {
+			while (barreira != barreiras->fim) {
+				if ((barreira->chave.x == (alien->pos.x*4 + linha_alien)+3)) {
+					if ((barreira->chave.y == (alien->pos.y*7 + coluna_alien) - 1)  || barreira->chave.y == (alien->pos.y*7 + coluna_alien) + 1)			
+						barreira->status = MORRENDO;
+					else if ((barreira->chave.y == (alien->pos.y*7 + coluna_alien) + 6 ||  (barreira->chave.y == (alien->pos.y*7 + coluna_alien) + 5 ))) 
+						barreira->status = MORRENDO;
+				}
+				barreira = barreira->prox;
 			}
-			
-
-			barreira = barreira->prox;
 		}
 
 		alien = alien->prox;
@@ -623,4 +629,79 @@ int dtctaclsalienbarreira (t_listAliens aliens, t_listaBarreira *barreiras,t_con
 	}
 	return 1;
 	
+}
+int fimdalinha (t_controle ctrl, int linha_alien, int player_linha) {
+	if ((ctrl.vetor[ctrl.fim].x*4 + 2) + linha_alien == player_linha)
+		return 1; 
+	return 0;
+}
+void destroi_listas (t_listaTiros *tiros, t_listaTiros *bombas, t_listAliens *aliens, t_listaBarreira *barreiras) {
+	dstrlistatiro (tiros);
+	dstrlistatiro (bombas);
+	dstrlistaliens (aliens);
+	dstrlistabarreira (barreiras);
+}
+void dstrlistatiro (t_listaTiros *t) {
+
+	t_tiro *tiro;
+
+	tiro = t->ini->prox;
+
+	if (t->tam != 0) {
+		while (tiro->prox != NULL){
+
+			tiro=tiro->prox;
+			free (tiro->prev);
+			t->tam --;
+		}
+		free (t->ini);
+		free (t->fim);
+	}
+}
+
+void dstrlistabarreira (t_listaBarreira * t) {
+	t_barreira *peca;
+
+	peca = t->ini->prox;
+
+	if (t->tam != 0) {
+		while (peca->prox != NULL){
+
+			peca=peca->prox;
+			free (peca->prev);
+			t->tam --;
+		}
+		free (t->ini);
+		free (t->fim);
+	}
+}
+
+void dstrlistaliens (t_listAliens *t) {
+	t_alien *peca;
+
+	peca = t->ini->prox;
+
+	if (t->tam != 0) {
+		while (peca->prox != NULL){
+
+			peca=peca->prox;
+			free (peca->prev);
+			t->tam --;
+		}
+		free (t->ini);
+		free (t->fim);
+	}
+}
+void inicializa_listas (t_listaTiros *tiros, t_listaTiros *bombas, t_listAliens *aliens, t_listaBarreira *barreiras) {
+
+	inicializa_aliens (aliens);
+	inicializa_barreira (barreiras,0,0);
+	initiros (tiros);
+	initiros (bombas);
+}
+void increaseperiodo (int *prdA, int *cont) {
+	if (*cont < 10000) {
+		*prdA = *prdA - *cont;
+		*cont = *cont + 1000;
+	}
 }
