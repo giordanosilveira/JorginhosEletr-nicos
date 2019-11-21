@@ -594,3 +594,33 @@ void vrfcextraliens (t_coord coord, t_controle * ctrl){
 		ctrl->ini++;
 	}
 }
+int dtctaclsalienbarreira (t_listAliens aliens, t_listaBarreira *barreiras,t_controle linhasvivas, int linha_alien, int coluna_alien) {
+
+
+	t_alien *alien;
+	t_barreira *barreira;
+
+	if ((linhasvivas.vetor[linhasvivas.fim].x*4 + 2) + linha_alien < MINLINHAS - 10)
+		return 0;
+
+	alien = aliens.ini->prox;
+
+	while (alien->prox != aliens.fim) {
+
+		barreira = barreiras->ini->prox;
+
+		while (barreira->prox != barreiras->fim) {
+			if ((barreira->chave.x == (alien->pos.x*4 + linha_alien)+3) && (barreira->chave.y == (alien->pos.y*7 + coluna_alien) - 1) && (barreira->chave.y == (alien->pos.y*7 + coluna_alien)+6)){
+				barreira->status = MORRENDO;
+			}
+			
+
+			barreira = barreira->prox;
+		}
+
+		alien = alien->prox;
+
+	}
+	return 1;
+	
+}

@@ -132,8 +132,12 @@ int main () {
 					prntnavemae (corponavemae,navemae);
 				}
 
-				if ((cnt % prdaliens) == 0)
+				if ((cnt % prdaliens) == 0) {
 					admimpressao (&l_aliens,corposaliens,&indo,&versao,&linha_alien,&coluna_alien,&linhasvivas,&colunasvivas,telalinhas,telacolunas);
+					if (dtctaclsalienbarreira (l_aliens,&l_barreira,linhasvivas,linha_alien,coluna_alien)) {
+						prntbarreiras (&l_barreira);
+					}
+				}
 			}
 			else if (cnt == RESETACONTADOR)
 				cnt = 0;

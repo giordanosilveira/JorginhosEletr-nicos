@@ -70,8 +70,8 @@
 #define LARGURANAVEMAE 3
 
 /*Tamanho mínimo da tela*/
-#define MINLINHAS 40
-#define MINCOLUNAS 120
+#define MINLINHAS 38
+#define MINCOLUNAS 100
 
 /*Tudo que tem haver com os tiros*/
 #define QNTDTIROS 4 /*Quantidade de tiros por vez na tela*/
@@ -247,3 +247,6 @@ void prntnavemae (char **, t_navemae);
 
 /*verifica os extremos dos aliens*/
 void vrfcextraliens (t_coord, t_controle *);
+
+/*detecta colisao alien-barreira*/
+int dtctaclsalienbarreira (t_listAliens,t_listaBarreira *, t_controle, int , int);
