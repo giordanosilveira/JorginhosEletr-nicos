@@ -57,10 +57,10 @@ int main () {
 	initiros (&l_tirosA);
 
 	t_navemae navemae;			/*Coordenada nave mae*/
-	int linha_alien = 8; 			/*Em qual linha, primeiramente, eu escrevo o alien*/
+	int linha_alien = 7; 			/*Em qual linha, primeiramente, eu escrevo o alien*/
 	int coluna_alien = 1; 			/*Em qual coluna, primeiramente,  eu escrevo o alien*/
-	int player_linha = telalinhas-2;
-	int player_coluna = telacolunas/2;
+	int player_linha = MINLINHAS-2;
+	int player_coluna = MINCOLUNAS/2;
 	int versao = 0; 			/*Versão que é para imprimir do alien*/
 	int indo = 1; 				/*controla se o alien esta indo ou vindo*/
 	int contiros = 0; 			/*quantidade de tiros na tela*/
@@ -74,10 +74,12 @@ int main () {
 	int statusjogo = 0;
 	int score = 0; 
 	int chancenavemae;
+	t_coord coordstr;			/*Ajudará no controle da impressao dos aliens*/
 
 	t_controle linhasvivas, colunasvivas;
-
-	inicializa_controle (&linhasvivas,&colunasvivas);
+	initcontrole (&colunasvivas,COLUNASDALIENS-1,LINHASDALIENS);
+	initcontrole (&linhasvivas,LINHASDALIENS-1,COLUNASDALIENS);
+	
 	navemae.coord.x = 0;
 	navemae.coord.y = 0;
 	navemae.status = MORRENDO;
@@ -91,11 +93,10 @@ int main () {
 
 		while (cnt <= PERIODODOJOGO && !ganhou(&l_aliens) && statusjogo != 1) {
 			
-		/*	mvprintw (0,telacolunas/2,"score: %d ", score);*/
 
 			key = getch ();
 		 	if (key == 'd') {
-				if (player_coluna + 1 < telacolunas){
+				if (player_coluna + 1 < MINCOLUNAS){
 					player_coluna++;
 				}
 			}
@@ -116,15 +117,15 @@ int main () {
 
 			if ((cnt % prdaliens/2) == 0 ) {
 				
-				chancenavemae = 1;
+				chancenavemae = rand () % 9 + 1;
 
-				if (chancenavemae == 1 && navemae.status == 1) {
+				if (chancenavemae >= 7 && navemae.status == 1) {
 					prntnavemae (corponavemae,navemae);
 					navemae.coord.y++;
-					if (navemae.coord.y + LARGURANAVEMAE == telacolunas )
+					if (navemae.coord.y + LARGURANAVEMAE == MINCOLUNAS )
 						navemae.status = 0;
 				}
-				else if (chancenavemae == 1 && navemae.status == 0) {
+				else if (chancenavemae >= 7 && navemae.status == 0) {
 					navemae.coord.x = 0;
 					navemae.coord.y = 0;
 					navemae.status = 1;
@@ -144,13 +145,19 @@ int main () {
 				while (tiro->prox != NULL) {
 
 					situacao = detecta_tiro (&tiro->chave,&tiro->status,&l_aliens,&l_barreira,&l_tirosA,&navemae,linha_alien,coluna_alien);
-					analizasituacao (situacao,&tiro->chave,&l_aliens,&l_barreira,&l_tirosA,navemae,corponavemae,corposaliens,&versao,&linha_alien,&coluna_alien,&contiros,&contirosA); 
+					analizasituacao (situacao,&tiro->chave,&coordstr,&l_aliens,&l_barreira,&l_tirosA,navemae,corponavemae,corposaliens,&versao,&linha_alien,&coluna_alien,&contiros,&contirosA); 
 					prntaliens (&l_aliens,corposaliens,&versao,&linha_alien,&coluna_alien);
 
 					refresh ();
 					if (situacao >= 1 && situacao <= 5) {
 						if (situacao == 2) {
+							vrfcextraliens (coordstr,&colunasvivas);	
+							vrfcextraliens (coordstr,&linhasvivas);
 							score = score + 10;
+							/*mvprintw (0,telacolunas/2,"score: %d ", score);*/
+						}
+						else if (situacao == 3) {	
+							score = score + 100;
 							/*mvprintw (0,telacolunas/2,"score: %d ", score);*/
 						}
 						srchandrmtirolista (&l_tiros);

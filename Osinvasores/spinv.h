@@ -70,11 +70,11 @@
 #define LARGURANAVEMAE 3
 
 /*Tamanho mínimo da tela*/
-#define MINLINHAS 38
-#define MINCOLUNAS 100
+#define MINLINHAS 40
+#define MINCOLUNAS 120
 
 /*Tudo que tem haver com os tiros*/
-#define QNTDTIROS 5 /*Quantidade de tiros por vez na tela*/
+#define QNTDTIROS 4 /*Quantidade de tiros por vez na tela*/
 #define NPEGOU 0
 #define PEGOU 1
 
@@ -110,8 +110,9 @@ typedef struct t_listAliens t_listAliens;
 
 /*esta struct serviva para eu fazer o controle da impressão dos aliens*/
 struct t_controle {
-	int *vetor;
-	int tam;
+	t_coord vetor[11];
+	int fim;
+	int ini;
 };
 typedef struct t_controle t_controle;
 
@@ -155,6 +156,9 @@ int ganhou (t_listAliens *);
 
 /*cria uma lista vazia de aliens*/
 void initaliens (t_listAliens *);
+
+/*cria a struct que vai me ajudar no controle de impressão dos alien*/
+void initcontrole (t_controle *, int, int);
 
 /*cria uma lista de tiros*/
 void initiros (t_listaTiros *);
@@ -207,7 +211,7 @@ void  prntiro (t_listaTiros *);
 t_coord srchalien (int, t_listAliens *, int, int);
 
 /*De acordo com a situação analiza a decisão a ser tomada*/
-void analizasituacao (int, t_coord *, t_listAliens *, t_listaBarreira *, t_listaTiros *,t_navemae , char **, char **, int *, int *, int *, int *, int *);
+void analizasituacao (int, t_coord *,t_coord *, t_listAliens *, t_listaBarreira *, t_listaTiros *,t_navemae , char **, char **, int *, int *, int *, int *, int *);
 
 /*remove o tiro certo da lista*/
 void srchandrmtirolista (t_listaTiros *);
@@ -216,7 +220,7 @@ void srchandrmtirolista (t_listaTiros *);
 void prntiroaliens (t_listaTiros *);
 
 /*Pesquisa qual alien esta morrendo e mata ele*/
-/*void srchanddstryalien ();*/
+void srchanddstryalien (t_listAliens *, t_coord *);
 
 void attbarreira (t_listaBarreira *);
 
@@ -240,3 +244,6 @@ void initspritnavemae (char **);
 
 /*Printa a nave mae*/
 void prntnavemae (char **, t_navemae);
+
+/*verifica os extremos dos aliens*/
+void vrfcextraliens (t_coord, t_controle *);
