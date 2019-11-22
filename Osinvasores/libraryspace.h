@@ -1,0 +1,146 @@
+/*player*/
+#define PLAYER11 " / \\ "
+#define PLAYER12 "   /MMMMM\\   "
+
+/*Sprits Alien 1*/
+#define ALIEN11 "/T-T\\"
+#define ALIEN12 "()-()"
+#define ALIEN13 "|W-W|"
+#define ALIEN112 "/*-*\\"
+#define ALIEN122 "/(|)\\"
+#define ALIEN132 "|W-W|"
+
+/*Sprits Alien 2*/
+#define ALIEN21 "(O@O)"
+#define ALIEN22 "}MOM{"
+#define ALIEN23 "().()"
+#define ALIEN212 "(*-*)"
+#define ALIEN222 "{MAM}"
+#define ALIEN232 "()_()"
+
+/*Sprits Alien 3*/
+#define ALIEN31 "(O.O)"
+#define ALIEN32 "|/*\\|"
+#define ALIEN33 ")WTW("
+#define ALIEN312 "(O.O)"
+#define ALIEN322 "/|*|\\"
+#define ALIEN332 "(WTW)"
+
+/*Sprit Nave mãe*/
+#define MAE1 " ^ "
+#define MAE2 "MoM"
+#define MAE3 "/-\\"
+
+/*sprit explosao player*/
+#define EXPLOSAOP1 "\\\\-O-//"
+#define EXPLOSAOP2 "WAS TED"
+
+/*Sprit explosão alien*/
+#define EXPLOSAOA1 "\\\\  //"
+#define EXPLOSAOA2 "-|10|-"
+#define EXPLOSAOA3 "//  \\\\"
+
+/*sprit explosão geral*/
+#define EXPLOSAOG1 "\\ /"
+#define EXPLOSAOG2 "-o-"
+#define EXPLOSAOG3 "/ \\"
+
+/*Tudo o que tem haver com os aliens*/
+#define TIALIENS 20000
+
+/*Tudo o que tem haver com os tiros*/
+#define TTIROS 2500
+#define SPRTIRO1 "|"
+#define SPRTIRO2 "-"
+
+/*Tudo o que tem haver com as bombas*/
+#define TBOMBAS 10000
+#define SPRTBOMBA1 "$"
+#define SPRTBOMBA2 "!"
+
+/*Status do jogo*/
+#define MORREU 0
+#define VIVO 1
+#define GANHOU 1
+#define PERDEU 0
+
+/*Inicio do jogo->amplificador*/
+#define INITAPL
+
+/*Movimentação*/
+#define UP 1
+#define DOWN -1
+#define LEFT 0
+#define RIGHT 1
+
+struct t_jogo {
+    int rowsscreen, collumscreen;                               /*linha e coluna da tela*/
+    int contiros, contbombas;                                   /*contador dos tiros e das bombas*/
+	int prdaliens, prdtiros, prdbombas;                         /*periodo do alien, tiro do player e bombas dos aliens*/
+    int indo;                                                   /*controla a movimentação dos aliens*/
+    int statusjogo;                                             /*Verifica se o jogador venceu ou perdeu o jogo*/
+    int score;                                                  /*pontuação do player*/
+    int indice;                                                 /*indice do while pricipal*/
+    int amplificador;                                           /*aumentara a velocidade dos aliens*/
+    char key;
+};
+typedef struct t_jogo t_jogo;                                   /*Principais variaveis do jogo*/
+
+struct t_alien {
+    int rowalien,collumaliens;                                  /*Linha e coluna aonde começam os aliens*/
+    int versao;                                                 /*Qual versão é para printar do alien*/
+    int status                                                  /*servirá apenas para a nave mãe*/
+};
+typedef struct t_alien t_alien;
+
+struct t_player {
+    int rowplayer, collumplayer;                                
+};
+typedef struct t_player t_player;
+
+struct t_coord {
+    int x,y; 
+};
+typedef struct t_coord t_coord;
+
+struct t_controle {
+	int fim;
+	int ini;
+	t_coord vetor[11];
+};
+typedef t_controle t_controle;                                  /*Struct que servirá para o controle da movimentção dos aliens*/
+
+
+struct t_nodo {
+    int status;
+    t_coord chave;
+    struct t_nodo *prev;
+    struct t_nodo *prox;
+};
+typedef struct t_nodo t_nodo;                                   /*Nodo que contem todas as irformações que precisa para uma lista generica*/
+
+struct t_lista {
+    int tam;
+    t_nodo *ini;
+    t_nodo *fim;
+    t_nodo *atual;
+};
+typedef struct t_lista t_lista;                                 /*Lista genérica*/
+
+/*Inicializa todas as structs*/
+void initstructs (t_jogo *, t_player *, t_alien *, t_controle *, t_controle *);
+
+/*Inicia a struct jogo*/
+void initjogo (t_jogo *);
+
+/*Inicia a struct player*/
+void initplayer (t_player *);
+
+/*Inicia a struct player*/
+void initalien (t_alien *);
+
+/*Inicia a struct controle*/
+void initcontrole (t_controle *);
+
+
+

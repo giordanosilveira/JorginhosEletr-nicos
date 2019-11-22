@@ -57,12 +57,12 @@ int main () {
 	initiros (&l_tirosA);
 
 	t_navemae navemae;			/*Coordenada nave mae*/
+	int indo = 1; 				/*controla se o alien esta indo ou vindo*/
+	int versao = 0; 			/*Versão que é para imprimir do alien*/
 	int linha_alien = 7; 			/*Em qual linha, primeiramente, eu escrevo o alien*/
 	int coluna_alien = 1; 			/*Em qual coluna, primeiramente,  eu escrevo o alien*/
-	int player_linha = MINLINHAS-2;
 	int player_coluna = MINCOLUNAS/2;
-	int versao = 0; 			/*Versão que é para imprimir do alien*/
-	int indo = 1; 				/*controla se o alien esta indo ou vindo*/
+	int player_linha = MINLINHAS-2;
 	int contiros = 0; 			/*quantidade de tiros na tela*/
 	char key;
 	int cnt = 0;
