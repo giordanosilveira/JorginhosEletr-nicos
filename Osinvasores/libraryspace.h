@@ -1,3 +1,4 @@
+
 /*player*/
 #define PLAYER11 " / \\ "
 #define PLAYER12 "   /MMMMM\\   "
@@ -45,8 +46,28 @@
 #define EXPLOSAOG2 "-o-"
 #define EXPLOSAOG3 "/ \\"
 
-/*Tudo o que tem haver com os aliens*/
+/*Tamanho da tela*/
+#define MAXLINHAS 38
+#define MAXCOLUNAS 100
+
+/*Tudo o que tem haver com as barreiras*/
+#define NBARREIRAS 4
+#define ALTURABARREIRA 3
+#define LARGURABARREIRA 8
+
+/*Controla o perido do jogo*/
+#define PERIODOJOGO 40000
 #define TIALIENS 20000
+
+/*Tudo o que tem haver com os aliens*/
+#define LINHALIEN 7
+#define COLUNALIEN 1
+#define LINHANAVEMAE 0
+#define COLUNANAVEMAE 0
+#define NLINHASALIENS 5
+#define NCOLUNASALIENS 11
+#define NSPRITSALIEN 18
+#define LARGURALIENS 6
 
 /*Tudo o que tem haver com os tiros*/
 #define TTIROS 2500
@@ -65,7 +86,7 @@
 #define PERDEU 0
 
 /*Inicio do jogo->amplificador*/
-#define INITAPL
+#define INITAPL 1000
 
 /*Movimentação*/
 #define UP 1
@@ -87,7 +108,7 @@ struct t_jogo {
 typedef struct t_jogo t_jogo;                                   /*Principais variaveis do jogo*/
 
 struct t_alien {
-    int rowalien,collumaliens;                                  /*Linha e coluna aonde começam os aliens*/
+    int rowalien,collumalien;                                  /*Linha e coluna aonde começam os aliens*/
     int versao;                                                 /*Qual versão é para printar do alien*/
     int status                                                  /*servirá apenas para a nave mãe*/
 };
@@ -130,6 +151,9 @@ typedef struct t_lista t_lista;                                 /*Lista genéric
 /*Inicializa todas as structs*/
 void initstructs (t_jogo *, t_player *, t_alien *, t_controle *, t_controle *);
 
+/*Inicializa as listas*/
+void initlistas (t_lista *, t_lista *, t_lista *, t_lista *);
+
 /*Inicia a struct jogo*/
 void initjogo (t_jogo *);
 
@@ -137,10 +161,18 @@ void initjogo (t_jogo *);
 void initplayer (t_player *);
 
 /*Inicia a struct player*/
-void initalien (t_alien *);
+void initalien (t_alien *, int, int);
 
 /*Inicia a struct controle*/
-void initcontrole (t_controle *);
+void initcontrole (t_controle *, int, int);
 
+/*Inicializa os sprits dos aliens*/
+void initspritsaliens (char **);
+
+/*Aloca matriz*/
+void aloca_matriz (char **);
+
+/*Insere a posição primeiramente nas lista*/
+void insrprimeiro (t_lista *, int, int, int);
 
 
