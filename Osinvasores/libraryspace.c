@@ -1,5 +1,8 @@
 /*realmente precisa uma matriz para os sprits ?*/
-
+#include "lib_lista.h"
+#include <stdlib.h>
+#include <string.h>
+#include <ncurses.h>
 void initstructs (t_jogo *jogo, t_player *player, t_alien *aliens, t_alien *navemae, t_controle *row, t_controle *collum) {
 
     initjogo (jogo);
@@ -81,9 +84,9 @@ void initspritsaliens (char **spritsaliens) {
     strcpy (spritsaliens[0],ALIEN11);
     strcpy (spritsaliens[1],ALIEN12);
     strcpy (spritsaliens[2],ALIEN13);
-    strcpy (spritsaliens[3],ALIEN111);
-    strcpy (spritsaliens[4],ALIEN121);
-    strcpy (spritsaliens[5],ALIEN131);
+    strcpy (spritsaliens[3],ALIEN112);
+    strcpy (spritsaliens[4],ALIEN122);
+    strcpy (spritsaliens[5],ALIEN132);
 
     strcpy (spritsaliens[6],ALIEN21);
     strcpy (spritsaliens[7],ALIEN21);
@@ -101,11 +104,82 @@ void initspritsaliens (char **spritsaliens) {
 
 }
 
-void aloca_matriz (char **spritsaliens, int altura, int largura) {
+char** aloca_matriz (int altura, int largura) {
 
     int i;
-    spritsaliens = (char **)malloc(sizeof(char *)*altura);
+    char **matriz;
+    
+    matriz = (char **)malloc(sizeof(char *)*altura);
     for (i = 0; i < altura; i++)
-        spritsaliens[i] = (char *)malloc(sizeof(char)*largura);
+        matriz[i] = (char *)malloc(sizeof(char)*largura);
+    
+    return matriz;
 
+}
+
+void borda (int lininit, int colinit, int nlinhas, int ncolunas) {
+    mvhline (lininit, colinit,  0,  ncolunas - colinit);
+    mvhline (nlinhas, colinit,  0,  ncolunas - colinit);
+    mvvline (lininit, colinit,  0,  nlinhas - lininit);
+    mvvline (lininit, ncolunas, 0,  nlinhas - lininit);
+    mvaddch (lininit, colinit, ACS_ULCORNER);
+    mvaddch (nlinhas, colinit, ACS_LLCORNER);
+    mvaddch (lininit, ncolunas, ACS_URCORNER);
+    mvaddch (nlinhas, ncolunas, ACS_LRCORNER);
+}
+
+int perdeu (t_jogo * jogo) {
+
+    if (! jogo->statusjogo)
+        return 1;
+    return 0;
+
+}
+
+int ganhou (t_lista *aliens) {
+
+    if (lista_vazia (aliens))
+        return 1;
+    return 0;
+}
+
+int tecla (t_jogo *jogo, t_player *player, t_lista *tiros) {
+
+    if (jogo->key == 'q') 
+        return 0;
+    else if (jogo->key == KEY_LEFT)
+        moveplayer (jogo,player);
+    else if (jogo->key == KEY_RIGHT)
+        moveplayer (jogo,player);
+    else if (jogo->key == ' ')
+        addtirolista (jogo,tiros);
+
+    return 1;
+
+}
+
+void moveplayer (t_jogo *jogo, t_player *player) {
+
+    if (jogo->key == KEY_LEFT)
+        player->collumplayer--;
+    else if (jogo->key == KEY_RIGHT)
+        player->rowplayer++; 
+    
+}
+
+void addtirolista (t_jogo *jogo, t_player *player, t_lista *tiros) {
+    if (jogo->contiros < TIROSPLAYER) {
+        jogo->contiros++;
+        insrlista (player->rowplayer - 1, player->collumplayer + 2,tiros);
+    }
+}
+
+void admnavemae (t_navemae *navemae) {
+
+    int chance;
+
+    /*Rand chance*/
+
+    /*Se a chance pode e nao esta printado, printa*/
+    /*Senão continua printando*/
 }

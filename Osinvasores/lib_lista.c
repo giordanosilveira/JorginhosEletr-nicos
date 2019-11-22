@@ -46,7 +46,7 @@ void destroi_lista(t_lista *l) {
 		while (aux->prox != NULL) {
 			aux = aux->prox;
 			free (aux->prev);
-			l->tamanho--;
+			l->tam--;
 		}
 	}
 	free (l->fim);
@@ -60,7 +60,7 @@ int insrlista(int linha, int coluna, t_lista *l){
 	if (new == NULL)
 		return 0;
 
-	l->tamanho++;
+	l->tam++;
 
 	new->chave.x = linha;
 	new->chave.y = coluna;
@@ -90,7 +90,7 @@ int insrlista(int linha, int coluna, t_lista *l){
 	
 	return 1;
 }*/
-int pertence_lista(int chave, t_lista *l) {
+/*int pertence_lista(int chave, t_lista *l) {
 
 	t_nodo *aux;
 	
@@ -106,7 +106,7 @@ int pertence_lista(int chave, t_lista *l) {
 	if (aux == l->fim)
 		return 0;
 	return 1;
-}
+}*/
 int inicializa_atual_inicio(t_lista *l) {
 
 	if (lista_vazia(l))
@@ -126,7 +126,7 @@ int incrementa_atual(t_lista *l) {
 	
 	return 1;
 }
-int consulta_item_atual(int *item, t_lista *l) {
+int consulta_item_atual(t_coord *item, t_lista *l) {
 
 	if (lista_vazia(l))
 		return 0;
@@ -134,7 +134,7 @@ int consulta_item_atual(int *item, t_lista *l) {
 	*item = l->atual->chave;
 	return 1;
 }
-int remove_item_atual(int *item, t_lista *l) {
+int remove_item_atual(t_coord *item, t_lista *l) {
 
 	t_nodo *p;
 
@@ -154,7 +154,7 @@ int remove_item_atual(int *item, t_lista *l) {
 	else
 		l->atual = l->atual->prox;
 		
-	l->tamanho--;
+	l->tam--;
 	free (p);
 
 	return 1;

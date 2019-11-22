@@ -1,5 +1,6 @@
 
 /*player*/
+#define TIROSPLAYER 4
 #define PLAYER11 " / \\ "
 #define PLAYER12 "   /MMMMM\\   "
 
@@ -47,6 +48,8 @@
 #define EXPLOSAOG3 "/ \\"
 
 /*Tamanho da tela*/
+#define LININIT 0
+#define COLINIT 0
 #define MAXLINHAS 38
 #define MAXCOLUNAS 100
 
@@ -60,6 +63,7 @@
 #define TIALIENS 20000
 
 /*Tudo o que tem haver com os aliens*/
+#define VERSAOINICIAL 0
 #define LINHALIEN 7
 #define COLUNALIEN 1
 #define LINHANAVEMAE 0
@@ -110,7 +114,7 @@ typedef struct t_jogo t_jogo;                                   /*Principais var
 struct t_alien {
     int rowalien,collumalien;                                  /*Linha e coluna aonde começam os aliens*/
     int versao;                                                 /*Qual versão é para printar do alien*/
-    int status                                                  /*servirá apenas para a nave mãe*/
+    int status;                                                 /*servirá apenas para a nave mãe*/
 };
 typedef struct t_alien t_alien;
 
@@ -129,7 +133,7 @@ struct t_controle {
 	int ini;
 	t_coord vetor[11];
 };
-typedef t_controle t_controle;                                  /*Struct que servirá para o controle da movimentção dos aliens*/
+typedef struct t_controle t_controle;                                  /*Struct que servirá para o controle da movimentção dos aliens*/
 
 
 struct t_nodo {
@@ -149,7 +153,7 @@ struct t_lista {
 typedef struct t_lista t_lista;                                 /*Lista genérica*/
 
 /*Inicializa todas as structs*/
-void initstructs (t_jogo *, t_player *, t_alien *, t_controle *, t_controle *);
+void initstructs (t_jogo *, t_player *, t_alien *, t_alien *, t_controle *, t_controle *);
 
 /*Inicializa as listas*/
 void initlistas (t_lista *, t_lista *, t_lista *, t_lista *);
@@ -169,10 +173,31 @@ void initcontrole (t_controle *, int, int);
 /*Inicializa os sprits dos aliens*/
 void initspritsaliens (char **);
 
+/*Verifica se o jogador perdeu o jogo*/
+int perdeu (t_jogo *);
+
+/*Verifca se o jogador ganhou*/
+int ganhou (t_lista *);
+
+/*Decide o destino de acordo com a tecla apertada*/
+int tecla (t_jogo *, t_player *, t_lista *);
+
+/*Move o jogador*/
+void moveplayer (t_jogo *, t_player *);
+
+/*Adiciona, quando possível, um tiro na lista*/
+void addtirolista (t_jogo *, t_player *, t_lista *);
+
 /*Aloca matriz*/
-void aloca_matriz (char **);
+char ** aloca_matriz (int, int);
 
 /*Insere a posição primeiramente nas lista*/
 void insrprimeiro (t_lista *, int, int, int);
+
+/*Faz a borda do jogo*/
+void borda (int, int , int , int);
+
+
+
 
 
