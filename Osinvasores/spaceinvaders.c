@@ -56,24 +56,24 @@ int main () {
                 return 0;
 
             /*Periodo de movimentação da navemae*/
-            if ((jogo.indice % jogo.prdaliens/2) == 0) {
+            /*if ((jogo.indice % jogo.prdaliens/2) == 0) {
                 admnavemae (&navemae);
-            }
+            }*/
 
             /*Periodo de movimentação dos aliens*/
             if (jogo.indice % jogo.prdaliens == 0) {
-                admaliens (&jogo,&aliens,alien,row,collum);
+                admaliens (&jogo,&alien,&aliens,&row,&collum);
             }
 
             /*periodo de movimentação dos tiros do player*/
-            if ((jogo.indice % jogo.prdtiros) == 0) {
+            /*if ((jogo.indice % jogo.prdtiros) == 0) {
                 admtiros (&jogo,&tiros,&bombas,&aliens,&barreiras);
-            }
+            }*/
 
             /*periodo de movimentação das bombas dos aliens*/
-            if ((jogo.indice % jogo.prdbombas) == 0) {
+            /*if ((jogo.indice % jogo.prdbombas) == 0) {
                 admbombas (&jogo,&tiros,&bombas,&barreiras);
-            }
+            }*/
 
             /*Reseta o laço mais interno*/
             if ((jogo.indice % RESETACONTADOR) == 0)

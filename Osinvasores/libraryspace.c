@@ -186,3 +186,74 @@ void admnavemae (t_navemae *navemae) {
     /*Se a chance pode e nao esta printado, printa*/
     /*Senão continua printando*/
 }
+
+void admaliens (t_jogo *jogo, t_alien *alien, t_lista *aliens, t_controle *row, t_controle *collum, char **spritsaliens) {
+
+    if (jogo->indo) {
+        alienstoright (jogo,alien,aliens,row,collum,spritsaliens);
+    }
+    else {
+        alienstoleft (jogo,alien,aliens,row,collum,spritsaliens);
+    }
+
+}
+
+void alienstoright (t_jogo *jogo, t_alien *alien, t_lista *aliens, t_controle *row, t_controle *collum, char **spritsaliens) {
+
+    if (((collum->vetor[collum->fim].x * (SPACECALIENS + TAMALIEN) + TAMALIEN) + alien->collumalien == MAXCOLUNAS)) {           /*Conta para pegar o final do*/
+        alien->collumalien = alien->collumalien - 1;                                                                            /*alien e compara-lo com o tamanho maximo da tela*/
+        alien->rowalien = alien->rowalien + 1;
+        jogo->prdaliens = jogo->prdaliens - CTTDDMTMPALIENS;
+        jogo->indo = 0;
+        prntaliens (jogo,alien,aliens,row,collum,spritsaliens);
+    }
+    else {
+        alien->collumalien = alien->collumalien + 1;
+        prntaliens (jogo,alien,aliens,row,collum,spritsaliens);
+    }
+
+}
+void alienstoleft (t_jogo *jogo, t_alien *alien, t_lista *aliens, t_controle *row, t_controle *collum, char **spritsaliens) {
+    if ((alien->collumalien + collum->vetor[collum->ini].x *(SPACECALIENS + TAMALIEN) - 1 == COLINIT)) {
+        alien->collumalien = alien->collumalien + 1;
+        alien->rowalien = alien->rowalien + 1;
+        jogo->indo = 1;
+        jogo->prdaliens = jogo->prdaliens - CTTDDMTMPALIENS;
+        prntaliens (jogo,alien,aliens,row,collum,spritsaliens);
+    }
+    else {
+        alien->collumalien = alien->collumalien - 1;
+        prntaliens (jogo,alien,aliens,row,collum,spritsaliens);
+    }
+}
+
+void prntaliens (t_jogo *jogo, t_alien *alien, t_lista *aliens, char **spritsaliens) {
+   
+    int pos;
+    if (inicializa_atual_inicio(aliens)){
+        do
+        {
+            pos = (aliens->atual->chave.x + 1)/2;                                                            /*Conta para pegar o sprit certo do alien*/
+
+            if (aliens->atual->status == VIVO) {
+                if (alien->versao) {
+                    mvprintw (alien->rowalien + (ALTURALIEN + SPACELALIENS)*aliens->atual->chave.x, alien->collumalien + (TAMALIEN + SPACECALIENS)*aliens->atual->chave.y, spritsaliens[pos*6+3]);
+                    mvprintw (alien->rowalien + (ALTURALIEN + SPACELALIENS)*aliens->atual->chave.x+1, alien->collumalien + (TAMALIEN + SPACECALIENS)*aliens->atual->chave.y, spritsaliens[pos*6+4]);
+                    mvprintw (alien->rowalien + (ALTURALIEN + SPACELALIENS)*aliens->atual->chave.x+2, alien->collumalien + (TAMALIEN + SPACECALIENS)*aliens->atual->chave.y, spritsaliens[pos*6+5]);
+                }
+                else {
+                    mvprintw (alien->rowalien + (ALTURALIEN + SPACELALIENS)*aliens->atual->chave.x, alien->collumalien + (TAMALIEN + SPACECALIENS)*aliens->atual->chave.y, spritsaliens[pos*6]);
+                    mvprintw (alien->rowalien + (ALTURALIEN + SPACELALIENS)*aliens->atual->chave.x+1, alien->collumalien + (TAMALIEN + SPACECALIENS)*aliens->atual->chave.y, spritsaliens[pos*6+1]);
+                    mvprintw (alien->rowalien + (ALTURALIEN + SPACELALIENS)*aliens->atual->chave.x+2, alien->collumalien + (TAMALIEN + SPACECALIENS)*aliens->atual->chave.y, spritsaliens[pos*6+2]);
+                }
+            }
+            else if (aliens->atual->status == MORREU) {
+                    mvprintw (alien->rowalien + (ALTURALIEN + SPACELALIENS)*aliens->atual->chave.x, alien->collumalien + (TAMALIEN + SPACECALIENS)*aliens->atual->chave.y, EXPLOSAOA1);
+                    mvprintw (alien->rowalien + (ALTURALIEN + SPACELALIENS)*aliens->atual->chave.x+1, alien->collumalien + (TAMALIEN + SPACECALIENS)*aliens->atual->chave.y, EXPLOSAOA2);
+                    mvprintw (alien->rowalien + (ALTURALIEN + SPACELALIENS)*aliens->atual->chave.x+2, alien->collumalien + (TAMALIEN + SPACECALIENS)*aliens->atual->chave.y, EXPLOSAOA3);
+            }
+        } while (incrementa_atual(aliens))
+        
+        refresh ();
+    }
+}

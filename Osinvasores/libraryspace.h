@@ -61,8 +61,13 @@
 /*Controla o perido do jogo*/
 #define PERIODOJOGO 40000
 #define TIALIENS 20000
+#define CTTDDMTMPALIENS 100                         /*ConsTanTe de DiMinuição do (TM)Perido dos Aliens*/
 
 /*Tudo o que tem haver com os aliens*/
+#define TAMALIEN 5
+#define ALTURALIEN 3
+#define SPACECALIENS 2
+#define SPACELALIENS 1
 #define VERSAOINICIAL 0
 #define LINHALIEN 7
 #define COLUNALIEN 1
@@ -95,7 +100,7 @@
 /*Movimentação*/
 #define UP 1
 #define DOWN -1
-#define LEFT 0
+#define LEFT -1
 #define RIGHT 1
 
 struct t_jogo {
@@ -134,7 +139,6 @@ struct t_controle {
 	t_coord vetor[11];
 };
 typedef struct t_controle t_controle;                                  /*Struct que servirá para o controle da movimentção dos aliens*/
-
 
 struct t_nodo {
     int status;
@@ -197,7 +201,18 @@ void insrprimeiro (t_lista *, int, int, int);
 /*Faz a borda do jogo*/
 void borda (int, int , int , int);
 
+/*Administra os aliens*/
+void admaliens (t_jogo *, t_alien *, t_lista *, t_controle *, t_controle *, char **);
 
+/*Administra a impressao aliens*/
+void admimpressao (t_jogo *, t_alien *, t_lista *, t_controle  *, t_controle *, char **);
 
+/*impressão dos aliens para a esquerda*/
+void alienstoleft (t_jogo *, t_alien *, t_lista *, t_controle *, t_controle *, char **);
 
+/*Impressão dos aliens para a direita*/
+void alienstoright (t_jogo *, t_alien *, t_lista *, t_controle *, t_controle *, char **);
+
+/*printa os aliens*/
+void prntaliens (t_jogo *, t_alien *, t_lista *, char **);
 
