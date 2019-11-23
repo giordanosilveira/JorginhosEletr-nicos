@@ -143,6 +143,10 @@ int ganhou (t_lista *aliens) {
     return 0;
 }
 
+void rstcont (t_jogo *jogo) {
+    jogo->indice = 0;
+}
+
 int tecla (t_jogo *jogo, t_player *player, t_lista *tiros) {
 
     if (jogo->key == 'q') 
@@ -257,3 +261,4 @@ void prntaliens (t_jogo *jogo, t_alien *alien, t_lista *aliens, char **spritsali
         refresh ();
     }
 }
+

@@ -76,15 +76,15 @@ int main () {
             }*/
 
             /*Reseta o laço mais interno*/
-            /*if ((jogo.indice % RESETACONTADOR) == 0)
-                rstcont (&jogo);*/
+            if ((jogo.indice % RESETACONTADOR) == 0)
+                rstcont (&jogo);
             
            /* prntplayer (player);
-            prntbarreira (barreiras);
+            prntbarreira (barreiras);*/
 
             jogo.indice++;    
 
-            refresh ();*/
+            refresh ();
 
         }
        /* if (ganhou(&aliens)) {

@@ -60,6 +60,7 @@
 
 /*Controla o perido do jogo*/
 #define PERIODOJOGO 40000
+#define RESETACONTADOR 39999
 #define TIALIENS 20000
 #define CTTDDMTMPALIENS 100                         /*ConsTanTe de DiMinuição do (TM)Perido dos Aliens*/
 
@@ -200,6 +201,9 @@ void insrprimeiro (t_lista *, int, int, int);
 
 /*Faz a borda do jogo*/
 void borda (int, int , int , int);
+
+/*Reseta o contador*/
+void rstcont (t_jogo);
 
 /*Administra os aliens*/
 void admaliens (t_jogo *, t_alien *, t_lista *, t_controle *, t_controle *, char **);
