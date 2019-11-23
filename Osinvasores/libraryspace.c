@@ -160,11 +160,14 @@ int tecla (t_jogo *jogo, t_player *player, t_lista *tiros) {
 
 void moveplayer (t_jogo *jogo, t_player *player) {
 
-    if (jogo->key == KEY_LEFT)
-        player->collumplayer--;
-    else if (jogo->key == KEY_RIGHT)
-        player->rowplayer++; 
-    
+    if (jogo->key == KEY_LEFT) {
+    	if (player->collumplayer + 2 > LININIT)
+        	player->collumplayer--;
+    }
+    else if (jogo->key == KEY_RIGHT) {
+    	if (player->collumplayer + 7 < COLINIT)
+        	player->rowplayer++;
+    }
 }
 
 void addtirolista (t_jogo *jogo, t_player *player, t_lista *tiros) {
