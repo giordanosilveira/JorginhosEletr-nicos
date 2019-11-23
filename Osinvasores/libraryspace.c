@@ -152,7 +152,7 @@ int tecla (t_jogo *jogo, t_player *player, t_lista *tiros) {
     else if (jogo->key == KEY_RIGHT)
         moveplayer (jogo,player);
     else if (jogo->key == ' ')
-        addtirolista (jogo,tiros);
+        addtirolista (jogo,player,tiros);
 
     return 1;
 
@@ -177,7 +177,7 @@ void addtirolista (t_jogo *jogo, t_player *player, t_lista *tiros) {
     }
 }
 
-void admnavemae (t_navemae *navemae) {
+void admnavemae (t_alien *navemae) {
 
     int chance;
 
@@ -205,11 +205,11 @@ void alienstoright (t_jogo *jogo, t_alien *alien, t_lista *aliens, t_controle *r
         alien->rowalien = alien->rowalien + 1;
         jogo->prdaliens = jogo->prdaliens - CTTDDMTMPALIENS;
         jogo->indo = 0;
-        prntaliens (jogo,alien,aliens,row,collum,spritsaliens);
+        prntaliens (jogo,alien,aliens,spritsaliens);
     }
     else {
         alien->collumalien = alien->collumalien + 1;
-        prntaliens (jogo,alien,aliens,row,collum,spritsaliens);
+        prntaliens (jogo,alien,aliens,spritsaliens);
     }
 
 }
@@ -219,11 +219,11 @@ void alienstoleft (t_jogo *jogo, t_alien *alien, t_lista *aliens, t_controle *ro
         alien->rowalien = alien->rowalien + 1;
         jogo->indo = 1;
         jogo->prdaliens = jogo->prdaliens - CTTDDMTMPALIENS;
-        prntaliens (jogo,alien,aliens,row,collum,spritsaliens);
+        prntaliens (jogo,alien,aliens,spritsaliens);
     }
     else {
         alien->collumalien = alien->collumalien - 1;
-        prntaliens (jogo,alien,aliens,row,collum,spritsaliens);
+        prntaliens (jogo,alien,aliens,spritsaliens);
     }
 }
 
@@ -252,7 +252,7 @@ void prntaliens (t_jogo *jogo, t_alien *alien, t_lista *aliens, char **spritsali
                     mvprintw (alien->rowalien + (ALTURALIEN + SPACELALIENS)*aliens->atual->chave.x+1, alien->collumalien + (TAMALIEN + SPACECALIENS)*aliens->atual->chave.y, EXPLOSAOA2);
                     mvprintw (alien->rowalien + (ALTURALIEN + SPACELALIENS)*aliens->atual->chave.x+2, alien->collumalien + (TAMALIEN + SPACECALIENS)*aliens->atual->chave.y, EXPLOSAOA3);
             }
-        } while (incrementa_atual(aliens))
+        } while (incrementa_atual(aliens));
         
         refresh ();
     }

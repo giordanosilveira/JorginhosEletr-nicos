@@ -43,7 +43,7 @@ int main () {
     borda (LININIT,COLINIT,MAXLINHAS-1,MAXCOLUNAS-1);                               /*Cria a borda do jogo*/
     srand(time(NULL));
 
-    while (!perdeu(jogo)) {
+    while (!perdeu(&jogo)) {
 
         while (jogo.indice <= PERIODOJOGO && !ganhou (&aliens) && !perdeu (&jogo)) {
             
@@ -62,7 +62,7 @@ int main () {
 
             /*Periodo de movimentação dos aliens*/
             if (jogo.indice % jogo.prdaliens == 0) {
-                admaliens (&jogo,&alien,&aliens,&row,&collum);
+                admaliens (&jogo,&alien,&aliens,&row,&collum,spritsaliens);
             }
 
             /*periodo de movimentação dos tiros do player*/
@@ -76,24 +76,24 @@ int main () {
             }*/
 
             /*Reseta o laço mais interno*/
-            if ((jogo.indice % RESETACONTADOR) == 0)
-                rstcont (&jogo);
+            /*if ((jogo.indice % RESETACONTADOR) == 0)
+                rstcont (&jogo);*/
             
-            prntplayer (player);
+           /* prntplayer (player);
             prntbarreira (barreiras);
 
             jogo.indice++;    
 
-            refresh ();
+            refresh ();*/
 
         }
-        if (ganhou(&aliens)) {
+       /* if (ganhou(&aliens)) {
             resetjogo (&t_jogo);
         }
         else {
             endwin ();
             printf ("Raul seixas\n");
-        }
+        }*/
 
     }
 
