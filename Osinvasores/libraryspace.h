@@ -1,6 +1,6 @@
 
 /*player*/
-#define TIROSPLAYER 8
+#define TIROSPLAYER 3
 #define PLAYER11 " / \\ "
 #define PLAYER12 "   /MMMMM\\   "
 
@@ -69,7 +69,7 @@
 /*Tudo o que tem haver com os aliens*/
 #define BOMBASALIENS 6
 #define TAMNAVEMAE 3
-#define CHANCENAVEMAE
+#define CHANCENAVEMAE 4000
 #define TAMALIEN 5
 #define ALTURALIEN 3
 #define SPACECALIENS 2

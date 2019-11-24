@@ -50,8 +50,8 @@ void initjogo (t_jogo *jogo) {
     jogo->statusjogo = VIVO;
     jogo->indice = 0;
     jogo->amplificador = INITAPL;
+    jogo->score = 0;   
 }
-
 /*Inicia a struct player*/
 void initplayer (t_player *player) {
     player->rowplayer = MAXLINHAS - 3;
@@ -233,7 +233,7 @@ void prntnavemae (t_alien *navemae) {
 void admaliens (t_jogo *jogo, t_alien *alien, t_lista *barreiras, t_lista *aliens, t_controle *row, t_controle *collum, char **spritsaliens) {
 
     clear ();
-    int cont = 0;
+    int cont = 0, i;
     t_coord lixo;
 
     if (jogo->indo) {
@@ -245,8 +245,7 @@ void admaliens (t_jogo *jogo, t_alien *alien, t_lista *barreiras, t_lista *alien
     alien->versao = (alien->versao +1) % 2;
 
     if (alienbarreira (aliens,barreiras,row,alien,&cont)) {
-        prntbarreiras (barreiras);
-        for (int i = 0 ; i <= cont; i++)
+        for (i = 0 ; i <= cont; i++)
             srchandrmitemlista (&lixo,barreiras);
     }
 
@@ -259,30 +258,18 @@ int alienbarreira (t_lista *aliens, t_lista *barreiras, t_controle *row, t_alien
     if (lista_vazia(aliens) || lista_vazia(barreiras))
         return 0;
 
-    t_nodo *ulib, *pecabar;
+    t_nodo *pecabar;
 
-    ulib = aliens->ini->prox;
+    pecabar = barreiras->ini->prox;
 
-    while (ulib->prox != NULL) {
-
-        pecabar = barreiras->ini->prox;
-
-        while (pecabar->prox != NULL) {
-            if (pecabar->status == VIVO) {
-                if (pecabar->chave.x == (ulib->chave.x*(3 + 1) + alien->rowalien) + 2) {
-                    if (pecabar->chave.y == (ulib->chave.y*(6+1) + alien->collumalien)){
-                        pecabar->status == MORREU;
+    while (pecabar->prox != NULL) {
+          if (pecabar->status == VIVO) {
+                if (pecabar->chave.x == row->vetor[row->fim].x * (4) + 2) {
+                        pecabar->status = MORREU;
                         *cont = *cont + 1;
-                    }
-                    else (pecabar->chave.y == (ulib->chave.y*(6 + 1) + alien->collumalien + 5)) {
-                        pecabar->status == MORREU;
-                        *cont = *cont + 1;
-                    }
-                } 
+                }
             }
             pecabar = pecabar->prox;
-        }
-        ulib = ulib->prox;
     }
     return 1;  
 }
@@ -530,6 +517,7 @@ void analizasituacao (t_jogo *jogo, t_alien *alien, t_alien *navemae, t_lista *a
     
         case 3:
         prntnavemae (navemae);
+	navemae->status = MORREU;
         jogo->contiros--;
         break;
     
@@ -705,7 +693,7 @@ void analizasituacaoaliens (t_jogo *jogo, t_coord *chave, t_lista *barreiras) {
         break;
 
         case 1:
-        /*jogo->statusjogo = MORREU;*/
+        jogo->statusjogo = MORREU;
         jogo->contbombas--;
         break;
 

@@ -40,12 +40,14 @@ int main () {
         return 1;
     } 
 
-    borda (LININIT,COLINIT,MAXLINHAS-1,MAXCOLUNAS-1);                               /*Cria a borda do jogo*/
+    borda (LININIT,COLINIT,MAXLINHAS - 1,MAXCOLUNAS - 1);                               /*Cria a borda do jogo*/
     srand(time(NULL));
 
     while (!perdeu(&jogo)) {
 
         while (jogo.indice <= PERIODOJOGO && !ganhou (&aliens) && !perdeu (&jogo)) {
+
+	    /*mvprintw (LININIT, MAXCOLUNAS/2, "score : %d", jogo.score);*/
 
             jogo.key = getch ();
             
@@ -90,8 +92,11 @@ int main () {
             resetjogo (&jogo,&alien);
             destroi_listas (&tiros,&bombas,&aliens,&barreiras);
             initlistas (&aliens,&tiros,&bombas,&barreiras);
+    	    initcontrole (&row,NLINHASALIENS - 1,NCOLUNASALIENS);
+            initcontrole (&collum,NCOLUNASALIENS - 1,NLINHASALIENS);
         }
-        else {
+        else { 
+            destroi_listas (&tiros,&bombas,&aliens,&barreiras);
             endwin ();
             printf ("Raul seixas\n");
         }
