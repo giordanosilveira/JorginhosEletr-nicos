@@ -59,6 +59,7 @@
 #define LARGURABARREIRA 8
 
 /*Controla o perido do jogo*/
+#define MAXVELOCIDADE 10000
 #define PERIODOJOGO 40000
 #define RESETACONTADOR 39999
 #define TIALIENS 20000
