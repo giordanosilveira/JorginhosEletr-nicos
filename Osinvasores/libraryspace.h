@@ -111,6 +111,7 @@ struct t_jogo {
     int rowsscreen, collumscreen;                               /*linha e coluna da tela*/
     int contiros, contbombas;                                   /*contador dos tiros e das bombas*/
 	int prdaliens, prdtiros, prdbombas;                         /*periodo do alien, tiro do player e bombas dos aliens*/
+    int situacao;                                               /*Vai ajudar na detecção de tiros e bombas*/
     int indo;                                                   /*controla a movimentação dos aliens*/
     int statusjogo;                                             /*Verifica se o jogador venceu ou perdeu o jogo*/
     int score;                                                  /*pontuação do player*/
@@ -240,3 +241,36 @@ void prntplayer (t_player *);
 
 /*Printa a barreira*/
 void prntbarreiras (t_lista *);
+
+/*Admnistra os tiros do player*/
+void admtiros (t_jogo *, t_alien *, t_alien *, t_controle *, t_controle *, t_lista *, t_lista *, t_lista *, t_lista *,char **);
+
+/*Detecta se o tiro pegou em algo*/
+int detecta_colisao (t_alien *, t_alien * , t_lista * , t_lista *,t_lista*, t_coord *, int *);
+
+/*detecta colisao entre o tiro e as barreiras*/
+int dtctcolisaotirobarreiras (t_lista *, t_coord *, int *);
+
+/*detecta colisao entre o tiro e os aliens*/
+int dtctcolisaotiroaliens (t_lista *, t_coord *,t_alien *, int *);
+
+/*detecta colisao entre o tiro e as bombas*/
+int dtctcolisaotirobombas (t_lista *, t_coord *, int *);
+
+/*detecta colisao entre o tiro e a nave mae*/
+int dtctcolisaotironavemae (t_alien *, t_coord *, int *);
+
+/*Verifica se o tiro chegou no início da tela*/
+int nowayoutiros (t_coord *, int *);
+
+/*De acordo com a situação escolhe uma decisão para ser tomada*/
+void analizasituacao (t_jogo *, t_alien *, t_alien *, t_lista *, t_lista *, t_lista * ,t_coord *, t_coord *, char **);
+
+/*printa a colisao entre o tiro e as bombas*/
+void prntiro (t_lista *);
+
+/*Verifica se a necessida de remover o tiro da lista e atualiza as colunas e as linhas dos aliens*/
+void vrfcrmtiroslista (t_jogo *,t_coord , t_controle *, t_controle *);
+
+/*Atualiza as linha e as colunas dos aliens*/
+void vrfcextaliens (int , t_controle *);

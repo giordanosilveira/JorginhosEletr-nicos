@@ -512,7 +512,6 @@ t_coord srchalien (int ndoalien, t_listAliens *aliens, int linha_alien, int colu
 	int i;
 	for (i = 0; i < ndoalien; i++)
 		aln = aln->prox;
-
 	coord.x = (aln->pos.x*4 + linha_alien)+2;
 	coord.y = ((aln->pos.y*7 + coluna_alien) + (aln->pos.y*7 + coluna_alien )+5)/2;
 

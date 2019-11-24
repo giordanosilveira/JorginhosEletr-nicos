@@ -27,6 +27,13 @@ int insrlista (int, int,  t_lista *l);
 */
 int pertence_lista(t_coord chave, t_lista *l);
 
+/*
+  procura se a um elemento morto dentro da lista e a posição dele em um item.
+  Retorna 1 se a operação foi bem sucedida e zero caso contrário
+  (elemento não encontrado também retorna zero).
+*/
+int srchandrmitemlista (t_coord *, t_lista *);
+
 /* 
   Inicializa o ponteiro atual para o primeiro elemento da lista.
   Retorna 1 se a operação foi bem sucedida e zero caso contrário.

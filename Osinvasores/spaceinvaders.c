@@ -64,9 +64,9 @@ int main () {
             }
 
             /*periodo de movimentação dos tiros do player*/
-            /*if ((jogo.indice % jogo.prdtiros) == 0) {
-                admtiros (&jogo,&tiros,&bombas,&aliens,&barreiras);
-            }*/
+            if ((jogo.indice % jogo.prdtiros) == 0) {
+                admtiros (&jogo,&alien,&navemae,&row,&collum,&aliens,&barreiras,&tiros,&bombas,spritsaliens);
+            }
 
             /*periodo de movimentação das bombas dos aliens*/
             /*if ((jogo.indice % jogo.prdbombas) == 0) {
