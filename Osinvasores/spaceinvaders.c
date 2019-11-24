@@ -54,9 +54,9 @@ int main () {
                 return 0;
 
             /*Periodo de movimentação da navemae*/
-            /*if ((jogo.indice % jogo.prdaliens/2) == 0) {
-                admnavemae (&navemae);
-            }*/
+            if ((jogo.indice % jogo.prdaliens/2) == 0) {
+                navemae (&navemae);
+            }
 
             /*Periodo de movimentação dos aliens*/
             if (jogo.indice % jogo.prdaliens == 0) {

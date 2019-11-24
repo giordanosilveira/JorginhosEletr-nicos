@@ -151,9 +151,9 @@ int tecla (t_jogo *jogo, t_player *player, t_lista *tiros) {
 
     if (jogo->key == 'q') 
         return 0;
-    else if (jogo->key == KEY_LEFT)
+    else if (jogo->key == KEY_LEFT || jogo->key == 'a')
         moveplayer (jogo,player);
-    else if (jogo->key == KEY_RIGHT)
+    else if (jogo->key == KEY_RIGHT || jogo->key == 'd')
         moveplayer (jogo,player);
     else if (jogo->key == ' ')
         addtirolista (jogo,player,tiros);
@@ -181,14 +181,52 @@ void addtirolista (t_jogo *jogo, t_player *player, t_lista *tiros) {
     }
 }
 
-void admnavemae (t_alien *navemae) {
+void navemae (t_alien *navemae) {
 
     int chance;
+    
+    chance = rand () % CHANCENAVEMAE + 1;
+    if (chance >= CHANCENAVEMAE - 5) {
+        navemaeaparece (navemae);
+        prntnavemae (navemae);
+    }
+    if (navemae->status == 1) {
+        prntnavemae (navemae);
+        admnavemae (navemae);
+    }
+}
 
-    /*Rand chance*/
+/*Faz a aparição da nave mae*/
+void navemaeaparece (t_alien *navemae) {
 
-    /*Se a chance pode e nao esta printado, printa*/
-    /*Senão continua printando*/
+    if (navemae->status == 0) {
+        navemae->rowalien = 0;
+        navemae->collumalien = 0;
+        navemae->status = VIVO;
+    }
+}
+
+/*Admnista a impressão da nave mãe*/
+void admnavemae (t_alien *navemae){
+    navemae->collumalien++;
+    if (navemae->collumalien + TAMNAVEMAE == MAXCOLUNAS)
+        navemae->status = MORREU;
+}
+
+/*Printa a nave mae*/
+void prntnavemae (t_alien *navemae) {
+
+    if (navemae->status == VIVO) {
+        mvprintw (navemae->rowalien, navemae->collumalien, MAE1);
+        mvprintw (navemae->rowalien + 1, navemae->collumalien, MAE2);
+        mvprintw (navemae->rowalien + 2, navemae->collumalien, MAE3);
+    }
+    else {
+        mvprintw (navemae->rowalien, navemae->collumalien, EXPLOSAOG1);
+        mvprintw (navemae->rowalien + 1, navemae->collumalien, EXPLOSAOG2);
+        mvprintw (navemae->rowalien + 2, navemae->collumalien, EXPLOSAOG3);
+    }
+
 }
 
 void admaliens (t_jogo *jogo, t_alien *alien, t_lista *aliens, t_controle *row, t_controle *collum, char **spritsaliens) {

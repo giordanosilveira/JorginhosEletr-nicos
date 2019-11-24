@@ -65,6 +65,8 @@
 #define CTTDDMTMPALIENS 100                         /*ConsTanTe de DiMinuição do (TM)Perido dos Aliens*/
 
 /*Tudo o que tem haver com os aliens*/
+#define TAMNAVEMAE 3
+#define CHANCENAVEMAE
 #define TAMALIEN 5
 #define ALTURALIEN 3
 #define SPACECALIENS 2
@@ -219,6 +221,18 @@ void alienstoright (t_jogo *, t_alien *, t_lista *, t_controle *, t_controle *, 
 
 /*printa os aliens*/
 void prntaliens (t_jogo *, t_alien *, t_lista *, char **);
+
+/*Administra a nave mãe*/
+void navemae (t_alien *);
+
+/*Faz a aparição da nave mae*/
+void navemaeaparece (t_alien *);
+
+/*Admnista a impressão da nave mãe*/
+void admnavemae (t_alien *);
+
+/*Printa a nave mae*/
+void prntnavemae (t_alien *);
 
 /*Printa o player*/
 void prntplayer (t_player *);
