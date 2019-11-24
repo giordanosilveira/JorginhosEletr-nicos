@@ -62,6 +62,7 @@
 #define PERIODOJOGO 40000
 #define RESETACONTADOR 39999
 #define TIALIENS 20000
+#define TNAVEMAE 10000
 #define CTTDDMTMPALIENS 100                         /*ConsTanTe de DiMinuição do (TM)Perido dos Aliens*/
 
 /*Tudo o que tem haver com os aliens*/
@@ -223,7 +224,7 @@ void alienstoright (t_jogo *, t_alien *, t_lista *, t_controle *, t_controle *, 
 void prntaliens (t_jogo *, t_alien *, t_lista *, char **);
 
 /*Administra a nave mãe*/
-void navemae (t_alien *);
+void nave_mae (t_alien *);
 
 /*Faz a aparição da nave mae*/
 void navemaeaparece (t_alien *);

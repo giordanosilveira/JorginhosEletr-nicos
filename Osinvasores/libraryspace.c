@@ -151,9 +151,9 @@ int tecla (t_jogo *jogo, t_player *player, t_lista *tiros) {
 
     if (jogo->key == 'q') 
         return 0;
-    else if (jogo->key == KEY_LEFT || jogo->key == 'a')
+    else if (jogo->key == 'a')
         moveplayer (jogo,player);
-    else if (jogo->key == KEY_RIGHT || jogo->key == 'd')
+    else if (jogo->key == 'd')
         moveplayer (jogo,player);
     else if (jogo->key == ' ')
         addtirolista (jogo,player,tiros);
@@ -164,13 +164,13 @@ int tecla (t_jogo *jogo, t_player *player, t_lista *tiros) {
 
 void moveplayer (t_jogo *jogo, t_player *player) {
 
-    if (jogo->key == KEY_LEFT) {
-    	if (player->collumplayer + 2 > LININIT)
+    if (jogo->key == 'a') {
+    	if (player->collumplayer - 1 > COLINIT)
         	player->collumplayer--;
     }
-    else if (jogo->key == KEY_RIGHT) {
-    	if (player->collumplayer + 7 < COLINIT)
-        	player->rowplayer++;
+    else if (jogo->key == 'd') {
+    	if (player->collumplayer + 7 < MAXCOLUNAS)
+        	player->collumplayer++;
     }
 }
 
@@ -181,17 +181,15 @@ void addtirolista (t_jogo *jogo, t_player *player, t_lista *tiros) {
     }
 }
 
-void navemae (t_alien *navemae) {
+void nave_mae (t_alien *navemae) {
 
     int chance;
     
     chance = rand () % CHANCENAVEMAE + 1;
     if (chance >= CHANCENAVEMAE - 5) {
         navemaeaparece (navemae);
-        prntnavemae (navemae);
     }
     if (navemae->status == 1) {
-        prntnavemae (navemae);
         admnavemae (navemae);
     }
 }
@@ -203,11 +201,14 @@ void navemaeaparece (t_alien *navemae) {
         navemae->rowalien = 0;
         navemae->collumalien = 0;
         navemae->status = VIVO;
+        prntnavemae (navemae);
     }
 }
 
 /*Admnista a impressão da nave mãe*/
 void admnavemae (t_alien *navemae){
+
+    prntnavemae (navemae);
     navemae->collumalien++;
     if (navemae->collumalien + TAMNAVEMAE == MAXCOLUNAS)
         navemae->status = MORREU;
