@@ -244,7 +244,7 @@ void admaliens (t_jogo *jogo, t_alien *alien, t_lista *aliens, t_controle *row, 
 }
 
 void nowayout (t_jogo *jogo, t_player *player, t_alien *alien, t_controle *row) {
-    if ((row->vetor[row->fim].x * (3 + 1) + 2 ) alien->rowalien == player->rowplayer))
+    if (((row->vetor[row->fim].x * (3 + 1) + 2 ) + alien->rowalien == player->rowplayer))
         jogo->statusjogo = MORREU;
 }
 
@@ -661,7 +661,7 @@ void analizasituacaoaliens (t_jogo *jogo, t_coord *chave, t_lista *barreiras) {
         break;
 
         case 1:
-        jogo->statusjogo = MORREU;
+        /*jogo->statusjogo = MORREU;*/
         jogo->contbombas--;
         break;
 
