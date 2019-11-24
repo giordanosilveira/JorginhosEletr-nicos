@@ -230,9 +230,12 @@ void prntnavemae (t_alien *navemae) {
 
 }
 
-void admaliens (t_jogo *jogo, t_alien *alien, t_lista *aliens, t_controle *row, t_controle *collum, char **spritsaliens) {
+void admaliens (t_jogo *jogo, t_alien *alien, t_lista *barreiras, t_lista *aliens, t_controle *row, t_controle *collum, char **spritsaliens) {
 
     clear ();
+    int cont = 0;
+    t_coord lixo;
+
     if (jogo->indo) {
         alienstoright (jogo,alien,aliens,row,collum,spritsaliens);
     }
@@ -241,6 +244,47 @@ void admaliens (t_jogo *jogo, t_alien *alien, t_lista *aliens, t_controle *row, 
     }
     alien->versao = (alien->versao +1) % 2;
 
+    if (alienbarreira (aliens,barreiras,row,alien,&cont)) {
+        prntbarreiras (barreiras);
+        for (int i = 0 ; i <= cont; i++)
+            srchandrmitemlista (&lixo,barreiras);
+    }
+
+}
+int alienbarreira (t_lista *aliens, t_lista *barreiras, t_controle *row, t_alien *alien, int *cont) {
+
+    if ((row->vetor[row->fim].x*4 + 2) + alien->rowalien < MAXLINHAS - 10)
+        return 0;
+
+    if (lista_vazia(aliens) || lista_vazia(barreiras))
+        return 0;
+
+    t_nodo *ulib, *pecabar;
+
+    ulib = aliens->ini->prox;
+
+    while (ulib->prox != NULL) {
+
+        pecabar = barreiras->ini->prox;
+
+        while (pecabar->prox != NULL) {
+            if (pecabar->status == VIVO) {
+                if (pecabar->chave.x == (ulib->chave.x*(3 + 1) + alien->rowalien) + 2) {
+                    if (pecabar->chave.y == (ulib->chave.y*(6+1) + alien->collumalien)){
+                        pecabar->status == MORREU;
+                        *cont = *cont + 1;
+                    }
+                    else (pecabar->chave.y == (ulib->chave.y*(6 + 1) + alien->collumalien + 5)) {
+                        pecabar->status == MORREU;
+                        *cont = *cont + 1;
+                    }
+                } 
+            }
+            pecabar = pecabar->prox;
+        }
+        ulib = ulib->prox;
+    }
+    return 1;  
 }
 
 void nowayout (t_jogo *jogo, t_player *player, t_alien *alien, t_controle *row) {

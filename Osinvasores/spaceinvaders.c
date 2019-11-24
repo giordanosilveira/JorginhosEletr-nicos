@@ -60,7 +60,7 @@ int main () {
 
             /*Periodo de movimentação dos aliens*/
             if (jogo.indice % jogo.prdaliens == 0) {
-                admaliens (&jogo,&alien,&aliens,&row,&collum,spritsaliens);
+                admaliens (&jogo,&alien,&barreiras,&aliens,&row,&collum,spritsaliens);
                 nowayout (&jogo,&player,&alien,&row);
             }
 
