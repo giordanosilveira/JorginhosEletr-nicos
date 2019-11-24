@@ -220,3 +220,8 @@ void alienstoright (t_jogo *, t_alien *, t_lista *, t_controle *, t_controle *, 
 /*printa os aliens*/
 void prntaliens (t_jogo *, t_alien *, t_lista *, char **);
 
+/*Printa o player*/
+void prntplayer (t_player *);
+
+/*Printa a barreira*/
+void prntbarreiras (t_lista *);

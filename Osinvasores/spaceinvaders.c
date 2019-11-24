@@ -77,8 +77,8 @@ int main () {
             if ((jogo.indice % RESETACONTADOR) == 0)
                 rstcont (&jogo);
             
-           /* prntplayer (player);
-            prntbarreira (barreiras);*/
+            prntplayer (player);
+            prntbarreiras (barreiras);
 
             jogo.indice++;    
 

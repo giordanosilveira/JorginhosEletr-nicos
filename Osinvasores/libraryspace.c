@@ -235,6 +235,8 @@ void alienstoleft (t_jogo *jogo, t_alien *alien, t_lista *aliens, t_controle *ro
 
 void prntaliens (t_jogo *jogo, t_alien *alien, t_lista *aliens, char **spritsaliens) {
    
+    /*coloca o incrementa atual*/
+
     int pos;
     t_nodo *et;
 
@@ -246,7 +248,6 @@ void prntaliens (t_jogo *jogo, t_alien *alien, t_lista *aliens, char **spritsali
         while (et->prox != aliens->fim)
         {
             pos = (et->chave.x + 1)/2;                                                            /*Conta para pegar o sprit certo do alien*/
-	    mvprintw (2,60,"%d ", et->chave.x);
 		
             if (et->status == VIVO) {
                 if (alien->versao) {
@@ -271,3 +272,23 @@ void prntaliens (t_jogo *jogo, t_alien *alien, t_lista *aliens, char **spritsali
     }
 }
 
+void prntplayer (t_player *player){
+    mvprintw (player->rowplayer, player->collumplayer + 3, PLAYER11); 
+    mvprintw (player->rowplayer + 1, player->collumplayer - 1, PLAYER12);
+}
+
+void prntbarreiras (t_lista *barreiras) {
+
+    if (inicializa_atual_inicio(barreiras)) {
+        do
+        {
+            if (barreiras->atual->status == VIVO)
+                mvprintw (barreiras->atual->chave.x, barreiras->atual->chave.y, "M");
+            else {
+                mvprintw (barreiras->atual->chave.x - 1, barreiras->atual->chave.y - 1, "M");
+                mvprintw (barreiras->atual->chave.x, barreiras->atual->chave.y - 1, "M");
+                mvprintw (barreiras->atual->chave.x + 1, barreiras->atual->chave.y - 1, "M");
+            }
+        } while (incrementa_atual(barreiras));
+    }    
+}
