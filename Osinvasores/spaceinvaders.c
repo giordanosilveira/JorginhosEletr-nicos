@@ -69,9 +69,9 @@ int main () {
             }
 
             /*periodo de movimentação das bombas dos aliens*/
-            /*if ((jogo.indice % jogo.prdbombas) == 0) {
-                admbombas (&jogo,&tiros,&bombas,&barreiras);
-            }*/
+            if ((jogo.indice % jogo.prdbombas) == 0) {
+                admbombas (&jogo,&bombas,&barreiras,&aliens,&player,&alien);
+            }
 
             /*Reseta o laço mais interno*/
             if ((jogo.indice % RESETACONTADOR) == 0)

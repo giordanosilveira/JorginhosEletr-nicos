@@ -25,7 +25,7 @@ int insrlista (int, int,  t_lista *l);
   Retorna 1 se o elemento contendo a chave chave existe na lista,
   caso contrário retorna zero.
 */
-int pertence_lista(t_coord chave, t_lista *l);
+t_coord srchalien (int , int , int , t_lista *);
 
 /*
   procura se a um elemento morto dentro da lista e a posição dele em um item.

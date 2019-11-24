@@ -66,6 +66,7 @@
 #define CTTDDMTMPALIENS 100                         /*ConsTanTe de DiMinuição do (TM)Perido dos Aliens*/
 
 /*Tudo o que tem haver com os aliens*/
+#define BOMBASALIENS 6
 #define TAMNAVEMAE 3
 #define CHANCENAVEMAE
 #define TAMALIEN 5
@@ -277,3 +278,28 @@ int vrfcrmtiroslista (t_jogo *,t_coord , t_controle *, t_controle *);
 
 /*Atualiza as linha e as colunas dos aliens*/
 void vrfcextaliens (int , t_controle *);
+
+/*Administra as bombas dos aliens*/
+void admbombas (t_jogo *, t_lista *, t_lista *, t_lista *, t_player *, t_alien *);
+
+/*Detecta a colisao entre as bombas e algo*/
+int detecta_colisao_bombas (t_lista *, t_player *, t_jogo *, t_coord *, int *);
+
+/*Detecta a colisa entre a bomba e a barreira*/
+int dtctcolisaobombabarreira (t_lista *, t_coord *, int *);
+
+/*Detecta a colisao entre a bomba e o player*/
+int dtctcolisaobombaplayer (t_player *, t_coord *);
+
+/*Detecta a colisao entre as bombas e o fim da tela*/
+int nowayoutbombas (t_coord *, int *);
+
+/*De acordo com a situação escolhe uma decisão para ser tomada*/
+void analizasituacaoaliens (t_jogo *, t_coord *, t_lista *);
+
+/*Verifica se a necessida de remover bomba da lista*/
+int vrtcrmbombaslista (t_jogo *);
+
+
+
+

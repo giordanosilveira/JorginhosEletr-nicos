@@ -111,23 +111,26 @@ void srchandrmitemlista (t_coord *item, t_lista *l) {
 	
 	return 1;
 }*/
-/*int pertence_lista(int chave, t_lista *l) {
+t_coord srchalien (int ndoelemento, int linha, int coluna, t_lista *l) {
 
+	t_coord *coord;
 	t_nodo *aux;
+	int i;
 	
-	if (lista_vazia (l))
-		return 0;
+	if (! lista_vazia (l)) {
 
-	aux = l->ini->prox;
-	l->fim->chave = chave;
+		i = 0;
+		aux = l->ini->prox;
 
-	while (aux->chave != chave) 
-		aux = aux->prox;
+		for (i = 0; i < ndoelemento; i++)
+			aux = aux->prox;
 
-	if (aux == l->fim)
-		return 0;
-	return 1;
-}*/
+		coord.x = (aux->chave.x*(3 + 1) + linha)+2;
+		coord.y = ((aux->chave.y*(6 + 1) + coluna) + (aux->chave.y*(6 + 1) + coluna) + 5)/2;
+
+		return coord;
+	}
+}
 int inicializa_atual_inicio(t_lista *l) {
 
 	if (lista_vazia(l))
