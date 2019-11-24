@@ -33,7 +33,7 @@ void initlistas (t_lista *aliens, t_lista *tiros, t_lista *bombas, t_lista *barr
             for (k = 0; k < LARGURABARREIRA; k++) {
                 coordx = (MAXLINHAS-10) + j;
                 coordy = (MAXCOLUNAS/5)*i + k;
-                insrlista (coordx,coordy,aliens);
+                insrlista (coordx,coordy,barreiras);
             }
         }
     }
@@ -245,7 +245,7 @@ void prntaliens (t_jogo *jogo, t_alien *alien, t_lista *aliens, char **spritsali
     	
 	et=aliens->ini->prox;
 
-        while (et->prox != aliens->fim)
+        while (et != aliens->fim)
         {
             pos = (et->chave.x + 1)/2;                                                            /*Conta para pegar o sprit certo do alien*/
 		
@@ -273,22 +273,27 @@ void prntaliens (t_jogo *jogo, t_alien *alien, t_lista *aliens, char **spritsali
 }
 
 void prntplayer (t_player *player){
+    mvprintw (0,60,"%d ", player->rowplayer);
     mvprintw (player->rowplayer, player->collumplayer + 3, PLAYER11); 
     mvprintw (player->rowplayer + 1, player->collumplayer - 1, PLAYER12);
 }
 
 void prntbarreiras (t_lista *barreiras) {
+    
+    t_nodo *pecabar;
 
-    if (inicializa_atual_inicio(barreiras)) {
-        do
+    if (! lista_vazia(barreiras)) {
+    	pecabar = barreiras->ini->prox;
+        while (pecabar != barreiras->fim)
         {
-            if (barreiras->atual->status == VIVO)
-                mvprintw (barreiras->atual->chave.x, barreiras->atual->chave.y, "M");
+            if (pecabar->status == VIVO)
+                mvprintw (pecabar->chave.x, pecabar->chave.y, "M");
             else {
-                mvprintw (barreiras->atual->chave.x - 1, barreiras->atual->chave.y - 1, "M");
-                mvprintw (barreiras->atual->chave.x, barreiras->atual->chave.y - 1, "M");
-                mvprintw (barreiras->atual->chave.x + 1, barreiras->atual->chave.y - 1, "M");
+                mvprintw (pecabar->chave.x - 1, pecabar->chave.y - 1, "M");
+                mvprintw (pecabar->chave.x, pecabar->chave.y - 1, "M");
+                mvprintw (pecabar->chave.x + 1, pecabar->chave.y - 1, "M");
             }
-        } while (incrementa_atual(barreiras));
-    }    
+       	    pecabar = pecabar->prox;
+       }    
+   }
 }
