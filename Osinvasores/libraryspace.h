@@ -300,6 +300,11 @@ void analizasituacaoaliens (t_jogo *, t_coord *, t_lista *);
 /*Verifica se a necessida de remover bomba da lista*/
 int vrfcrmbombaslista (t_jogo *);
 
+/*Reseta o jogo*/
+void resetjogo (t_jogo *,t_alien *);
+
+/*Destroi as listas*/
+void destroi_listas (t_lista *, t_lista *, t_lista *, t_lista *);
 
 
 

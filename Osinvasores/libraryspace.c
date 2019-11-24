@@ -678,3 +678,29 @@ int vrfcrmbombaslista (t_jogo *jogo) {
     return 0;
 }
 
+void resetjogo (t_jogo *jogo, t_alien *alien) {
+
+    jogo->contiros = 0;
+    jogo->contbombas = 0;
+    if (jogo->amplificador < MAXVELOCIDADE)
+        jogo->prdaliens = TIALIENS - jogo->amplificador;
+    jogo->amplificador = jogo->amplificador + INITAPL;
+    jogo->indice = 0;
+    jogo->statusjogo = VIVO;
+
+    alien->collumalien = COLUNALIEN;
+    alien->rowalien = LINHALIEN;
+    alien->versao = VERSAOINICIAL;
+    alien->status = MORREU;
+
+}
+
+void destroi_listas (t_lista *tiros, t_lista *bombas, t_lista *aliens, t_lista *barreiras) {
+
+    destroi_lista (tiros);
+    destroi_lista (bombas);
+    destroi_lista (aliens);
+    destroi_lista (barreiras);
+
+}
+

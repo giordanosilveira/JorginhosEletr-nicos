@@ -85,13 +85,15 @@ int main () {
             refresh ();
 
         }
-       /* if (ganhou(&aliens)) {
-            resetjogo (&t_jogo);
+        if (ganhou(&aliens)) {
+            resetjogo (&jogo,&alien);
+            destroi_listas (&tiros,&bombas,&aliens,&barreiras);
+            initlistas (&aliens,&tiros,&bombas,&barreiras);
         }
         else {
             endwin ();
             printf ("Raul seixas\n");
-        }*/
+        }
 
     }
 
