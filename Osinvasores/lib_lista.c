@@ -75,29 +75,27 @@ int insrlista(int linha, int coluna, t_lista *l){
 
 	return 1;
 }
-/*int srchandrmitemlista (t_coord *item, t_lista *l) {
+void srchandrmitemlista (t_coord *item, t_lista *l) {
 
 
-	if (lista_vazia(l))
-		return 0;
+	if (! lista_vazia(l)) {
 
-	t_nodo *aux;
-	aux = l->ini;	
-	while (aux->prox->status != MORREU && aux->prox != l->fim)
-		aux = aux->prox;
+		t_nodo *aux,*aux2;
+		aux = l->ini->prox;;	
+		while (aux->prox != l->fim && aux->status != MORREU)
+			aux = aux->prox;
+	
+		aux2 = aux;
 
-	if (aux->prox == l->fim)
-		return 0;
+		item->x = aux->chave.x;
+		item->y = aux->chave.y;
 
-	item->x = l->prox->chave.x;
-	item->y = l->prox->chave.y;	
-	aux->prox = aux->prox->prox;
-	free (aux->prox->prev);
-	aux->prox->prev = aux;
-
-	l->tamanho--;
-	return 1;
-}*/
+		aux->prox->prev = aux->prev;
+		aux->prev->prox = aux->prox;
+		free (aux2);
+		l->tam--;
+	}
+}
 /*int remove_inicio_lista(int *item, t_lista *l) {
 	
 	if (lista_vazia (l))

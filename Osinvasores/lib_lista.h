@@ -32,7 +32,7 @@ int pertence_lista(t_coord chave, t_lista *l);
   Retorna 1 se a operação foi bem sucedida e zero caso contrário
   (elemento não encontrado também retorna zero).
 */
-int srchandrmitemlista (t_coord *, t_lista *);
+void srchandrmitemlista (t_coord *, t_lista *);
 
 /* 
   Inicializa o ponteiro atual para o primeiro elemento da lista.

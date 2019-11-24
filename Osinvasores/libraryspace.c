@@ -301,7 +301,7 @@ void prntaliens (t_jogo *jogo, t_alien *alien, t_lista *aliens, char **spritsali
                     mvprintw (alien->rowalien + (ALTURALIEN + SPACELALIENS)*et->chave.x+2, alien->collumalien + (TAMALIEN + SPACECALIENS)*et->chave.y, spritsaliens[pos*6+2]);
                 }
             }
-            else if (aliens->atual->status == MORREU) {
+            else if (et->status == MORREU) {
                     mvprintw (alien->rowalien + (ALTURALIEN + SPACELALIENS)*et->chave.x, alien->collumalien + (TAMALIEN + SPACECALIENS)*et->chave.y, EXPLOSAOA1);
                     mvprintw (alien->rowalien + (ALTURALIEN + SPACELALIENS)*et->chave.x+1, alien->collumalien + (TAMALIEN + SPACECALIENS)*et->chave.y, EXPLOSAOA2);
                     mvprintw (alien->rowalien + (ALTURALIEN + SPACELALIENS)*et->chave.x+2, alien->collumalien + (TAMALIEN + SPACECALIENS)*et->chave.y, EXPLOSAOA3);
@@ -313,7 +313,6 @@ void prntaliens (t_jogo *jogo, t_alien *alien, t_lista *aliens, char **spritsali
 }
 
 void prntplayer (t_player *player){
-    mvprintw (0,60,"%d ", player->rowplayer);
     mvprintw (player->rowplayer, player->collumplayer + 3, PLAYER11); 
     mvprintw (player->rowplayer + 1, player->collumplayer - 1, PLAYER12);
 }
@@ -329,9 +328,9 @@ void prntbarreiras (t_lista *barreiras) {
             if (pecabar->status == VIVO)
                 mvprintw (pecabar->chave.x, pecabar->chave.y, "M");
             else {
-                mvprintw (pecabar->chave.x - 1, pecabar->chave.y - 1, "M");
-                mvprintw (pecabar->chave.x, pecabar->chave.y - 1, "M");
-                mvprintw (pecabar->chave.x + 1, pecabar->chave.y - 1, "M");
+                mvprintw (pecabar->chave.x - 1, pecabar->chave.y - 1, EXPLOSAOG1);
+                mvprintw (pecabar->chave.x, pecabar->chave.y - 1, EXPLOSAOG2);
+                mvprintw (pecabar->chave.x + 1, pecabar->chave.y - 1, EXPLOSAOG3);
             }
        	    pecabar = pecabar->prox;
        }    
@@ -341,18 +340,20 @@ void prntbarreiras (t_lista *barreiras) {
 void admtiros (t_jogo *jogo, t_alien *alien, t_alien *navemae, t_controle *row, t_controle *collum, t_lista *aliens, t_lista *barreiras, t_lista *tiros, t_lista *bombas, char **spritesaliens) {
 
     t_coord aux;
-
-    if (inicializa_atual_inicio (tiros)) {
-
-        do
+    t_nodo *bala;
+    if (!lista_vazia(tiros)) {
+	bala = tiros->ini->prox;
+        while (bala != tiros->fim)
         {
-            jogo->situacao = detecta_colisao (alien,navemae,aliens,barreiras,bombas,tiros->atual->chave,tiros->atual->status);
-            analizasituacao (jogo,alien,navemae,aliens,barreiras,bombas,tiros->atual->chave,&aux,spritesaliens);
+            jogo->situacao = detecta_colisao (alien,navemae,aliens,barreiras,bombas,&bala->chave,&bala->status);
+            analizasituacao (jogo,alien,navemae,aliens,barreiras,bombas,&bala->chave,&aux,spritesaliens);
+	    prntaliens (jogo,alien,aliens,spritesaliens);
 
             if (vrfcrmtiroslista(jogo,aux,row,collum))
-                srchandrmitemlista (tiros);
+                srchandrmitemlista (&aux,tiros);
 
-        } while (incrementa_atual(tiros));
+	    bala = bala->prox;
+        }
         prntiro (tiros); 
     }
 }
@@ -380,45 +381,52 @@ int detecta_colisao (t_alien *alien, t_alien *navemae, t_lista *aliens, t_lista 
 /*detecta colisao entre o tiro e as barreiras*/
 int dtctcolisaotirobarreiras (t_lista *barreiras, t_coord *chave, int *status){
 
-    if (inicializa_atual_inicio(barreiras)){
-        do
+
+    t_nodo *pecabar;
+    if (! lista_vazia(barreiras)){
+        pecabar = barreiras->ini->prox;
+        while (pecabar != barreiras->fim)
         {
-            if (chave->x - 1 == barreiras->atual->chave.x && chave->y == barreiras->atual->chave.y) {
-                barreiras->atual->status == MORREU;
+            if (chave->x - 1 == pecabar->chave.x && chave->y + 3 == pecabar->chave.y) {
+                pecabar->status = MORREU;
                 *status = MORREU;
                 return 1;
             }
-        } while (incrementa_atual(barreiras));
+            pecabar = pecabar->prox;
+	}
     }
     return 0;
 }
 
 /*detecta colisao entre o tiro e os aliens*/
-int dtctcolisaotiroaliens (t_lista *aliens, t_coord *coord, t_alien*, int *status) {
-    
-    if (inicializa_atual_inicio(aliens)){
-        do
-        {
-            if (chave->x - 1 == (aliens->atual->chave.x*(ALTURALIEN + SPACELALIENS)+alien->rowalien) + 2 && (chave->y >= aliens->atual->chave.y*(TAMALIEN + SPACELALIENS)+alien->collumalien) && (chave->y <= (aliens->atual->chave.y*(TAMALIEN + SPACECALIENS)+alien->collumalien) + 5)) {
-                aliens->atual->status == MORREU;
+int dtctcolisaotiroaliens (t_lista *aliens, t_coord *chave, t_alien *alien, int *status) {
+   
+    t_nodo *ulib;
+
+    if (! lista_vazia(aliens)){
+    	ulib = aliens->ini->prox; 
+        while (ulib != aliens->fim) {
+            if (chave->x - 1 == (ulib->chave.x*(ALTURALIEN + SPACELALIENS)+alien->rowalien) + 2 && (chave->y + 3 >= ulib->chave.y*(TAMALIEN + SPACECALIENS)+alien->collumalien) && (chave->y + 3 <= (ulib->chave.y*(TAMALIEN + SPACECALIENS)+alien->collumalien) + 5)) {		
+		ulib->status = MORREU;
                 *status = MORREU;
-                return 2;
+                return 1;
             }
-        } while (incrementa_atual(aliens));
+            ulib = ulib->prox;
+	}
     }
     return 0;
 }
 
 /*detecta colisao entre o tiro e as bombas*/
-int dtctcolisaotirobombas (t_lista *bombas, t_coord *coord, int *status) {
+int dtctcolisaotirobombas (t_lista *bombas, t_coord *chave, int *status) {
     
     if (inicializa_atual_inicio(bombas)){
         do
         {
-            if (chave->x - 2 == bombas->atual->chave.x && chave->y == bombas->atual->chave.y) {
-                bombas->atual->status == MORREU;
+            if (chave->x - 2 == bombas->atual->chave.x && chave->y + 3== bombas->atual->chave.y) {
+                bombas->atual->status = MORREU;
                 *status = MORREU;
-                return 3;
+                return 1;
             }
         } while (incrementa_atual(bombas));
     }
@@ -426,25 +434,27 @@ int dtctcolisaotirobombas (t_lista *bombas, t_coord *coord, int *status) {
 }
 
 /*detecta colisao entre o tiro e a nave mae*/
-int dtctcolisaotironavemae (t_alien *navemae, t_coord *coord, int *status) {
+int dtctcolisaotironavemae (t_alien *navemae, t_coord *chave, int *status) {
     
-    if (chave->x - 1 == navemae->rowalien + TAMNAVEMAE-1 && chave->y <= navemae->collumalien.y + TAMNAVEMAE - 1 && chave->y >= navemae->collumalien) {
-        navemae->status == MORREU;
+    if (chave->x - 1 == navemae->rowalien + TAMNAVEMAE-1 && chave->y + 3 <= navemae->collumalien + TAMNAVEMAE - 1 && chave->y + 3 >= navemae->collumalien) {
+        navemae->status = MORREU;
         *status = MORREU;
-        return 4;
+        return 1;
     }
     return 0;
 }
 
 int nowayoutiros (t_coord *coord, int *status) {
-    if (coord->x - 1 == LININIT)
-        return 1
+    if (coord->x - 1 == LININIT){
+    	*status = MORREU;
+        return 1;
+    }
     return 0;
 }
 
 void analizasituacao (t_jogo *jogo, t_alien *alien, t_alien *navemae, t_lista *aliens, t_lista *barreiras, t_lista *bombas, t_coord *chave, t_coord *aux, char **spritsaliens) {
 
-    t_coord *lixo;
+    t_coord lixo;
     switch (jogo->situacao)
     {
         case 0:
@@ -460,10 +470,7 @@ void analizasituacao (t_jogo *jogo, t_alien *alien, t_alien *navemae, t_lista *a
         break;
 
         case 2:
-        inicializa_atual_inicio (bombas);
-        while (bombas->atual != bombas->fim && bombas->atual->status != MORREU)
-            incrementa_atual (bombas);
-        prntbombas (bombas->atual->chave);
+        prntbombas (bombas);
         srchandrmitemlista (&lixo,bombas);
         jogo->contbombas--;
         jogo->contiros--;
@@ -490,8 +497,8 @@ void prntiro (t_lista *tiros) {
     if (inicializa_atual_inicio (tiros)) {
         while (tiros->atual != tiros->fim ) {
             if (tiros->atual->status) {
-                mvprintw (tiros->atual->chave.x + 1, tiros->atual->chave.y," ");
-                mvprintw (tiros->atual->chave.x, tiros->atual->chave.y,SPRTIRO1);
+                mvprintw (tiros->atual->chave.x + 1, tiros->atual->chave.y + 3," ");
+                mvprintw (tiros->atual->chave.x, tiros->atual->chave.y + 3,SPRTIRO1);
             }
             else {
                 mvprintw (tiros->atual->chave.x - 1, tiros->atual->chave.y - 1,EXPLOSAOG1);
@@ -524,7 +531,7 @@ void prntbombas (t_lista *bombas) {
 int vrfcrmtiroslista (t_jogo *jogo, t_coord aux, t_controle *row, t_controle *collum) {
 
     if (jogo->situacao >= 0 && jogo->situacao <= 4) {
-        if (jogo->situacao == 2 ){
+        if (jogo->situacao == 1 ){
             vrfcextaliens (aux.x,row);
             vrfcextaliens (aux.y,collum);
             jogo->score = jogo->score + 10;
@@ -536,7 +543,7 @@ int vrfcrmtiroslista (t_jogo *jogo, t_coord aux, t_controle *row, t_controle *co
     return 0;
 }
 
-void vrfcextaliens (int coordy, t_coord *ctrl) {
+void vrfcextaliens (int coordy, t_controle *ctrl) {
     	ctrl->vetor[coordy].y--;
 	
 	int i;

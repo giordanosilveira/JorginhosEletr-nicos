@@ -1,6 +1,6 @@
 
 /*player*/
-#define TIROSPLAYER 4
+#define TIROSPLAYER 8
 #define PLAYER11 " / \\ "
 #define PLAYER12 "   /MMMMM\\   "
 
@@ -266,11 +266,14 @@ int nowayoutiros (t_coord *, int *);
 /*De acordo com a situação escolhe uma decisão para ser tomada*/
 void analizasituacao (t_jogo *, t_alien *, t_alien *, t_lista *, t_lista *, t_lista * ,t_coord *, t_coord *, char **);
 
-/*printa a colisao entre o tiro e as bombas*/
+/*printa os tiros*/
 void prntiro (t_lista *);
 
+/*printa as bombas e a colisao entre elas e os tiros */
+void prntbombas (t_lista *);
+
 /*Verifica se a necessida de remover o tiro da lista e atualiza as colunas e as linhas dos aliens*/
-void vrfcrmtiroslista (t_jogo *,t_coord , t_controle *, t_controle *);
+int vrfcrmtiroslista (t_jogo *,t_coord , t_controle *, t_controle *);
 
 /*Atualiza as linha e as colunas dos aliens*/
 void vrfcextaliens (int , t_controle *);
