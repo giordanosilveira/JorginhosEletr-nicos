@@ -243,6 +243,11 @@ void admaliens (t_jogo *jogo, t_alien *alien, t_lista *aliens, t_controle *row, 
 
 }
 
+void nowayout (t_jogo *jogo, t_player *player, t_alien *alien, t_controle *row) {
+    if ((row->vetor[row->fim].x * (3 + 1) + 2 ) alien->rowalien == player->rowplayer))
+        jogo->statusjogo = MORREU;
+}
+
 void alienstoright (t_jogo *jogo, t_alien *alien, t_lista *aliens, t_controle *row, t_controle *collum, char **spritsaliens) {
 
     if ((((collum->vetor[collum->fim].x *(SPACECALIENS + TAMALIEN)) + TAMALIEN) + alien->collumalien == MAXCOLUNAS)) {           /*Conta para pegar o final do*/

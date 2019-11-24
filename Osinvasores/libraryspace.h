@@ -214,6 +214,9 @@ void rstcont (t_jogo *);
 /*Administra os aliens*/
 void admaliens (t_jogo *, t_alien *, t_lista *, t_controle *, t_controle *, char **);
 
+/*Verifica se os aliens chegar na linha do player*/
+void nowayout (t_jogo *, t_player *, t_alien *, t_controle *);
+
 /*Administra a impressao aliens*/
 void admimpressao (t_jogo *, t_alien *, t_lista *, t_controle  *, t_controle *, char **);
 
