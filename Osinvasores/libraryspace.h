@@ -203,7 +203,7 @@ void insrprimeiro (t_lista *, int, int, int);
 void borda (int, int , int , int);
 
 /*Reseta o contador*/
-void rstcont (t_jogo);
+void rstcont (t_jogo *);
 
 /*Administra os aliens*/
 void admaliens (t_jogo *, t_alien *, t_lista *, t_controle *, t_controle *, char **);

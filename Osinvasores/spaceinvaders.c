@@ -46,8 +46,6 @@ int main () {
     while (!perdeu(&jogo)) {
 
         while (jogo.indice <= PERIODOJOGO && !ganhou (&aliens) && !perdeu (&jogo)) {
-            
-            clear ();
 
             jogo.key = getch ();
             

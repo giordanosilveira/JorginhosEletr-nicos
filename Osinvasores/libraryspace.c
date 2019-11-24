@@ -9,8 +9,8 @@ void initstructs (t_jogo *jogo, t_player *player, t_alien *aliens, t_alien *nave
     initplayer (player);
     initalien (aliens,LINHALIEN,COLUNALIEN);
     initalien (navemae,LINHANAVEMAE,COLUNANAVEMAE);
-    initcontrole (row,LINHALIEN - 1,COLUNALIEN);
-    initcontrole (collum,COLUNALIEN - 1,LINHALIEN);
+    initcontrole (row,NLINHASALIENS - 1,NCOLUNASALIENS);
+    initcontrole (collum,NCOLUNASALIENS - 1,NLINHASALIENS);
 
 }
 
@@ -89,15 +89,15 @@ void initspritsaliens (char **spritsaliens) {
     strcpy (spritsaliens[5],ALIEN132);
 
     strcpy (spritsaliens[6],ALIEN21);
-    strcpy (spritsaliens[7],ALIEN21);
-    strcpy (spritsaliens[8],ALIEN21);
+    strcpy (spritsaliens[7],ALIEN22);
+    strcpy (spritsaliens[8],ALIEN23);
     strcpy (spritsaliens[9],ALIEN212);
     strcpy (spritsaliens[10],ALIEN222);
     strcpy (spritsaliens[11],ALIEN232);
 
     strcpy (spritsaliens[12],ALIEN31);
-    strcpy (spritsaliens[13],ALIEN31);
-    strcpy (spritsaliens[14],ALIEN31);
+    strcpy (spritsaliens[13],ALIEN32);
+    strcpy (spritsaliens[14],ALIEN33);
     strcpy (spritsaliens[15],ALIEN312);
     strcpy (spritsaliens[16],ALIEN322);
     strcpy (spritsaliens[17],ALIEN332);
@@ -130,7 +130,7 @@ void borda (int lininit, int colinit, int nlinhas, int ncolunas) {
 
 int perdeu (t_jogo * jogo) {
 
-    if (! jogo->statusjogo)
+    if (jogo->statusjogo == MORREU)
         return 1;
     return 0;
 
@@ -193,19 +193,21 @@ void admnavemae (t_alien *navemae) {
 
 void admaliens (t_jogo *jogo, t_alien *alien, t_lista *aliens, t_controle *row, t_controle *collum, char **spritsaliens) {
 
+    clear ();
     if (jogo->indo) {
         alienstoright (jogo,alien,aliens,row,collum,spritsaliens);
     }
     else {
         alienstoleft (jogo,alien,aliens,row,collum,spritsaliens);
     }
+    alien->versao = (alien->versao +1) % 2;
 
 }
 
 void alienstoright (t_jogo *jogo, t_alien *alien, t_lista *aliens, t_controle *row, t_controle *collum, char **spritsaliens) {
 
-    if (((collum->vetor[collum->fim].x * (SPACECALIENS + TAMALIEN) + TAMALIEN) + alien->collumalien == MAXCOLUNAS)) {           /*Conta para pegar o final do*/
-        alien->collumalien = alien->collumalien - 1;                                                                            /*alien e compara-lo com o tamanho maximo da tela*/
+    if ((((collum->vetor[collum->fim].x *(SPACECALIENS + TAMALIEN)) + TAMALIEN) + alien->collumalien == MAXCOLUNAS)) {           /*Conta para pegar o final do*/
+	alien->collumalien = alien->collumalien - 1;                                                                            /*alien e compara-lo com o tamanho maximo da tela*/
         alien->rowalien = alien->rowalien + 1;
         jogo->prdaliens = jogo->prdaliens - CTTDDMTMPALIENS;
         jogo->indo = 0;
@@ -234,30 +236,37 @@ void alienstoleft (t_jogo *jogo, t_alien *alien, t_lista *aliens, t_controle *ro
 void prntaliens (t_jogo *jogo, t_alien *alien, t_lista *aliens, char **spritsaliens) {
    
     int pos;
-    if (inicializa_atual_inicio(aliens)){
-        do
-        {
-            pos = (aliens->atual->chave.x + 1)/2;                                                            /*Conta para pegar o sprit certo do alien*/
+    t_nodo *et;
 
-            if (aliens->atual->status == VIVO) {
+    
+    if (! lista_vazia(aliens)){
+    	
+	et=aliens->ini->prox;
+
+        while (et->prox != aliens->fim)
+        {
+            pos = (et->chave.x + 1)/2;                                                            /*Conta para pegar o sprit certo do alien*/
+	    mvprintw (2,60,"%d ", et->chave.x);
+		
+            if (et->status == VIVO) {
                 if (alien->versao) {
-                    mvprintw (alien->rowalien + (ALTURALIEN + SPACELALIENS)*aliens->atual->chave.x, alien->collumalien + (TAMALIEN + SPACECALIENS)*aliens->atual->chave.y, spritsaliens[pos*6+3]);
-                    mvprintw (alien->rowalien + (ALTURALIEN + SPACELALIENS)*aliens->atual->chave.x+1, alien->collumalien + (TAMALIEN + SPACECALIENS)*aliens->atual->chave.y, spritsaliens[pos*6+4]);
-                    mvprintw (alien->rowalien + (ALTURALIEN + SPACELALIENS)*aliens->atual->chave.x+2, alien->collumalien + (TAMALIEN + SPACECALIENS)*aliens->atual->chave.y, spritsaliens[pos*6+5]);
+                    mvprintw (alien->rowalien + (ALTURALIEN + SPACELALIENS)*et->chave.x, alien->collumalien + (TAMALIEN + SPACECALIENS)*et->chave.y, spritsaliens[pos*6+3]);
+                    mvprintw (alien->rowalien + (ALTURALIEN + SPACELALIENS)*et->chave.x+1, alien->collumalien + (TAMALIEN + SPACECALIENS)*et->chave.y, spritsaliens[pos*6+4]);
+                    mvprintw (alien->rowalien + (ALTURALIEN + SPACELALIENS)*et->chave.x+2, alien->collumalien + (TAMALIEN + SPACECALIENS)*et->chave.y, spritsaliens[pos*6+5]);
                 }
                 else {
-                    mvprintw (alien->rowalien + (ALTURALIEN + SPACELALIENS)*aliens->atual->chave.x, alien->collumalien + (TAMALIEN + SPACECALIENS)*aliens->atual->chave.y, spritsaliens[pos*6]);
-                    mvprintw (alien->rowalien + (ALTURALIEN + SPACELALIENS)*aliens->atual->chave.x+1, alien->collumalien + (TAMALIEN + SPACECALIENS)*aliens->atual->chave.y, spritsaliens[pos*6+1]);
-                    mvprintw (alien->rowalien + (ALTURALIEN + SPACELALIENS)*aliens->atual->chave.x+2, alien->collumalien + (TAMALIEN + SPACECALIENS)*aliens->atual->chave.y, spritsaliens[pos*6+2]);
+                    mvprintw (alien->rowalien + (ALTURALIEN + SPACELALIENS)*et->chave.x, alien->collumalien + (TAMALIEN + SPACECALIENS)*et->chave.y, spritsaliens[pos*6]);
+                    mvprintw (alien->rowalien + (ALTURALIEN + SPACELALIENS)*et->chave.x+1, alien->collumalien + (TAMALIEN + SPACECALIENS)*et->chave.y, spritsaliens[pos*6+1]);
+                    mvprintw (alien->rowalien + (ALTURALIEN + SPACELALIENS)*et->chave.x+2, alien->collumalien + (TAMALIEN + SPACECALIENS)*et->chave.y, spritsaliens[pos*6+2]);
                 }
             }
             else if (aliens->atual->status == MORREU) {
-                    mvprintw (alien->rowalien + (ALTURALIEN + SPACELALIENS)*aliens->atual->chave.x, alien->collumalien + (TAMALIEN + SPACECALIENS)*aliens->atual->chave.y, EXPLOSAOA1);
-                    mvprintw (alien->rowalien + (ALTURALIEN + SPACELALIENS)*aliens->atual->chave.x+1, alien->collumalien + (TAMALIEN + SPACECALIENS)*aliens->atual->chave.y, EXPLOSAOA2);
-                    mvprintw (alien->rowalien + (ALTURALIEN + SPACELALIENS)*aliens->atual->chave.x+2, alien->collumalien + (TAMALIEN + SPACECALIENS)*aliens->atual->chave.y, EXPLOSAOA3);
+                    mvprintw (alien->rowalien + (ALTURALIEN + SPACELALIENS)*et->chave.x, alien->collumalien + (TAMALIEN + SPACECALIENS)*et->chave.y, EXPLOSAOA1);
+                    mvprintw (alien->rowalien + (ALTURALIEN + SPACELALIENS)*et->chave.x+1, alien->collumalien + (TAMALIEN + SPACECALIENS)*et->chave.y, EXPLOSAOA2);
+                    mvprintw (alien->rowalien + (ALTURALIEN + SPACELALIENS)*et->chave.x+2, alien->collumalien + (TAMALIEN + SPACECALIENS)*et->chave.y, EXPLOSAOA3);
             }
-        } while (incrementa_atual(aliens));
-        
+            et = et->prox;
+        }
         refresh ();
     }
 }
