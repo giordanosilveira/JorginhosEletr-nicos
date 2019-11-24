@@ -113,7 +113,7 @@ void srchandrmitemlista (t_coord *item, t_lista *l) {
 }*/
 t_coord srchalien (int ndoelemento, int linha, int coluna, t_lista *l) {
 
-	t_coord *coord;
+	t_coord coord;
 	t_nodo *aux;
 	int i;
 	

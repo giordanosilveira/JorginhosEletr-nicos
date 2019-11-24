@@ -289,7 +289,7 @@ int detecta_colisao_bombas (t_lista *, t_player *, t_jogo *, t_coord *, int *);
 int dtctcolisaobombabarreira (t_lista *, t_coord *, int *);
 
 /*Detecta a colisao entre a bomba e o player*/
-int dtctcolisaobombaplayer (t_player *, t_coord *);
+int dtctcolisaobombaplayer (t_player *, t_coord *,int *);
 
 /*Detecta a colisao entre as bombas e o fim da tela*/
 int nowayoutbombas (t_coord *, int *);
@@ -298,7 +298,7 @@ int nowayoutbombas (t_coord *, int *);
 void analizasituacaoaliens (t_jogo *, t_coord *, t_lista *);
 
 /*Verifica se a necessida de remover bomba da lista*/
-int vrtcrmbombaslista (t_jogo *);
+int vrfcrmbombaslista (t_jogo *);
 
 
 

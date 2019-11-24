@@ -54,7 +54,7 @@ void initjogo (t_jogo *jogo) {
 
 /*Inicia a struct player*/
 void initplayer (t_player *player) {
-    player->rowplayer = MAXLINHAS - 2;
+    player->rowplayer = MAXLINHAS - 3;
     player->collumplayer = MAXCOLUNAS/2;
 }
 
@@ -426,7 +426,7 @@ int dtctcolisaotirobombas (t_lista *bombas, t_coord *chave, int *status) {
         bomba = bombas->ini->prox;    
         while (bomba != bombas->fim) {
             if (chave->x - 2 == bomba->chave.x && chave->y + 3== bomba->chave.y) {
-                bomba>status = MORREU;
+                bomba->status = MORREU;
                 *status = MORREU;
                 return 1;
             }
@@ -583,7 +583,7 @@ void admbombas (t_jogo *jogo, t_lista *bombas, t_lista *barreiras, t_lista *alie
                 jogo->situacao = detecta_colisao_bombas (barreiras,player,jogo,&bomba->chave,&bomba->status);
                 analizasituacaoaliens (jogo,&bomba->chave,barreiras);
 
-                if (vrfcrmbombaslista (jogo));    
+                if (vrfcrmbombaslista (jogo))    
                     srchandrmitemlista (&coord,bombas);
                 bomba = bomba->prox;
             }
@@ -599,7 +599,7 @@ int detecta_colisao_bombas (t_lista *barreiras, t_player *player, t_jogo *jogo, 
     if (dtctcolisaobombaplayer (player,coord,status))
         return 1;
 
-    if (nowayoutbombas) (coord,status)
+    if (nowayoutbombas(coord,status))
         return 2;
 
     return 3;
@@ -671,7 +671,7 @@ void analizasituacaoaliens (t_jogo *jogo, t_coord *chave, t_lista *barreiras) {
     }
 }
 
-int vrtcrmbombaslista (t_jogo *jogo) {
+int vrfcrmbombaslista (t_jogo *jogo) {
 
     if (jogo->situacao >= 0 && jogo->situacao <= 2)
         return 1;
