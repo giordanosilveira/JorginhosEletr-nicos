@@ -1,4 +1,3 @@
-/*realmente precisa uma matriz para os sprits ?*/
 #include "lib_lista.h"
 #include <stdlib.h>
 #include <string.h>
