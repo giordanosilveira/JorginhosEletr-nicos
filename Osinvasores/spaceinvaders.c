@@ -38,7 +38,6 @@ int main () {
         return 1;
     } 
 
-    borda (LININIT,COLINIT,MAXLINHAS - 1,MAXCOLUNAS - 1);                               /*Cria a borda do jogo*/
     srand(time(NULL));
 
     while (!perdeu(&jogo)) {
@@ -81,8 +80,9 @@ int main () {
             prntplayer (&player);
             prntbarreiras (&barreiras);
 
-            jogo.indice++;    
-
+            jogo.indice++;
+                
+            borda (LININIT,COLINIT,MAXLINHAS - 1,MAXCOLUNAS - 1);                               /*Cria a borda do jogo*/
             refresh ();
 
         }

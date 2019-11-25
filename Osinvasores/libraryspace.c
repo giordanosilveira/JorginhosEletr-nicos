@@ -30,8 +30,8 @@ void initlistas (t_lista *aliens, t_lista *tiros, t_lista *bombas, t_lista *barr
     for (i = 1; i <= NBARREIRAS; i++) {
         for (j = 0; j < ALTURABARREIRA; j++) {
             for (k = 0; k < LARGURABARREIRA; k++) {
-                coordx = (MAXLINHAS-10) + j;
-                coordy = (MAXCOLUNAS/5)*i + k;
+                coordx = (MAXLINHAS-10) + j;                        /*Conta para pegar a linha certa da barreira*/
+                coordy = (MAXCOLUNAS/5)*i + k;                      /*Conta para peagr a coluna certa da barreira*/
                 insrlista (coordx,coordy,barreiras);
             }
         }
@@ -263,7 +263,7 @@ int alienbarreira (t_lista *aliens, t_lista *barreiras, t_controle *row, t_alien
 
     while (pecabar->prox != NULL) {
           if (pecabar->status == VIVO) {
-                if (pecabar->chave.x == row->vetor[row->fim].x * (4) + 2) {
+                if (pecabar->chave.x == row->vetor[row->fim].x * (4) + 2) {             /*Vericando se a linha do alien chegou na barreira*/
                         pecabar->status = MORREU;
                         *cont = *cont + 1;
                 }
@@ -274,7 +274,7 @@ int alienbarreira (t_lista *aliens, t_lista *barreiras, t_controle *row, t_alien
 }
 
 void nowayout (t_jogo *jogo, t_player *player, t_alien *alien, t_controle *row) {
-    if (((row->vetor[row->fim].x * (3 + 1) + 2 ) + alien->rowalien == player->rowplayer))
+    if (((row->vetor[row->fim].x * (3 + 1) + 2 ) + alien->rowalien == player->rowplayer))   /*Verificando se o alien chegou na coluna do player*/
         jogo->statusjogo = MORREU;
 }
 
@@ -295,8 +295,8 @@ void alienstoright (t_jogo *jogo, t_alien *alien, t_lista *aliens, t_controle *r
 }
 
 void alienstoleft (t_jogo *jogo, t_alien *alien, t_lista *aliens, t_controle *row, t_controle *collum, char **spritsaliens) {
-    if ((alien->collumalien + collum->vetor[collum->ini].x *(SPACECALIENS + TAMALIEN) - 1 == COLINIT)) {
-        alien->collumalien = alien->collumalien + 1;
+    if ((alien->collumalien + collum->vetor[collum->ini].x *(SPACECALIENS + TAMALIEN) - 1 == COLINIT)) {                    /*Conta para medir a coluna do alien*/ 
+        alien->collumalien = alien->collumalien + 1;                                                                        /*Em relação a parede inicial*/
         alien->rowalien = alien->rowalien + 1;
         jogo->indo = 1;
         jogo->prdaliens = jogo->prdaliens - CTTDDMTMPALIENS;
@@ -422,7 +422,7 @@ int dtctcolisaotirobarreiras (t_lista *barreiras, t_coord *chave, int *status){
         pecabar = barreiras->ini->prox;
         while (pecabar != barreiras->fim)
         {
-            if (chave->x - 1 == pecabar->chave.x && chave->y + 3 == pecabar->chave.y) {
+            if (chave->x - 1 == pecabar->chave.x && chave->y + 3 == pecabar->chave.y) { /*Se o tiro pegou na barreira*/
                 pecabar->status = MORREU;
                 *status = MORREU;
                 return 1;
@@ -440,7 +440,7 @@ int dtctcolisaotiroaliens (t_lista *aliens, t_coord *chave, t_alien *alien, int 
 
     if (! lista_vazia(aliens)){
     	ulib = aliens->ini->prox; 
-        while (ulib != aliens->fim) {
+        while (ulib != aliens->fim) { /*Esse if gigantesco só serve para ver se o tiro pegou no alien*/
             if (chave->x - 1 == (ulib->chave.x*(ALTURALIEN + SPACELALIENS)+alien->rowalien) + 2 && (chave->y + 3 >= ulib->chave.y*(TAMALIEN + SPACECALIENS)+alien->collumalien) && (chave->y + 3 <= (ulib->chave.y*(TAMALIEN + SPACECALIENS)+alien->collumalien) + 5)) {		
 		ulib->status = MORREU;
                 *status = MORREU;
@@ -460,7 +460,7 @@ int dtctcolisaotirobombas (t_lista *bombas, t_coord *chave, int *status) {
     if (!lista_vazia(bombas)){
         bomba = bombas->ini->prox;    
         while (bomba != bombas->fim) {
-            if (chave->x - 2 == bomba->chave.x && chave->y + 3== bomba->chave.y) {
+            if (chave->x - 2 == bomba->chave.x && chave->y + 3== bomba->chave.y) {      /*Se o tiro pegou na bomba*/
                 bomba->status = MORREU;
                 *status = MORREU;
                 return 1;
@@ -474,6 +474,7 @@ int dtctcolisaotirobombas (t_lista *bombas, t_coord *chave, int *status) {
 /*detecta colisao entre o tiro e a nave mae*/
 int dtctcolisaotironavemae (t_alien *navemae, t_coord *chave, int *status) {
     
+    /*Se o tiro pegou na nave mãe*/
     if (chave->x - 1 == navemae->rowalien + TAMNAVEMAE-1 && chave->y + 3 <= navemae->collumalien + TAMNAVEMAE - 1 && chave->y + 3 >= navemae->collumalien) {
         navemae->status = MORREU;
         *status = MORREU;
@@ -483,7 +484,7 @@ int dtctcolisaotironavemae (t_alien *navemae, t_coord *chave, int *status) {
 }
 
 int nowayoutiros (t_coord *coord, int *status) {
-    if (coord->x - 1 == LININIT){
+    if (coord->x - 1 == LININIT){                                                       /*Se o tiro chegou no fim da tela*/
     	*status = MORREU;
         return 1;
     }
@@ -495,36 +496,36 @@ void analizasituacao (t_jogo *jogo, t_alien *alien, t_alien *navemae, t_lista *a
     t_coord lixo;
     switch (jogo->situacao)
     {
-        case 0:
+        case 0:                                         /*Se o tiro pegou na barreira, remove a peca da lista*/
         prntbarreiras (barreiras);
         srchandrmitemlista (&lixo,barreiras);
         jogo->contiros--;
         break;
 
-        case 1:
+        case 1:                                         /*Se o tiro pegou no alien, remove o alien da lista*/
         prntaliens (jogo,alien,aliens,spritsaliens);
         srchandrmitemlista (aux,aliens);
         jogo->contiros--;
         break;
 
         case 2:
-        prntbombas (bombas);
+        prntbombas (bombas);                            /*Se o tiro pegou na bombas, remove o bomba da lista*/
         srchandrmitemlista (&lixo,bombas);
         jogo->contbombas--;
         jogo->contiros--;
         break;
     
-        case 3:
+        case 3:                                         /*Se o tiro pegou na nave mae, apaga a nave mãe*/
         prntnavemae (navemae);
-	navemae->status = MORREU;
+	    navemae->status = MORREU;
         jogo->contiros--;
         break;
     
-        case 4:
+        case 4:                                         /*Se o tiro chegou ao fim da tela*/
         jogo->contiros--;
         break;
     
-        default:
+        default:                                        /*Se o tiro não pegou em nada*/
         chave->x--;
         break;
     }
@@ -582,6 +583,7 @@ int vrfcrmtiroslista (t_jogo *jogo, t_coord aux, t_controle *row, t_controle *co
     return 0;
 }
 
+/*Todas essa contas são para ajudar na detecção do tiro e da borda*/
 void vrfcextaliens (int coordy, t_controle *ctrl) {
     	ctrl->vetor[coordy].y--;
 	
@@ -604,9 +606,9 @@ void admbombas (t_jogo *jogo, t_lista *bombas, t_lista *barreiras, t_lista *alie
 
     int ndoalien;
     t_coord coord; 
-    if (! lista_vazia(aliens)) {
+    if (! lista_vazia(aliens)) {                                                /*Escolhe um alien da lista para atirar*/
         ndoalien = rand() % aliens->tam;
-        coord = srchalien (ndoalien,alien->rowalien,alien->collumalien,aliens);
+        coord = srchalien (ndoalien,alien->rowalien,alien->collumalien,aliens); /*Devolve as coordenadas desse alien*/
         if (jogo->contbombas < BOMBASALIENS) {
             insrlista (coord.x,coord.y,bombas);
             jogo->contbombas++;
@@ -615,7 +617,7 @@ void admbombas (t_jogo *jogo, t_lista *bombas, t_lista *barreiras, t_lista *alie
         t_nodo *bomba;
         if (!lista_vazia(bombas)) {
             bomba = bombas->ini->prox;
-            while (bomba != bombas->fim) {
+            while (bomba != bombas->fim) {                                      /*Analiza se a bomba pegou em algo*/
                 jogo->situacao = detecta_colisao_bombas (barreiras,player,jogo,&bomba->chave,&bomba->status);
                 analizasituacaoaliens (jogo,&bomba->chave,barreiras);
 
@@ -649,7 +651,7 @@ int dtctcolisaobombabarreira (t_lista *barreiras, t_coord *chave, int *status) {
         pecabar = barreiras->ini->prox;
         while (pecabar != barreiras->fim)
         {
-            if (chave->x + 1 == pecabar->chave.x && chave->y == pecabar->chave.y) {
+            if (chave->x + 1 == pecabar->chave.x && chave->y == pecabar->chave.y) {             /*Se a bomba pegou na barreira*/
                 pecabar->status = MORREU;
                 *status = MORREU;
                 return 1;
@@ -662,6 +664,7 @@ int dtctcolisaobombabarreira (t_lista *barreiras, t_coord *chave, int *status) {
 
 int dtctcolisaobombaplayer (t_player *player, t_coord *chave, int *status) {
 
+    /*Se a bomba pegou no player*/
     if (chave->x + 1 == player->rowplayer && chave->y >= player->collumplayer + 2 && chave->y <= player->collumplayer + 7) {
         *status = MORREU;
         return 1;
@@ -672,6 +675,7 @@ int dtctcolisaobombaplayer (t_player *player, t_coord *chave, int *status) {
 
 int nowayoutbombas (t_coord *chave, int *status) {
 
+    /*Se a bomba chegou ao fim da tela*/
     if (chave->x + 1 == MAXLINHAS) {
         *status = MORREU;
         return 1;
@@ -685,22 +689,22 @@ void analizasituacaoaliens (t_jogo *jogo, t_coord *chave, t_lista *barreiras) {
 
     switch (jogo->situacao)
     {
-        case 0:
+        case 0:                                         /*Se a bomba pegou na barreira, remove a peca da lista*/
         prntbarreiras (barreiras);
         srchandrmitemlista (&lixo,barreiras);
         jogo->contbombas--;
         break;
 
-        case 1:
+        case 1:                                         /*Se a bomba pegou no player, acabou o jogo*/
         jogo->statusjogo = MORREU;
         jogo->contbombas--;
         break;
 
-        case 2:
+        case 2:                                         /*Se a bomba chegou ao fim da tela*/
         jogo->contbombas--;
         break;
     
-        default :
+        default :                                       /*Se a bomba não pegou em nada*/
         chave->x++;
         break;
 
@@ -709,6 +713,7 @@ void analizasituacaoaliens (t_jogo *jogo, t_coord *chave, t_lista *barreiras) {
 
 int vrfcrmbombaslista (t_jogo *jogo) {
 
+    /*Verifica se a necessidade de remoção da bomba da lista*/
     if (jogo->situacao >= 0 && jogo->situacao <= 2)
         return 1;
     return 0;
