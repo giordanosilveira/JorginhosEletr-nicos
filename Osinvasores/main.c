@@ -44,7 +44,7 @@ int main () {
 
         while (jogo.indice <= PERIODOJOGO && !ganhou (&aliens) && !perdeu (&jogo)) {
 
-	    /*mvprintw (LININIT, MAXCOLUNAS/2, "score : %d", jogo.score);*/
+	    /*mvprintw (LININIT + 1, MAXCOLUNAS/2, "score : %d", jogo.score);*/
 
             jogo.key = getch ();
             

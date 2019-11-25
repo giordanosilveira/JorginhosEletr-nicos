@@ -58,15 +58,15 @@
 #define LARGURABARREIRA 8
 
 /*Controla o perido do jogo*/
-#define MAXVELOCIDADE 10000
+#define MAXVELOCIDADE 7500
 #define PERIODOJOGO 40000
 #define RESETACONTADOR 39999
-#define TIALIENS 20000
+#define TIALIENS 15000
 #define TNAVEMAE 10000
-#define CTTDDMTMPALIENS 100                         /*ConsTanTe de DiMinuição do (TM)Perido dos Aliens*/
+#define CTTDDMTMPALIENS 200                         /*ConsTanTe de DiMinuição do (TM)Perido dos Aliens*/
 
 /*Tudo o que tem haver com os aliens*/
-#define BOMBASALIENS 6
+#define BOMBASALIENS 8
 #define TAMNAVEMAE 3
 #define CHANCENAVEMAE 4000
 #define TAMALIEN 5
