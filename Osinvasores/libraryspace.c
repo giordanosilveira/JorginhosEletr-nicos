@@ -148,8 +148,11 @@ void rstcont (t_jogo *jogo) {
 
 int tecla (t_jogo *jogo, t_player *player, t_lista *tiros) {
 
-    if (jogo->key == 'q') 
+    if (jogo->key == 'q'){
+    	endwin ();
+	printf ("Mas já, tão cedo\n");
         return 0;
+    }
     else if (jogo->key == 'a')
         moveplayer (jogo,player);
     else if (jogo->key == 'd')
@@ -168,7 +171,7 @@ void moveplayer (t_jogo *jogo, t_player *player) {
         	player->collumplayer--;
     }
     else if (jogo->key == 'd') {
-    	if (player->collumplayer + 7 < MAXCOLUNAS)
+    	if (player->collumplayer + 10 < MAXCOLUNAS)
         	player->collumplayer++;
     }
 }
@@ -197,7 +200,7 @@ void nave_mae (t_alien *navemae) {
 void navemaeaparece (t_alien *navemae) {
 
     if (navemae->status == 0) {
-        navemae->rowalien = 0;
+        navemae->rowalien = 2;
         navemae->collumalien = 0;
         navemae->status = VIVO;
         prntnavemae (navemae);

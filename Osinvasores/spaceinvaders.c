@@ -38,14 +38,13 @@ int main () {
         return 1;
     } 
 
-    borda (LININIT,COLINIT,MAXLINHAS - 1,MAXCOLUNAS - 1);                               /*Cria a borda do jogo*/
     srand(time(NULL));
 
     while (!perdeu(&jogo)) {
 
         while (jogo.indice <= PERIODOJOGO && !ganhou (&aliens) && !perdeu (&jogo)) {
 
-	    /*mvprintw (LININIT, MAXCOLUNAS/2, "score : %d", jogo.score);*/
+	    /*mvprintw (LININIT + 1, MAXCOLUNAS/2, "score : %d", jogo.score);*/
 
             jogo.key = getch ();
             
@@ -82,7 +81,8 @@ int main () {
             prntbarreiras (&barreiras);
 
             jogo.indice++;    
-
+	    
+            borda (LININIT,COLINIT,MAXLINHAS - 1,MAXCOLUNAS - 1);                               /*Cria a borda do jogo*/
             refresh ();
 
         }
