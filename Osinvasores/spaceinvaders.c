@@ -5,8 +5,6 @@
 #include <unistd.h>
 #include <time.h>
 #include "lib_lista.h"
-
-
 int main () {
 
     initscr();                                                                      /* inicia a tela */
