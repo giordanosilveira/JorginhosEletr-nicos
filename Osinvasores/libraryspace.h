@@ -163,27 +163,6 @@ struct t_lista {
 };
 typedef struct t_lista t_lista;                                 /*Lista genérica*/
 
-/*Inicializa todas as structs*/
-void initstructs (t_jogo *, t_player *, t_alien *, t_alien *, t_controle *, t_controle *);
-
-/*Inicializa as listas*/
-void initlistas (t_lista *, t_lista *, t_lista *, t_lista *);
-
-/*Inicia a struct jogo*/
-void initjogo (t_jogo *);
-
-/*Inicia a struct player*/
-void initplayer (t_player *);
-
-/*Inicia a struct player*/
-void initalien (t_alien *, int, int);
-
-/*Inicia a struct controle*/
-void initcontrole (t_controle *, int, int);
-
-/*Inicializa os sprits dos aliens*/
-void initspritsaliens (char **);
-
 /*Verifica se o jogador perdeu o jogo*/
 int perdeu (t_jogo *);
 
@@ -199,9 +178,6 @@ void moveplayer (t_jogo *, t_player *);
 /*Adiciona, quando possível, um tiro na lista*/
 void addtirolista (t_jogo *, t_player *, t_lista *);
 
-/*Aloca matriz*/
-char ** aloca_matriz (int, int);
-
 /*Insere a posição primeiramente nas lista*/
 void insrprimeiro (t_lista *, int, int, int);
 
@@ -214,12 +190,6 @@ void rstcont (t_jogo *);
 /*Administra os aliens*/
 void admaliens (t_jogo *, t_alien *, t_lista *,t_lista *, t_controle *, t_controle *, char **);
 
-/*Verifica se os aliens pegaram na barreiras*/
-int alienbarreira (t_lista *, t_lista *, t_controle *, t_alien *, int *);
-
-/*Verifica se os aliens chegar na linha do player*/
-void nowayout (t_jogo *, t_player *, t_alien *, t_controle *);
-
 /*Administra a impressao aliens*/
 void admimpressao (t_jogo *, t_alien *, t_lista *, t_controle  *, t_controle *, char **);
 
@@ -228,9 +198,6 @@ void alienstoleft (t_jogo *, t_alien *, t_lista *, t_controle *, t_controle *, c
 
 /*Impressão dos aliens para a direita*/
 void alienstoright (t_jogo *, t_alien *, t_lista *, t_controle *, t_controle *, char **);
-
-/*printa os aliens*/
-void prntaliens (t_jogo *, t_alien *, t_lista *, char **);
 
 /*Administra a nave mãe*/
 void nave_mae (t_alien *);
@@ -241,44 +208,11 @@ void navemaeaparece (t_alien *);
 /*Admnista a impressão da nave mãe*/
 void admnavemae (t_alien *);
 
-/*Printa a nave mae*/
-void prntnavemae (t_alien *);
-
-/*Printa o player*/
-void prntplayer (t_player *);
-
-/*Printa a barreira*/
-void prntbarreiras (t_lista *);
-
 /*Admnistra os tiros do player*/
 void admtiros (t_jogo *, t_alien *, t_alien *, t_controle *, t_controle *, t_lista *, t_lista *, t_lista *, t_lista *,char **);
 
-/*Detecta se o tiro pegou em algo*/
-int detecta_colisao (t_alien *, t_alien * , t_lista * , t_lista *,t_lista*, t_coord *, int *);
-
-/*detecta colisao entre o tiro e as barreiras*/
-int dtctcolisaotirobarreiras (t_lista *, t_coord *, int *);
-
-/*detecta colisao entre o tiro e os aliens*/
-int dtctcolisaotiroaliens (t_lista *, t_coord *,t_alien *, int *);
-
-/*detecta colisao entre o tiro e as bombas*/
-int dtctcolisaotirobombas (t_lista *, t_coord *, int *);
-
-/*detecta colisao entre o tiro e a nave mae*/
-int dtctcolisaotironavemae (t_alien *, t_coord *, int *);
-
-/*Verifica se o tiro chegou no início da tela*/
-int nowayoutiros (t_coord *, int *);
-
 /*De acordo com a situação escolhe uma decisão para ser tomada*/
 void analizasituacao (t_jogo *, t_alien *, t_alien *, t_lista *, t_lista *, t_lista * ,t_coord *, t_coord *, char **);
-
-/*printa os tiros*/
-void prntiro (t_lista *);
-
-/*printa as bombas e a colisao entre elas e os tiros */
-void prntbombas (t_lista *);
 
 /*Verifica se a necessida de remover o tiro da lista e atualiza as colunas e as linhas dos aliens*/
 int vrfcrmtiroslista (t_jogo *,t_coord , t_controle *, t_controle *);
@@ -288,18 +222,6 @@ void vrfcextaliens (int , t_controle *);
 
 /*Administra as bombas dos aliens*/
 void admbombas (t_jogo *, t_lista *, t_lista *, t_lista *, t_player *, t_alien *);
-
-/*Detecta a colisao entre as bombas e algo*/
-int detecta_colisao_bombas (t_lista *, t_player *, t_jogo *, t_coord *, int *);
-
-/*Detecta a colisa entre a bomba e a barreira*/
-int dtctcolisaobombabarreira (t_lista *, t_coord *, int *);
-
-/*Detecta a colisao entre a bomba e o player*/
-int dtctcolisaobombaplayer (t_player *, t_coord *,int *);
-
-/*Detecta a colisao entre as bombas e o fim da tela*/
-int nowayoutbombas (t_coord *, int *);
 
 /*De acordo com a situação escolhe uma decisão para ser tomada*/
 void analizasituacaoaliens (t_jogo *, t_coord *, t_lista *);
