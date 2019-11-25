@@ -80,8 +80,7 @@ int main () {
             prntplayer (&player);
             prntbarreiras (&barreiras);
 
-            jogo.indice++;
-                
+            jogo.indice++;    
             borda (LININIT,COLINIT,MAXLINHAS - 1,MAXCOLUNAS - 1);                               /*Cria a borda do jogo*/
             refresh ();
 
